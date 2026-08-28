@@ -1,0 +1,2039 @@
+{
+  "episode_id": "EP001",
+  "title": "A Bed of Mud",
+  "status": "APPROVED_FOR_PRODUCTION",
+  "stages": [
+    {
+      "stage": "STORY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "issues": [],
+        "warnings": [],
+        "analysis": {
+          "scene_count": 4,
+          "planned_duration": 47,
+          "target_duration": 47,
+          "duration_difference": 0
+        }
+      }
+    },
+    {
+      "stage": "STORY_STRUCTURE",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "overall_arc": "MYSTERY_ESCALATION",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "SETUP",
+            "dramatic_role": "ESTABLISH_MYSTERY",
+            "purpose": "Establish the central mystery and introduce the audience to the core problem.",
+            "information_revealed": [
+              "The official story about Oakhaven may not be true."
+            ],
+            "open_questions": [
+              "What is the truth behind Oakhaven?"
+            ],
+            "tension_level": 2
+          },
+          {
+            "scene_number": 2,
+            "narrative_function": "ESCALATION",
+            "dramatic_role": "CHALLENGE_ASSUMPTION",
+            "purpose": "Challenge the established version of events and increase audience curiosity.",
+            "information_revealed": [
+              "Workers at the docks know something contradicts the official story."
+            ],
+            "open_questions": [
+              "What really happened at the docks?"
+            ],
+            "tension_level": 4
+          },
+          {
+            "scene_number": 3,
+            "narrative_function": "REVELATION",
+            "dramatic_role": "INTRODUCE_CASE",
+            "purpose": "Introduce the death that becomes the first concrete mystery.",
+            "information_revealed": [
+              "Samuel Bell has died.",
+              "The case appears to be closed."
+            ],
+            "open_questions": [
+              "Was Samuel Bell's death really natural?"
+            ],
+            "tension_level": 6
+          },
+          {
+            "scene_number": 4,
+            "narrative_function": "DISCOVERY",
+            "dramatic_role": "REVEAL_CLUE",
+            "purpose": "Reveal the first significant clue that changes the interpretation of the case.",
+            "information_revealed": [
+              "The apparent heart attack may not be a simple medical event.",
+              "A catalog code is connected to the case."
+            ],
+            "open_questions": [
+              "What does the catalog code mean?",
+              "Who created the catalog?"
+            ],
+            "tension_level": 8
+          }
+        ]
+      }
+    },
+    {
+      "stage": "CONTINUITY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "inherited_from_previous_scene": false,
+            "characters": [
+              {
+                "name": "Sam Bell",
+                "appearance": "Established appearance of Sam Bell.",
+                "wardrobe": "Established wardrobe of Sam Bell.",
+                "emotional_state": "UNEASY",
+                "physical_condition": "Normal"
+              }
+            ],
+            "location": {
+              "name": "The Old Docks",
+              "time_of_day": "Pre-dawn",
+              "weather": "Cold and damp",
+              "lighting": "Dim natural light",
+              "atmosphere": "Quiet and uneasy"
+            },
+            "props": [],
+            "continuity_requirements": [],
+            "changes_from_previous_scene": [
+              "Sam Bell enters the story state.",
+              "Initial scene establishes the episode state."
+            ]
+          },
+          {
+            "scene_number": 2,
+            "inherited_from_previous_scene": true,
+            "characters": [
+              {
+                "name": "Sam Bell",
+                "appearance": "Established appearance of Sam Bell.",
+                "wardrobe": "Established wardrobe of Sam Bell.",
+                "emotional_state": "UNEASY",
+                "physical_condition": "Normal"
+              }
+            ],
+            "location": {
+              "name": "Dock Edge",
+              "time_of_day": "Early morning",
+              "weather": "Cold and damp",
+              "lighting": "Low natural light",
+              "atmosphere": "Quiet and foreboding"
+            },
+            "props": [],
+            "continuity_requirements": [
+              "Maintain visual identity of Sam Bell.",
+              "Maintain wardrobe continuity for Sam Bell."
+            ],
+            "changes_from_previous_scene": [
+              "Location changes from The Old Docks to Dock Edge."
+            ]
+          },
+          {
+            "scene_number": 3,
+            "inherited_from_previous_scene": true,
+            "characters": [
+              {
+                "name": "Sterling",
+                "appearance": "Established appearance of Sterling.",
+                "wardrobe": "Established wardrobe of Sterling.",
+                "emotional_state": "CALM",
+                "physical_condition": "Normal"
+              }
+            ],
+            "location": {
+              "name": "The Old Docks",
+              "time_of_day": "Pre-dawn",
+              "weather": "Cold and damp",
+              "lighting": "Dim natural light",
+              "atmosphere": "Quiet and uneasy"
+            },
+            "props": [],
+            "continuity_requirements": [],
+            "changes_from_previous_scene": [
+              "Sterling enters the story state.",
+              "Location changes from Dock Edge to The Old Docks."
+            ]
+          },
+          {
+            "scene_number": 4,
+            "inherited_from_previous_scene": true,
+            "characters": [
+              {
+                "name": "Julian",
+                "appearance": "Established appearance of Julian.",
+                "wardrobe": "Established wardrobe of Julian.",
+                "emotional_state": "FOCUSED",
+                "physical_condition": "Normal"
+              },
+              {
+                "name": "Ren",
+                "appearance": "Established appearance of Ren.",
+                "wardrobe": "Established wardrobe of Ren.",
+                "emotional_state": "ALERT",
+                "physical_condition": "Normal"
+              }
+            ],
+            "location": {
+              "name": "Julian's Office",
+              "time_of_day": "Night",
+              "weather": "Cold and dry",
+              "lighting": "Low desk-lamp lighting",
+              "atmosphere": "Dark and investigative"
+            },
+            "props": [
+              {
+                "name": "Catalog document",
+                "appearance": "Aged paper document with subtle handwritten and printed markings.",
+                "state": "Active investigation"
+              },
+              {
+                "name": "Case records",
+                "appearance": "Old investigative records.",
+                "state": "Active investigation"
+              },
+              {
+                "name": "Desk",
+                "appearance": "Established office desk.",
+                "state": "Existing"
+              }
+            ],
+            "continuity_requirements": [
+              "Maintain continuity of the catalog document.",
+              "Do not reveal document details before the intended close-up.",
+              "Avoid unnecessary character movement."
+            ],
+            "changes_from_previous_scene": [
+              "Julian enters the story state.",
+              "Ren enters the story state.",
+              "Location changes from The Old Docks to Julian's Office."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "STATE_MANAGEMENT",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP001",
+        "title": "A Bed of Mud",
+        "current_scene": 4,
+        "characters": {
+          "CHAR_SAM_BELL": {
+            "entity_id": "CHAR_SAM_BELL",
+            "name": "Sam Bell",
+            "appearance": "Established appearance of Sam Bell.",
+            "wardrobe": "Established wardrobe of Sam Bell.",
+            "emotional_state": "UNEASY",
+            "physical_condition": "Normal",
+            "reference_required": true,
+            "master_character_required": true
+          },
+          "CHAR_STERLING": {
+            "entity_id": "CHAR_STERLING",
+            "name": "Sterling",
+            "appearance": "Established appearance of Sterling.",
+            "wardrobe": "Established wardrobe of Sterling.",
+            "emotional_state": "CALM",
+            "physical_condition": "Normal",
+            "reference_required": true,
+            "master_character_required": true
+          },
+          "CHAR_JULIAN": {
+            "entity_id": "CHAR_JULIAN",
+            "name": "Julian",
+            "appearance": "Established appearance of Julian.",
+            "wardrobe": "Established wardrobe of Julian.",
+            "emotional_state": "FOCUSED",
+            "physical_condition": "Normal",
+            "reference_required": true,
+            "master_character_required": true
+          },
+          "CHAR_REN": {
+            "entity_id": "CHAR_REN",
+            "name": "Ren",
+            "appearance": "Established appearance of Ren.",
+            "wardrobe": "Established wardrobe of Ren.",
+            "emotional_state": "ALERT",
+            "physical_condition": "Normal",
+            "reference_required": true,
+            "master_character_required": true
+          }
+        },
+        "locations": {
+          "LOC_THE_OLD_DOCKS": {
+            "entity_id": "LOC_THE_OLD_DOCKS",
+            "name": "The Old Docks",
+            "time_of_day": "Pre-dawn",
+            "weather": "Cold and damp",
+            "lighting": "Dim natural light",
+            "atmosphere": "Quiet and uneasy",
+            "reference_required": true
+          },
+          "LOC_DOCK_EDGE": {
+            "entity_id": "LOC_DOCK_EDGE",
+            "name": "Dock Edge",
+            "time_of_day": "Early morning",
+            "weather": "Cold and damp",
+            "lighting": "Low natural light",
+            "atmosphere": "Quiet and foreboding",
+            "reference_required": true
+          },
+          "LOC_JULIAN_S_OFFICE": {
+            "entity_id": "LOC_JULIAN_S_OFFICE",
+            "name": "Julian's Office",
+            "time_of_day": "Night",
+            "weather": "Cold and dry",
+            "lighting": "Low desk-lamp lighting",
+            "atmosphere": "Dark and investigative",
+            "reference_required": true
+          }
+        },
+        "props": {
+          "PROP_CATALOG_DOCUMENT": {
+            "entity_id": "PROP_CATALOG_DOCUMENT",
+            "name": "Catalog document",
+            "appearance": "Aged paper document with subtle handwritten and printed markings.",
+            "state": "Active investigation",
+            "reference_required": true
+          },
+          "PROP_CASE_RECORDS": {
+            "entity_id": "PROP_CASE_RECORDS",
+            "name": "Case records",
+            "appearance": "Old investigative records.",
+            "state": "Active investigation",
+            "reference_required": true
+          },
+          "PROP_DESK": {
+            "entity_id": "PROP_DESK",
+            "name": "Desk",
+            "appearance": "Established office desk.",
+            "state": "Existing",
+            "reference_required": true
+          }
+        },
+        "scene_states": {
+          "1": {
+            "scene_number": 1,
+            "characters": {
+              "CHAR_SAM_BELL": {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "appearance": "Established appearance of Sam Bell.",
+                "wardrobe": "Established wardrobe of Sam Bell.",
+                "emotional_state": "UNEASY",
+                "physical_condition": "Normal",
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_THE_OLD_DOCKS",
+              "name": "The Old Docks",
+              "time_of_day": "Pre-dawn",
+              "weather": "Cold and damp",
+              "lighting": "Dim natural light",
+              "atmosphere": "Quiet and uneasy",
+              "reference_required": true
+            },
+            "props": {},
+            "active_characters": [
+              "CHAR_SAM_BELL"
+            ],
+            "active_props": []
+          },
+          "2": {
+            "scene_number": 2,
+            "characters": {
+              "CHAR_SAM_BELL": {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "appearance": "Established appearance of Sam Bell.",
+                "wardrobe": "Established wardrobe of Sam Bell.",
+                "emotional_state": "UNEASY",
+                "physical_condition": "Normal",
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_DOCK_EDGE",
+              "name": "Dock Edge",
+              "time_of_day": "Early morning",
+              "weather": "Cold and damp",
+              "lighting": "Low natural light",
+              "atmosphere": "Quiet and foreboding",
+              "reference_required": true
+            },
+            "props": {},
+            "active_characters": [
+              "CHAR_SAM_BELL"
+            ],
+            "active_props": []
+          },
+          "3": {
+            "scene_number": 3,
+            "characters": {
+              "CHAR_STERLING": {
+                "entity_id": "CHAR_STERLING",
+                "name": "Sterling",
+                "appearance": "Established appearance of Sterling.",
+                "wardrobe": "Established wardrobe of Sterling.",
+                "emotional_state": "CALM",
+                "physical_condition": "Normal",
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_THE_OLD_DOCKS",
+              "name": "The Old Docks",
+              "time_of_day": "Pre-dawn",
+              "weather": "Cold and damp",
+              "lighting": "Dim natural light",
+              "atmosphere": "Quiet and uneasy",
+              "reference_required": true
+            },
+            "props": {},
+            "active_characters": [
+              "CHAR_STERLING"
+            ],
+            "active_props": []
+          },
+          "4": {
+            "scene_number": 4,
+            "characters": {
+              "CHAR_JULIAN": {
+                "entity_id": "CHAR_JULIAN",
+                "name": "Julian",
+                "appearance": "Established appearance of Julian.",
+                "wardrobe": "Established wardrobe of Julian.",
+                "emotional_state": "FOCUSED",
+                "physical_condition": "Normal",
+                "reference_required": true,
+                "master_character_required": true
+              },
+              "CHAR_REN": {
+                "entity_id": "CHAR_REN",
+                "name": "Ren",
+                "appearance": "Established appearance of Ren.",
+                "wardrobe": "Established wardrobe of Ren.",
+                "emotional_state": "ALERT",
+                "physical_condition": "Normal",
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_JULIAN_S_OFFICE",
+              "name": "Julian's Office",
+              "time_of_day": "Night",
+              "weather": "Cold and dry",
+              "lighting": "Low desk-lamp lighting",
+              "atmosphere": "Dark and investigative",
+              "reference_required": true
+            },
+            "props": {
+              "PROP_CATALOG_DOCUMENT": {
+                "entity_id": "PROP_CATALOG_DOCUMENT",
+                "name": "Catalog document",
+                "appearance": "Aged paper document with subtle handwritten and printed markings.",
+                "state": "Active investigation",
+                "reference_required": true
+              },
+              "PROP_CASE_RECORDS": {
+                "entity_id": "PROP_CASE_RECORDS",
+                "name": "Case records",
+                "appearance": "Old investigative records.",
+                "state": "Active investigation",
+                "reference_required": true
+              },
+              "PROP_DESK": {
+                "entity_id": "PROP_DESK",
+                "name": "Desk",
+                "appearance": "Established office desk.",
+                "state": "Existing",
+                "reference_required": true
+              }
+            },
+            "active_characters": [
+              "CHAR_JULIAN",
+              "CHAR_REN"
+            ],
+            "active_props": [
+              "PROP_CATALOG_DOCUMENT",
+              "PROP_CASE_RECORDS",
+              "PROP_DESK"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "stage": "PRODUCTION_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP001",
+        "title": "A Bed of Mud",
+        "target_duration_seconds": 47,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 8,
+            "location_id": "LOC_THE_OLD_DOCKS",
+            "shot_count": 1,
+            "shots": [
+              {
+                "shot_id": "EP001-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 8,
+                "purpose": "Establish Sam Bell and the old docks.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_WIDE",
+                  "camera_movement": "VERY_SLOW_PUSH_IN",
+                  "framing": "CHARACTER_AND_ENVIRONMENT",
+                  "composition": "Sam Bell remains the primary subject while the old docks remain clearly visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "WORK_AT_DOCK",
+                    "gesture": "SUBTLE_WORKING_GESTURE",
+                    "facial_movement": "UNEASY_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve Sam Bell's established appearance.",
+                  "Preserve Sam Bell's established wardrobe.",
+                  "Keep the docks visually quiet.",
+                  "Maintain cold and damp pre-dawn conditions.",
+                  "Avoid unnecessary character movement.",
+                  "Do not introduce additional characters.",
+                  "Do not introduce unrelated props.",
+                  "Avoid dramatic camera movement."
+                ],
+                "dialogue": "The Pikes claim this city was built on solid rock."
+              }
+            ]
+          },
+          {
+            "scene_number": 2,
+            "duration_seconds": 7,
+            "location_id": "LOC_DOCK_EDGE",
+            "shot_count": 2,
+            "shots": [
+              {
+                "shot_id": "EP001-S02-SHOT01",
+                "scene_number": 2,
+                "duration_seconds": 4,
+                "purpose": "Continue Sam Bell's work at the dock edge.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sam Bell remains centered with the dock edge visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "CONTINUE_WORKING",
+                    "gesture": "SUBTLE_NATURAL_GESTURE",
+                    "facial_movement": "UNEASY_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain wardrobe continuity.",
+                  "Maintain cold and damp weather.",
+                  "Maintain early morning lighting.",
+                  "Do not introduce new characters.",
+                  "Avoid unnecessary head movement."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S02-SHOT02",
+                "scene_number": 2,
+                "duration_seconds": 3,
+                "purpose": "Emphasize Sam Bell's awareness that something is wrong.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sam Bell dominates the frame while the dock remains recognizable."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "OBSERVE_DOCK_AREA",
+                    "gesture": "MINIMAL_MOVEMENT",
+                    "facial_movement": "UNEASY_LOOK"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Do not turn Sam fully toward camera.",
+                  "Avoid exaggerated acting.",
+                  "Maintain visual continuity with Shot 01.",
+                  "Keep environment subdued.",
+                  "Do not introduce additional workers."
+                ],
+                "dialogue": "But anyone working the docks at four in the morning knows the truth."
+              }
+            ]
+          },
+          {
+            "scene_number": 3,
+            "duration_seconds": 12,
+            "location_id": "LOC_THE_OLD_DOCKS",
+            "shot_count": 2,
+            "shots": [
+              {
+                "shot_id": "EP001-S03-SHOT01",
+                "scene_number": 3,
+                "duration_seconds": 6,
+                "purpose": "Establish Sterling examining the case at the old docks.",
+                "characters": [
+                  "CHAR_STERLING"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sterling is framed against the quiet old docks."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_STERLING",
+                    "action": "EXAMINE_CASE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "CALM_NEUTRAL_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain Sterling's established appearance.",
+                  "Maintain Sterling's established wardrobe.",
+                  "Maintain cold damp pre-dawn conditions.",
+                  "Avoid exaggerated acting.",
+                  "Keep the scene subdued."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S03-SHOT02",
+                "scene_number": 3,
+                "duration_seconds": 6,
+                "purpose": "Deliver the apparent conclusion that Samuel Bell's case is closed.",
+                "characters": [
+                  "CHAR_STERLING"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_SLOW_PUSH_IN",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sterling remains the sole visual focus."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_STERLING",
+                    "action": "DELIVER_CASE_CONCLUSION",
+                    "gesture": "MINIMAL_HAND_MOVEMENT",
+                    "facial_movement": "CALM_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Do not introduce Julian yet.",
+                  "Do not introduce Ren yet.",
+                  "Avoid melodramatic performance.",
+                  "Maintain muted lighting.",
+                  "Keep the old docks visually consistent."
+                ],
+                "dialogue": "Slightly tragic case. Samuel Bell, age 69. Case closed."
+              }
+            ]
+          },
+          {
+            "scene_number": 4,
+            "duration_seconds": 20,
+            "location_id": "LOC_JULIAN_S_OFFICE",
+            "shot_count": 4,
+            "shots": [
+              {
+                "shot_id": "EP001-S04-SHOT01",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Establish Julian investigating the case in his office.",
+                "characters": [
+                  "CHAR_JULIAN"
+                ],
+                "props": [
+                  "PROP_DESK",
+                  "PROP_CASE_RECORDS"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Julian remains the primary subject at his desk."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "STUDY_CASE_RECORDS",
+                    "gesture": "MINIMAL_HAND_MOVEMENT",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Camera remains on Julian.",
+                  "Do not reveal document details yet.",
+                  "Maintain low desk-lamp lighting.",
+                  "Maintain dark investigative atmosphere.",
+                  "Avoid unnecessary head turns.",
+                  "Do not introduce rain.",
+                  "Preserve established office environment."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S04-SHOT02",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Show Julian beginning to examine the suspicious catalog document.",
+                "characters": [
+                  "CHAR_JULIAN"
+                ],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT",
+                  "PROP_DESK"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "SUBTLE_CONTROLLED_PUSH",
+                  "framing": "OVER_SHOULDER",
+                  "composition": "Julian remains visible while the document becomes partially visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "EXAMINE_DOCUMENT",
+                    "gesture": "CAREFULLY_HANDLING_DOCUMENT",
+                    "facial_movement": "FOCUSED_SUSPICIOUS_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "action": "REMAINS_ON_DESK"
+                  }
+                ],
+                "visual_constraints": [
+                  "Do not reveal the key catalog code yet.",
+                  "Do not zoom excessively close.",
+                  "Document must remain visually consistent.",
+                  "Avoid document flipping animation.",
+                  "Keep Julian's movement subtle.",
+                  "Maintain low desk-lamp lighting."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Reveal the catalog code that changes Julian's understanding.",
+                "characters": [],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "DOCUMENT_FOCUSED",
+                  "composition": "The catalog document fills most of the frame while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "action": "DISPLAY_CATALOG_CODE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Reveal the catalog code clearly.",
+                  "Do not introduce unrelated text.",
+                  "Preserve document appearance.",
+                  "Do not animate page flipping.",
+                  "Keep the document physically stable.",
+                  "Maintain the established lighting."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S04-SHOT04",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Show Julian recognizing the significance of the catalog code while Ren remains alert.",
+                "characters": [
+                  "CHAR_JULIAN",
+                  "CHAR_REN"
+                ],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT",
+                  "PROP_DESK"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM_TWO_SHOT",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "CHARACTER_INTERACTION",
+                  "composition": "Julian remains visually dominant with Ren positioned nearby."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "RECOGNIZE_CLUE",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "SUSPICIOUS_REALIZATION"
+                  },
+                  {
+                    "entity_id": "CHAR_REN",
+                    "action": "WATCH_JULIAN",
+                    "gesture": "STILL_ALERT_POSTURE",
+                    "facial_movement": "CONTROLLED_ALERT_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain both character identities.",
+                  "Maintain wardrobe continuity.",
+                  "Preserve spatial relationship.",
+                  "Avoid unnecessary head turns.",
+                  "Keep reactions subtle.",
+                  "Do not introduce new characters.",
+                  "Maintain dark investigative atmosphere."
+                ],
+                "dialogue": "This isn't a heart attack, Ren. It's a catalog code."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "ASSET_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP001",
+        "title": "A Bed of Mud",
+        "assets": [
+          {
+            "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+            "entity_id": "CHAR_SAM_BELL",
+            "asset_type": "CHARACTER",
+            "name": "Sam Bell",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+            "entity_id": "LOC_THE_OLD_DOCKS",
+            "asset_type": "LOCATION",
+            "name": "The Old Docks",
+            "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+            "entity_id": "LOC_DOCK_EDGE",
+            "asset_type": "LOCATION",
+            "name": "Dock Edge",
+            "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_CHAR_STERLING_MASTER",
+            "entity_id": "CHAR_STERLING",
+            "asset_type": "CHARACTER",
+            "name": "Sterling",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+            "entity_id": "CHAR_JULIAN",
+            "asset_type": "CHARACTER",
+            "name": "Julian",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_CHAR_REN_MASTER",
+            "entity_id": "CHAR_REN",
+            "asset_type": "CHARACTER",
+            "name": "Ren",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+            "entity_id": "LOC_JULIAN_S_OFFICE",
+            "asset_type": "LOCATION",
+            "name": "Julian's Office",
+            "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+            "entity_id": "PROP_CATALOG_DOCUMENT",
+            "asset_type": "PROP",
+            "name": "Catalog document",
+            "purpose": "Master prop reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_CASE_RECORDS_MASTER",
+            "entity_id": "PROP_CASE_RECORDS",
+            "asset_type": "PROP",
+            "name": "Case records",
+            "purpose": "Master prop reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_DESK_MASTER",
+            "entity_id": "PROP_DESK",
+            "asset_type": "PROP",
+            "name": "Desk",
+            "purpose": "Master prop reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          }
+        ],
+        "scenes": [
+          {
+            "scene_number": 1,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                "entity_id": "CHAR_SAM_BELL",
+                "asset_type": "CHARACTER",
+                "name": "Sam Bell",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                "entity_id": "LOC_THE_OLD_DOCKS",
+                "asset_type": "LOCATION",
+                "name": "The Old Docks",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP001-S01-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 2,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                "entity_id": "CHAR_SAM_BELL",
+                "asset_type": "CHARACTER",
+                "name": "Sam Bell",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+                "entity_id": "LOC_DOCK_EDGE",
+                "asset_type": "LOCATION",
+                "name": "Dock Edge",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP001-S02-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+                    "entity_id": "LOC_DOCK_EDGE",
+                    "asset_type": "LOCATION",
+                    "name": "Dock Edge",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S02-SHOT02",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+                    "entity_id": "LOC_DOCK_EDGE",
+                    "asset_type": "LOCATION",
+                    "name": "Dock Edge",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 3,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_STERLING_MASTER",
+                "entity_id": "CHAR_STERLING",
+                "asset_type": "CHARACTER",
+                "name": "Sterling",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                "entity_id": "LOC_THE_OLD_DOCKS",
+                "asset_type": "LOCATION",
+                "name": "The Old Docks",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP001-S03-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_STERLING_MASTER",
+                    "entity_id": "CHAR_STERLING",
+                    "asset_type": "CHARACTER",
+                    "name": "Sterling",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S03-SHOT02",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_STERLING_MASTER",
+                    "entity_id": "CHAR_STERLING",
+                    "asset_type": "CHARACTER",
+                    "name": "Sterling",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 4,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                "entity_id": "CHAR_JULIAN",
+                "asset_type": "CHARACTER",
+                "name": "Julian",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_CHAR_REN_MASTER",
+                "entity_id": "CHAR_REN",
+                "asset_type": "CHARACTER",
+                "name": "Ren",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                "entity_id": "LOC_JULIAN_S_OFFICE",
+                "asset_type": "LOCATION",
+                "name": "Julian's Office",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                "entity_id": "PROP_CATALOG_DOCUMENT",
+                "asset_type": "PROP",
+                "name": "Catalog document",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_CASE_RECORDS_MASTER",
+                "entity_id": "PROP_CASE_RECORDS",
+                "asset_type": "PROP",
+                "name": "Case records",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_DESK_MASTER",
+                "entity_id": "PROP_DESK",
+                "asset_type": "PROP",
+                "name": "Desk",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP001-S04-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CASE_RECORDS_MASTER",
+                    "entity_id": "PROP_CASE_RECORDS",
+                    "asset_type": "PROP",
+                    "name": "Case records",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT02",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT04",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_CHAR_REN_MASTER",
+                    "entity_id": "CHAR_REN",
+                    "asset_type": "CHARACTER",
+                    "name": "Ren",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_EXECUTION",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP001",
+        "title": "A Bed of Mud",
+        "target_duration_seconds": 47,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 8,
+            "shots": [
+              {
+                "shot_id": "EP001-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 8,
+                "purpose": "Establish Sam Bell and the old docks.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_WIDE",
+                  "camera_movement": "VERY_SLOW_PUSH_IN",
+                  "framing": "CHARACTER_AND_ENVIRONMENT",
+                  "composition": "Sam Bell remains the primary subject while the old docks remain clearly visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "WORK_AT_DOCK",
+                    "gesture": "SUBTLE_WORKING_GESTURE",
+                    "facial_movement": "UNEASY_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve Sam Bell's established appearance.",
+                  "Preserve Sam Bell's established wardrobe.",
+                  "Keep the docks visually quiet.",
+                  "Maintain cold and damp pre-dawn conditions.",
+                  "Avoid unnecessary character movement.",
+                  "Do not introduce additional characters.",
+                  "Do not introduce unrelated props.",
+                  "Avoid dramatic camera movement."
+                ],
+                "dialogue": "The Pikes claim this city was built on solid rock.",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 2,
+            "duration_seconds": 7,
+            "shots": [
+              {
+                "shot_id": "EP001-S02-SHOT01",
+                "scene_number": 2,
+                "duration_seconds": 4,
+                "purpose": "Continue Sam Bell's work at the dock edge.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sam Bell remains centered with the dock edge visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "CONTINUE_WORKING",
+                    "gesture": "SUBTLE_NATURAL_GESTURE",
+                    "facial_movement": "UNEASY_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain wardrobe continuity.",
+                  "Maintain cold and damp weather.",
+                  "Maintain early morning lighting.",
+                  "Do not introduce new characters.",
+                  "Avoid unnecessary head movement."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+                    "entity_id": "LOC_DOCK_EDGE",
+                    "asset_type": "LOCATION",
+                    "name": "Dock Edge",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S02-SHOT02",
+                "scene_number": 2,
+                "duration_seconds": 3,
+                "purpose": "Emphasize Sam Bell's awareness that something is wrong.",
+                "characters": [
+                  "CHAR_SAM_BELL"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sam Bell dominates the frame while the dock remains recognizable."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_SAM_BELL",
+                    "action": "OBSERVE_DOCK_AREA",
+                    "gesture": "MINIMAL_MOVEMENT",
+                    "facial_movement": "UNEASY_LOOK"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Do not turn Sam fully toward camera.",
+                  "Avoid exaggerated acting.",
+                  "Maintain visual continuity with Shot 01.",
+                  "Keep environment subdued.",
+                  "Do not introduce additional workers."
+                ],
+                "dialogue": "But anyone working the docks at four in the morning knows the truth.",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+                    "entity_id": "CHAR_SAM_BELL",
+                    "asset_type": "CHARACTER",
+                    "name": "Sam Bell",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+                    "entity_id": "LOC_DOCK_EDGE",
+                    "asset_type": "LOCATION",
+                    "name": "Dock Edge",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 3,
+            "duration_seconds": 12,
+            "shots": [
+              {
+                "shot_id": "EP001-S03-SHOT01",
+                "scene_number": 3,
+                "duration_seconds": 6,
+                "purpose": "Establish Sterling examining the case at the old docks.",
+                "characters": [
+                  "CHAR_STERLING"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sterling is framed against the quiet old docks."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_STERLING",
+                    "action": "EXAMINE_CASE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "CALM_NEUTRAL_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain Sterling's established appearance.",
+                  "Maintain Sterling's established wardrobe.",
+                  "Maintain cold damp pre-dawn conditions.",
+                  "Avoid exaggerated acting.",
+                  "Keep the scene subdued."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_STERLING_MASTER",
+                    "entity_id": "CHAR_STERLING",
+                    "asset_type": "CHARACTER",
+                    "name": "Sterling",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S03-SHOT02",
+                "scene_number": 3,
+                "duration_seconds": 6,
+                "purpose": "Deliver the apparent conclusion that Samuel Bell's case is closed.",
+                "characters": [
+                  "CHAR_STERLING"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_SLOW_PUSH_IN",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Sterling remains the sole visual focus."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_STERLING",
+                    "action": "DELIVER_CASE_CONCLUSION",
+                    "gesture": "MINIMAL_HAND_MOVEMENT",
+                    "facial_movement": "CALM_CONTROLLED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Do not introduce Julian yet.",
+                  "Do not introduce Ren yet.",
+                  "Avoid melodramatic performance.",
+                  "Maintain muted lighting.",
+                  "Keep the old docks visually consistent."
+                ],
+                "dialogue": "Slightly tragic case. Samuel Bell, age 69. Case closed.",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_STERLING_MASTER",
+                    "entity_id": "CHAR_STERLING",
+                    "asset_type": "CHARACTER",
+                    "name": "Sterling",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+                    "entity_id": "LOC_THE_OLD_DOCKS",
+                    "asset_type": "LOCATION",
+                    "name": "The Old Docks",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "scene_number": 4,
+            "duration_seconds": 20,
+            "shots": [
+              {
+                "shot_id": "EP001-S04-SHOT01",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Establish Julian investigating the case in his office.",
+                "characters": [
+                  "CHAR_JULIAN"
+                ],
+                "props": [
+                  "PROP_DESK",
+                  "PROP_CASE_RECORDS"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC",
+                  "framing": "CHARACTER_FOCUSED",
+                  "composition": "Julian remains the primary subject at his desk."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "STUDY_CASE_RECORDS",
+                    "gesture": "MINIMAL_HAND_MOVEMENT",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Camera remains on Julian.",
+                  "Do not reveal document details yet.",
+                  "Maintain low desk-lamp lighting.",
+                  "Maintain dark investigative atmosphere.",
+                  "Avoid unnecessary head turns.",
+                  "Do not introduce rain.",
+                  "Preserve established office environment."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CASE_RECORDS_MASTER",
+                    "entity_id": "PROP_CASE_RECORDS",
+                    "asset_type": "PROP",
+                    "name": "Case records",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT02",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Show Julian beginning to examine the suspicious catalog document.",
+                "characters": [
+                  "CHAR_JULIAN"
+                ],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT",
+                  "PROP_DESK"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "SUBTLE_CONTROLLED_PUSH",
+                  "framing": "OVER_SHOULDER",
+                  "composition": "Julian remains visible while the document becomes partially visible."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "EXAMINE_DOCUMENT",
+                    "gesture": "CAREFULLY_HANDLING_DOCUMENT",
+                    "facial_movement": "FOCUSED_SUSPICIOUS_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "action": "REMAINS_ON_DESK"
+                  }
+                ],
+                "visual_constraints": [
+                  "Do not reveal the key catalog code yet.",
+                  "Do not zoom excessively close.",
+                  "Document must remain visually consistent.",
+                  "Avoid document flipping animation.",
+                  "Keep Julian's movement subtle.",
+                  "Maintain low desk-lamp lighting."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Reveal the catalog code that changes Julian's understanding.",
+                "characters": [],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "DOCUMENT_FOCUSED",
+                  "composition": "The catalog document fills most of the frame while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "action": "DISPLAY_CATALOG_CODE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Reveal the catalog code clearly.",
+                  "Do not introduce unrelated text.",
+                  "Preserve document appearance.",
+                  "Do not animate page flipping.",
+                  "Keep the document physically stable.",
+                  "Maintain the established lighting."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT04",
+                "scene_number": 4,
+                "duration_seconds": 5,
+                "purpose": "Show Julian recognizing the significance of the catalog code while Ren remains alert.",
+                "characters": [
+                  "CHAR_JULIAN",
+                  "CHAR_REN"
+                ],
+                "props": [
+                  "PROP_CATALOG_DOCUMENT",
+                  "PROP_DESK"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM_TWO_SHOT",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "CHARACTER_INTERACTION",
+                  "composition": "Julian remains visually dominant with Ren positioned nearby."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_JULIAN",
+                    "action": "RECOGNIZE_CLUE",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "SUSPICIOUS_REALIZATION"
+                  },
+                  {
+                    "entity_id": "CHAR_REN",
+                    "action": "WATCH_JULIAN",
+                    "gesture": "STILL_ALERT_POSTURE",
+                    "facial_movement": "CONTROLLED_ALERT_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Maintain both character identities.",
+                  "Maintain wardrobe continuity.",
+                  "Preserve spatial relationship.",
+                  "Avoid unnecessary head turns.",
+                  "Keep reactions subtle.",
+                  "Do not introduce new characters.",
+                  "Maintain dark investigative atmosphere."
+                ],
+                "dialogue": "This isn't a heart attack, Ren. It's a catalog code.",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+                    "entity_id": "CHAR_JULIAN",
+                    "asset_type": "CHARACTER",
+                    "name": "Julian",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_CHAR_REN_MASTER",
+                    "entity_id": "CHAR_REN",
+                    "asset_type": "CHARACTER",
+                    "name": "Ren",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_CATALOG_DOCUMENT_MASTER",
+                    "entity_id": "PROP_CATALOG_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Catalog document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_DESK_MASTER",
+                    "entity_id": "PROP_DESK",
+                    "asset_type": "PROP",
+                    "name": "Desk",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

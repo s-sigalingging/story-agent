@@ -1,0 +1,74 @@
+{
+  "episode_id": "EP001",
+  "title": "A Bed of Mud",
+  "target_duration_seconds": 47,
+
+  "story_summary": "Julian discovers that the death of Samuel Bell may be connected to a hidden historical record about Oakhaven.",
+
+  "opening_hook": "A mysterious death at the old docks exposes a hidden connection to Oakhaven's past.",
+
+  "ending_hook": "Julian realizes that the strange catalog code is not a random number but a reference to something buried in Oakhaven's history.",
+
+  "tone": "dark mystery, slow-burn investigation, atmospheric noir",
+
+  "visual_style": "cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement",
+
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 8,
+      "location": "The Old Docks",
+      "characters": [
+        "Sam Bell"
+      ],
+      "dialogue": "The Pikes claim this city was built on solid rock.",
+      "visual_description": "Sam Bell stands alone near the old docks before dawn, surrounded by dark water, industrial structures, and heavy mist.",
+      "narrative_purpose": "Introduce Oakhaven and establish the mysterious atmosphere of the story.",
+      "camera_direction": "Slow cinematic push toward Sam Bell. Keep the movement subtle and steady.",
+      "continuity_notes": ""
+    },
+
+    {
+      "scene_number": 2,
+      "duration_seconds": 7,
+      "location": "Dock Edge",
+      "characters": [
+        "Sam Bell"
+      ],
+      "dialogue": "But anyone working the docks at four in the morning knows the truth.",
+      "visual_description": "Sam Bell looks toward the dark water and abandoned dock structures.",
+      "narrative_purpose": "Suggest that the official history of Oakhaven hides a darker truth.",
+      "camera_direction": "Slow lateral camera movement while maintaining Sam Bell as the visual focus.",
+      "continuity_notes": "Maintain the same pre-dawn lighting and weather conditions as Scene 1."
+    },
+
+    {
+      "scene_number": 3,
+      "duration_seconds": 12,
+      "location": "The Old Docks",
+      "characters": [
+        "Sterling"
+      ],
+      "dialogue": "Slightly tragic case. Samuel Bell, age 69. Case closed.",
+      "visual_description": "Sterling examines Samuel Bell's body at the old docks while the surrounding environment remains dark and quiet.",
+      "narrative_purpose": "Introduce Sterling and establish the apparent official explanation for Samuel Bell's death.",
+      "camera_direction": "Mostly static framing with a subtle controlled push toward Sterling.",
+      "continuity_notes": "Maintain the same location and atmospheric conditions established in the previous scenes."
+    },
+
+    {
+      "scene_number": 4,
+      "duration_seconds": 20,
+      "location": "Julian's Office",
+      "characters": [
+        "Julian",
+        "Ren"
+      ],
+      "dialogue": "This isn't a heart attack, Ren. It's a catalog code.",
+      "visual_description": "Julian studies a mysterious document in his office while Ren stands nearby.",
+      "narrative_purpose": "Reveal the first major clue and shift the story from a simple death investigation into a larger mystery.",
+      "camera_direction": "Controlled cinematic movement between Julian and the document, avoiding rapid cuts.",
+      "continuity_notes": "Transition from the docks to Julian's office as the first major narrative shift."
+    }
+  ]
+}
