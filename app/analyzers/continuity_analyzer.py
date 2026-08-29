@@ -1,432 +1,540 @@
-from app.models.episode import Episode
+from copy import deepcopy
+from typing import Dict, List, Optional
 
+from app.analyzers.scene_analyzer import (
+    SceneAnalyzer,
+)
 from app.models.continuity import (
+    CharacterContinuityState,
     EpisodeContinuity,
+    LocationContinuityState,
+    PropContinuityState,
     SceneContinuity,
-    CharacterState,
-    LocationState,
-    PropState
+)
+from app.models.episode import (
+    Episode,
+    Scene,
+)
+from app.models.scene_analysis import (
+    SceneAnalysis,
+)
+from app.world.registry import (
+    WorldRegistry,
 )
 
 
 class ContinuityAnalyzer:
+    """
+    Generic continuity analyzer.
+
+    Responsibilities
+    ----------------
+    - inherit known state across scenes
+    - update state only from explicit scene information
+    - track characters, locations, and props by stable entity ID
+    - preserve UNKNOWN when information is not established
+
+    This analyzer must never contain knowledge about a specific
+    character, location, prop, episode, or story world.
+    """
+
+    def __init__(
+        self,
+    ):
+
+        self.scene_analyzer = (
+            SceneAnalyzer()
+        )
+
+    # ================================================================
+    # PUBLIC API
+    # ================================================================
 
     def analyze(
         self,
-        episode: Episode
+        episode: Episode,
+        registry: Optional[
+            WorldRegistry
+        ] = None,
     ) -> EpisodeContinuity:
 
-        scenes = []
+        scene_analysis_result = (
+            self.scene_analyzer.analyze(
+                episode=episode,
+                registry=registry,
+            )
+        )
 
-        previous_characters = {}
-        previous_location = None
-        previous_props = {}
+        scene_analysis_map = {
+            item.scene_number: item
+            for item in (
+                scene_analysis_result.scenes
+            )
+        }
 
-        for index, scene in enumerate(episode.scenes):
+        character_states: Dict[
+            str,
+            CharacterContinuityState
+        ] = {}
 
-            continuity = self.analyze_scene(
-                scene=scene,
-                previous_characters=previous_characters,
-                previous_location=previous_location,
-                previous_props=previous_props,
-                is_first_scene=(index == 0)
+        location_states: Dict[
+            str,
+            LocationContinuityState
+        ] = {}
+
+        prop_states: Dict[
+            str,
+            PropContinuityState
+        ] = {}
+
+        scene_results: List[
+            SceneContinuity
+        ] = []
+
+        for scene in episode.scenes:
+
+            analysis = (
+                scene_analysis_map.get(
+                    scene.scene_number
+                )
             )
 
-            scenes.append(continuity)
+            if analysis is None:
+                continue
 
-            # Update state after analyzing scene
-            previous_characters = {
-                character.name: character
-                for character in continuity.characters
-            }
+            scene_result = (
+                self._analyze_scene(
+                    scene=scene,
+                    analysis=analysis,
+                    character_states=(
+                        character_states
+                    ),
+                    location_states=(
+                        location_states
+                    ),
+                    prop_states=(
+                        prop_states
+                    ),
+                )
+            )
 
-            previous_location = continuity.location
-
-            previous_props = {
-                prop.name: prop
-                for prop in continuity.props
-            }
+            scene_results.append(
+                scene_result
+            )
 
         return EpisodeContinuity(
             status="PASSED",
-            scenes=scenes
+            episode_id=(
+                episode.episode_id
+            ),
+            scenes=scene_results,
+            final_character_states=(
+                deepcopy(
+                    character_states
+                )
+            ),
+            final_location_states=(
+                deepcopy(
+                    location_states
+                )
+            ),
+            final_prop_states=(
+                deepcopy(
+                    prop_states
+                )
+            ),
         )
 
-    def analyze_scene(
+    # ================================================================
+    # SCENE
+    # ================================================================
+
+    def _analyze_scene(
         self,
-        scene,
-        previous_characters,
-        previous_location,
-        previous_props,
-        is_first_scene
-    ):
+        scene: Scene,
+        analysis: SceneAnalysis,
+        character_states: Dict[
+            str,
+            CharacterContinuityState
+        ],
+        location_states: Dict[
+            str,
+            LocationContinuityState
+        ],
+        prop_states: Dict[
+            str,
+            PropContinuityState
+        ],
+    ) -> SceneContinuity:
 
-        characters = []
+        inherited = False
 
-        for character_name in scene.characters:
+        current_character_states: List[
+            CharacterContinuityState
+        ] = []
 
-            character = self.build_character_state(
-                character_name=character_name,
-                scene_number=scene.scene_number,
-                previous_character=(
-                    previous_characters.get(character_name)
+        current_prop_states: List[
+            PropContinuityState
+        ] = []
+
+        # ============================================================
+        # CHARACTERS
+        # ============================================================
+
+        for index, entity_id in enumerate(
+            analysis.character_ids
+        ):
+
+            name = ""
+
+            if index < len(
+                analysis.characters
+            ):
+                name = (
+                    analysis.characters[
+                        index
+                    ]
+                )
+
+            previous = (
+                character_states.get(
+                    entity_id
                 )
             )
 
-            characters.append(character)
+            if previous:
+                state = deepcopy(
+                    previous
+                )
+                inherited = True
 
-        location = self.build_location_state(
-            scene.location,
-            scene.scene_number,
-            previous_location
-        )
+            else:
+                state = (
+                    CharacterContinuityState(
+                        entity_id=(
+                            entity_id
+                        ),
+                        name=name,
+                    )
+                )
 
-        props = self.build_prop_states(
-            scene.scene_number,
-            previous_props
-        )
+            if name:
+                state.name = name
 
-        continuity_requirements = (
-            self.build_continuity_requirements(
-                scene,
-                previous_characters,
-                previous_location,
-                previous_props
+            if (
+                analysis.emotional_state
+                and
+                analysis.emotional_state
+                != "UNKNOWN"
+            ):
+                state.emotional_state = (
+                    analysis.emotional_state
+                )
+
+            state.notes = (
+                self._merge_notes(
+                    state.notes,
+                    self._scene_notes(
+                        scene
+                    ),
+                )
             )
-        )
 
-        changes = self.detect_changes(
-            scene,
-            previous_characters,
-            previous_location,
-            previous_props
-        )
+            character_states[
+                entity_id
+            ] = deepcopy(
+                state
+            )
+
+            current_character_states.append(
+                deepcopy(
+                    state
+                )
+            )
+
+        # ============================================================
+        # LOCATION
+        # ============================================================
+
+        current_location_state = None
+
+        if analysis.location_id:
+
+            previous_location = (
+                location_states.get(
+                    analysis.location_id
+                )
+            )
+
+            if previous_location:
+                location_state = (
+                    deepcopy(
+                        previous_location
+                    )
+                )
+                inherited = True
+
+            else:
+                location_state = (
+                    LocationContinuityState(
+                        entity_id=(
+                            analysis.location_id
+                        ),
+                        name=(
+                            analysis.location
+                        ),
+                    )
+                )
+
+            if analysis.location:
+                location_state.name = (
+                    analysis.location
+                )
+
+            environment = (
+                analysis.environment
+            )
+
+            location_state.time_of_day = (
+                self._prefer_known(
+                    new_value=(
+                        environment.time_of_day
+                    ),
+                    previous_value=(
+                        location_state.time_of_day
+                    ),
+                )
+            )
+
+            location_state.weather = (
+                self._prefer_known(
+                    new_value=(
+                        environment.weather
+                    ),
+                    previous_value=(
+                        location_state.weather
+                    ),
+                )
+            )
+
+            location_state.lighting = (
+                self._prefer_known(
+                    new_value=(
+                        environment.lighting
+                    ),
+                    previous_value=(
+                        location_state.lighting
+                    ),
+                )
+            )
+
+            location_state.atmosphere = (
+                self._prefer_known(
+                    new_value=(
+                        environment.atmosphere
+                    ),
+                    previous_value=(
+                        location_state.atmosphere
+                    ),
+                )
+            )
+
+            location_state.notes = (
+                self._merge_notes(
+                    location_state.notes,
+                    self._scene_notes(
+                        scene
+                    ),
+                )
+            )
+
+            location_states[
+                analysis.location_id
+            ] = deepcopy(
+                location_state
+            )
+
+            current_location_state = (
+                deepcopy(
+                    location_state
+                )
+            )
+
+        # ============================================================
+        # PROPS
+        # ============================================================
+
+        for index, entity_id in enumerate(
+            analysis.prop_ids
+        ):
+
+            name = ""
+
+            if index < len(
+                analysis.props
+            ):
+                name = (
+                    analysis.props[
+                        index
+                    ]
+                )
+
+            previous_prop = (
+                prop_states.get(
+                    entity_id
+                )
+            )
+
+            if previous_prop:
+                prop_state = (
+                    deepcopy(
+                        previous_prop
+                    )
+                )
+                inherited = True
+
+            else:
+                prop_state = (
+                    PropContinuityState(
+                        entity_id=(
+                            entity_id
+                        ),
+                        name=name,
+                    )
+                )
+
+            if name:
+                prop_state.name = name
+
+            prop_state.notes = (
+                self._merge_notes(
+                    prop_state.notes,
+                    self._scene_notes(
+                        scene
+                    ),
+                )
+            )
+
+            prop_states[
+                entity_id
+            ] = deepcopy(
+                prop_state
+            )
+
+            current_prop_states.append(
+                deepcopy(
+                    prop_state
+                )
+            )
 
         return SceneContinuity(
-            scene_number=scene.scene_number,
-
+            scene_number=(
+                scene.scene_number
+            ),
             inherited_from_previous_scene=(
-                not is_first_scene
+                inherited
             ),
-
-            characters=characters,
-
-            location=location,
-
-            props=props,
-
-            continuity_requirements=continuity_requirements,
-
-            changes_from_previous_scene=changes
+            character_states=(
+                current_character_states
+            ),
+            location_state=(
+                current_location_state
+            ),
+            prop_states=(
+                current_prop_states
+            ),
+            continuity_notes=(
+                self._scene_notes(
+                    scene
+                )
+            ),
         )
 
     # ================================================================
-    # CHARACTER STATE
+    # NOTES
     # ================================================================
 
-    def build_character_state(
+    def _scene_notes(
         self,
-        character_name,
-        scene_number,
-        previous_character
-    ):
+        scene: Scene,
+    ) -> List[str]:
 
-        # If character already existed,
-        # preserve the previous state.
-        if previous_character:
+        notes = []
 
-            return CharacterState(
-                name=previous_character.name,
-                appearance=previous_character.appearance,
-                wardrobe=previous_character.wardrobe,
-                emotional_state=(
-                    self.update_emotional_state(
-                        character_name,
-                        scene_number,
-                        previous_character.emotional_state
-                    )
-                ),
-                physical_condition=(
-                    previous_character.physical_condition
-                )
+        continuity_note = (
+            scene.continuity_notes
+            .strip()
+        )
+
+        if continuity_note:
+            notes.append(
+                continuity_note
             )
 
-        # Initial character state
-        return CharacterState(
-            name=character_name,
-
-            appearance=(
-                f"Established appearance of {character_name}."
-            ),
-
-            wardrobe=(
-                f"Established wardrobe of {character_name}."
-            ),
-
-            emotional_state=(
-                self.initial_emotional_state(
-                    character_name,
-                    scene_number
-                )
-            ),
-
-            physical_condition="Normal"
-        )
-
-    def initial_emotional_state(
-        self,
-        character_name,
-        scene_number
-    ):
-
-        if character_name == "Sam Bell":
-            return "UNEASY"
-
-        if character_name == "Sterling":
-            return "CALM"
-
-        if character_name == "Julian":
-            return "FOCUSED"
-
-        if character_name == "Ren":
-            return "ALERT"
-
-        return "NEUTRAL"
-
-    def update_emotional_state(
-        self,
-        character_name,
-        scene_number,
-        previous_state
-    ):
-
-        if character_name == "Julian":
-            return "SUSPICIOUS"
-
-        if character_name == "Ren":
-            return "ALERT"
-
-        return previous_state
+        return notes
 
     # ================================================================
-    # LOCATION STATE
+    # STATE MERGING
     # ================================================================
 
-    def build_location_state(
+    def _prefer_known(
         self,
-        location_name,
-        scene_number,
-        previous_location
-    ):
+        new_value: str,
+        previous_value: str,
+    ) -> str:
+        """
+        Prefer newly established information.
 
-        # Preserve environment if the location remains the same.
+        UNKNOWN must never overwrite a previously known state.
+        """
 
         if (
-            previous_location
-            and previous_location.name == location_name
+            new_value
+            and
+            new_value != "UNKNOWN"
+        ):
+            return new_value
+
+        if previous_value:
+            return previous_value
+
+        return "UNKNOWN"
+
+    def _merge_notes(
+        self,
+        existing: List[str],
+        incoming: List[str],
+    ) -> List[str]:
+
+        result = []
+
+        seen = set()
+
+        for value in (
+            list(existing)
+            + list(incoming)
         ):
 
-            return LocationState(
-                name=previous_location.name,
-                time_of_day=previous_location.time_of_day,
-                weather=previous_location.weather,
-                lighting=previous_location.lighting,
-                atmosphere=previous_location.atmosphere
+            cleaned = (
+                value.strip()
             )
 
-        # Initial environment
+            if not cleaned:
+                continue
 
-        if location_name == "The Old Docks":
-
-            return LocationState(
-                name=location_name,
-                time_of_day="Pre-dawn",
-                weather="Cold and damp",
-                lighting="Dim natural light",
-                atmosphere="Quiet and uneasy"
+            key = (
+                cleaned.lower()
             )
 
-        if location_name == "Dock Edge":
+            if key in seen:
+                continue
 
-            return LocationState(
-                name=location_name,
-                time_of_day="Early morning",
-                weather="Cold and damp",
-                lighting="Low natural light",
-                atmosphere="Quiet and foreboding"
+            seen.add(
+                key
             )
 
-        if location_name == "Julian's Office":
-
-            return LocationState(
-                name=location_name,
-                time_of_day="Night",
-                weather="Cold and dry",
-                lighting="Low desk-lamp lighting",
-                atmosphere="Dark and investigative"
+            result.append(
+                cleaned
             )
 
-        return LocationState(
-            name=location_name,
-            time_of_day="Unspecified",
-            weather="Unspecified",
-            lighting="Unspecified",
-            atmosphere="Unspecified"
-        )
-
-    # ================================================================
-    # PROP STATE
-    # ================================================================
-
-    def build_prop_states(
-        self,
-        scene_number,
-        previous_props
-    ):
-
-        props = []
-
-        if scene_number == 4:
-
-            catalog_document = PropState(
-                name="Catalog document",
-                appearance=(
-                    "Aged paper document with "
-                    "subtle handwritten and printed markings."
-                ),
-                state="Active investigation"
-            )
-
-            props.append(catalog_document)
-
-            case_records = PropState(
-                name="Case records",
-                appearance="Old investigative records.",
-                state="Active investigation"
-            )
-
-            props.append(case_records)
-
-            desk = PropState(
-                name="Desk",
-                appearance="Established office desk.",
-                state="Existing"
-            )
-
-            props.append(desk)
-
-        else:
-
-            for prop in previous_props.values():
-                props.append(prop)
-
-        return props
-
-    # ================================================================
-    # CONTINUITY REQUIREMENTS
-    # ================================================================
-
-    def build_continuity_requirements(
-        self,
-        scene,
-        previous_characters,
-        previous_location,
-        previous_props
-    ):
-
-        requirements = []
-
-        # Character continuity
-
-        for character in scene.characters:
-
-            if character in previous_characters:
-
-                requirements.append(
-                    f"Maintain visual identity of {character}."
-                )
-
-                requirements.append(
-                    f"Maintain wardrobe continuity for {character}."
-                )
-
-        # Location continuity
-
-        if previous_location:
-
-            if previous_location.name == scene.location:
-
-                requirements.append(
-                    "Preserve the established environment "
-                    "of the previous scene."
-                )
-
-                requirements.append(
-                    "Do not arbitrarily change lighting or weather."
-                )
-
-        # Scene-specific continuity
-
-        if scene.scene_number == 4:
-
-            requirements.append(
-                "Maintain continuity of the catalog document."
-            )
-
-            requirements.append(
-                "Do not reveal document details before "
-                "the intended close-up."
-            )
-
-            requirements.append(
-                "Avoid unnecessary character movement."
-            )
-
-        return requirements
-
-    # ================================================================
-    # CHANGE DETECTION
-    # ================================================================
-
-    def detect_changes(
-        self,
-        scene,
-        previous_characters,
-        previous_location,
-        previous_props
-    ):
-
-        changes = []
-
-        # New characters
-
-        for character in scene.characters:
-
-            if character not in previous_characters:
-
-                changes.append(
-                    f"{character} enters the story state."
-                )
-
-        # Location change
-
-        if (
-            previous_location
-            and previous_location.name != scene.location
-        ):
-
-            changes.append(
-                f"Location changes from "
-                f"{previous_location.name} "
-                f"to {scene.location}."
-            )
-
-        # First scene
-
-        if not previous_location:
-
-            changes.append(
-                "Initial scene establishes the episode state."
-            )
-
-        return changes
+        return result

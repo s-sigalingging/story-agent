@@ -1,9 +1,10 @@
-from pydantic import BaseModel
 from typing import List
+
+from pydantic import BaseModel, Field
 
 
 class SceneStructure(BaseModel):
-    scene_number: int
+    scene_number: int = Field(gt=0)
 
     narrative_function: str
 
@@ -11,11 +12,18 @@ class SceneStructure(BaseModel):
 
     purpose: str
 
-    information_revealed: List[str]
+    information_revealed: List[str] = Field(
+        default_factory=list
+    )
 
-    open_questions: List[str]
+    open_questions: List[str] = Field(
+        default_factory=list
+    )
 
-    tension_level: int
+    tension_level: int = Field(
+        ge=0,
+        le=10,
+    )
 
 
 class StoryStructure(BaseModel):
@@ -23,4 +31,6 @@ class StoryStructure(BaseModel):
 
     overall_arc: str
 
-    scenes: List[SceneStructure]
+    scenes: List[SceneStructure] = Field(
+        default_factory=list
+    )

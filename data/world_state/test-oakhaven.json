@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "last_episode_id": "EP001",
+  "characters": {
+    "CHAR_SAM_BELL": {
+      "entity_id": "CHAR_SAM_BELL",
+      "name": "Sam Bell",
+      "appearance": "UNKNOWN",
+      "wardrobe": "UNKNOWN",
+      "emotional_state": "SUSPICIOUS",
+      "physical_condition": "UNKNOWN",
+      "position": "UNKNOWN",
+      "notes": [
+        "Maintain the same pre-dawn lighting and weather conditions as Scene 1."
+      ],
+      "reference_required": true,
+      "master_character_required": true
+    },
+    "CHAR_STERLING": {
+      "entity_id": "CHAR_STERLING",
+      "name": "Sterling",
+      "appearance": "UNKNOWN",
+      "wardrobe": "UNKNOWN",
+      "emotional_state": "SUSPICIOUS",
+      "physical_condition": "UNKNOWN",
+      "position": "UNKNOWN",
+      "notes": [
+        "Maintain the same location and atmospheric conditions established in the previous scenes."
+      ],
+      "reference_required": true,
+      "master_character_required": true
+    },
+    "CHAR_JULIAN": {
+      "entity_id": "CHAR_JULIAN",
+      "name": "Julian",
+      "appearance": "UNKNOWN",
+      "wardrobe": "UNKNOWN",
+      "emotional_state": "SUSPICIOUS",
+      "physical_condition": "UNKNOWN",
+      "position": "UNKNOWN",
+      "notes": [
+        "Transition from the docks to Julian's office as the first major narrative shift."
+      ],
+      "reference_required": true,
+      "master_character_required": true
+    },
+    "CHAR_REN": {
+      "entity_id": "CHAR_REN",
+      "name": "Ren",
+      "appearance": "UNKNOWN",
+      "wardrobe": "UNKNOWN",
+      "emotional_state": "SUSPICIOUS",
+      "physical_condition": "UNKNOWN",
+      "position": "UNKNOWN",
+      "notes": [
+        "Transition from the docks to Julian's office as the first major narrative shift."
+      ],
+      "reference_required": true,
+      "master_character_required": true
+    }
+  },
+  "locations": {
+    "LOC_THE_OLD_DOCKS": {
+      "entity_id": "LOC_THE_OLD_DOCKS",
+      "name": "The Old Docks",
+      "time_of_day": "PRE_DAWN",
+      "weather": "FOG",
+      "lighting": "LOW_LIGHT",
+      "atmosphere": "SOMBER",
+      "notes": [
+        "Maintain the same location and atmospheric conditions established in the previous scenes."
+      ],
+      "reference_required": true
+    },
+    "LOC_DOCK_EDGE": {
+      "entity_id": "LOC_DOCK_EDGE",
+      "name": "Dock Edge",
+      "time_of_day": "PRE_DAWN",
+      "weather": "UNKNOWN",
+      "lighting": "LOW_LIGHT",
+      "atmosphere": "NEUTRAL",
+      "notes": [
+        "Maintain the same pre-dawn lighting and weather conditions as Scene 1."
+      ],
+      "reference_required": true
+    },
+    "LOC_JULIAN_S_OFFICE": {
+      "entity_id": "LOC_JULIAN_S_OFFICE",
+      "name": "Julian's Office",
+      "time_of_day": "UNKNOWN",
+      "weather": "UNKNOWN",
+      "lighting": "UNKNOWN",
+      "atmosphere": "NEUTRAL",
+      "notes": [
+        "Transition from the docks to Julian's office as the first major narrative shift."
+      ],
+      "reference_required": true
+    }
+  },
+  "props": {}
+}

@@ -1,4 +1,3 @@
-
 from typing import List
 
 from app.models.asset import AssetPlan, AssetReference
@@ -71,16 +70,22 @@ class SceneExecutionPlan:
         self,
         scene_number: int,
         duration_seconds: int,
+        location_id: str,
+        shot_count: int,
         shots: List[ShotExecutionPlan],
     ):
         self.scene_number = scene_number
         self.duration_seconds = duration_seconds
+        self.location_id = location_id
+        self.shot_count = shot_count
         self.shots = shots
 
     def to_dict(self):
         return {
             "scene_number": self.scene_number,
             "duration_seconds": self.duration_seconds,
+            "location_id": self.location_id,
+            "shot_count": self.shot_count,
             "shots": [
                 shot.to_dict()
                 for shot in self.shots
@@ -120,7 +125,7 @@ class ProductionExecution:
         shot_id: str,
     ) -> List[AssetReference]:
         """
-        Return the assets explicitly assigned to a specific shot.
+        Return assets explicitly assigned to a specific shot.
 
         AssetPlanner is the source of truth for shot-level assets.
         """
@@ -133,7 +138,7 @@ class ProductionExecution:
             for shot in scene.shots:
 
                 if shot.shot_id == shot_id:
-                    return shot.assets
+                    return list(shot.assets)
 
         return []
 
@@ -156,8 +161,8 @@ class ProductionExecution:
         """
 
         shot_assets = self._get_shot_assets(
-            shot.scene_number,
-            shot.shot_id,
+            scene_number=shot.scene_number,
+            shot_id=shot.shot_id,
         )
 
         return ShotExecutionPlan(
@@ -185,13 +190,58 @@ class ProductionExecution:
                 shot
             )
 
-            shots.append(shot_execution)
+            shots.append(
+                shot_execution
+            )
 
         return SceneExecutionPlan(
             scene_number=scene.scene_number,
             duration_seconds=scene.duration_seconds,
+            location_id=scene.location_id,
+            shot_count=len(shots),
             shots=shots,
         )
+
+    # ================================================================
+    # VALIDATION
+    # ================================================================
+
+    def _validate_scene_shots(
+        self,
+        scene,
+    ) -> None:
+        """
+        Validate that the production plan contains a coherent
+        shot structure before execution data is created.
+        """
+
+        if not scene.shots:
+
+            raise ValueError(
+                f"Scene {scene.scene_number} "
+                "contains no shots."
+            )
+
+        calculated_duration = sum(
+            shot.duration_seconds
+            for shot in scene.shots
+        )
+
+        if calculated_duration != scene.duration_seconds:
+
+            raise ValueError(
+                f"Scene {scene.scene_number} duration mismatch. "
+                f"Scene duration is {scene.duration_seconds}s, "
+                f"but its shots total {calculated_duration}s."
+            )
+
+        if scene.shot_count != len(scene.shots):
+
+            raise ValueError(
+                f"Scene {scene.scene_number} shot count mismatch. "
+                f"Expected {scene.shot_count}, "
+                f"found {len(scene.shots)}."
+            )
 
     # ================================================================
     # BUILD
@@ -209,11 +259,31 @@ class ProductionExecution:
 
         for scene in self.production_plan.scenes:
 
+            self._validate_scene_shots(
+                scene
+            )
+
             scene_execution = self._build_scene_execution(
                 scene
             )
 
-            scenes.append(scene_execution)
+            scenes.append(
+                scene_execution
+            )
+
+        total_duration = sum(
+            scene.duration_seconds
+            for scene in scenes
+        )
+
+        if total_duration != self.production_plan.target_duration_seconds:
+
+            raise ValueError(
+                "Production duration mismatch. "
+                f"Production plan contains {total_duration}s, "
+                f"but target duration is "
+                f"{self.production_plan.target_duration_seconds}s."
+            )
 
         return {
             "episode_id": self.production_plan.episode_id,
@@ -221,9 +291,10 @@ class ProductionExecution:
             "target_duration_seconds": (
                 self.production_plan.target_duration_seconds
             ),
+            "total_duration_seconds": total_duration,
+            "scene_count": len(scenes),
             "scenes": [
                 scene.to_dict()
                 for scene in scenes
             ],
         }
-
