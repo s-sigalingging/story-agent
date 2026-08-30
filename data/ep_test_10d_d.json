@@ -1,0 +1,21 @@
+{
+  "episode_id": "EP_TEST_10D_D",
+  "title": "Morning Coffee",
+  "target_duration_seconds": 10,
+  "style": {
+    "tone": "Quiet everyday comedy",
+    "visual_style": "Stylized 3D animation"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 10,
+      "visual_description": "Theo walks into a small kitchen, picks up a plain ceramic mug from the counter, and takes a relaxed sip.",
+      "characters": [
+        "Theo"
+      ],
+      "location": "Small Kitchen",
+      "dialogue": ""
+    }
+  ]
+}

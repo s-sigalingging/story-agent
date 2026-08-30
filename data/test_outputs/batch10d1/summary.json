@@ -1,0 +1,49 @@
+{
+  "batch": "10D.1",
+  "status": "PASSED",
+  "total_cases": 5,
+  "passed": 5,
+  "failed": 0,
+  "cases": [
+    {
+      "case_id": "A_COMEDY_IMAGE",
+      "episode_id": "EP_TEST_10D_A",
+      "episode_file": "data/ep_test_10d_a.json",
+      "status": "PASSED",
+      "errors": [],
+      "output_file": "data/test_outputs/batch10d1/a_comedy_image_orchestration.json"
+    },
+    {
+      "case_id": "B_SCIFI_TEXT",
+      "episode_id": "EP_TEST_10D_B",
+      "episode_file": "data/ep_test_10d_b.json",
+      "status": "PASSED",
+      "errors": [],
+      "output_file": "data/test_outputs/batch10d1/b_scifi_text_orchestration.json"
+    },
+    {
+      "case_id": "C_ACTION_MARKING",
+      "episode_id": "EP_TEST_10D_C",
+      "episode_file": "data/ep_test_10d_c.json",
+      "status": "PASSED",
+      "errors": [],
+      "output_file": "data/test_outputs/batch10d1/c_action_marking_orchestration.json"
+    },
+    {
+      "case_id": "D_ORDINARY_PROP",
+      "episode_id": "EP_TEST_10D_D",
+      "episode_file": "data/ep_test_10d_d.json",
+      "status": "PASSED",
+      "errors": [],
+      "output_file": "data/test_outputs/batch10d1/d_ordinary_prop_orchestration.json"
+    },
+    {
+      "case_id": "E_MULTI_ENTITY",
+      "episode_id": "EP_TEST_10D_E",
+      "episode_file": "data/ep_test_10d_e.json",
+      "status": "PASSED",
+      "errors": [],
+      "output_file": "data/test_outputs/batch10d1/e_multi_entity_orchestration.json"
+    }
+  ]
+}

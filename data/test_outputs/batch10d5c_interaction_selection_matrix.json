@@ -1,0 +1,141 @@
+{
+  "batch": "10D.5C",
+  "status": "PASSED",
+  "total_tests": 12,
+  "passed": 12,
+  "failed": 0,
+  "tests": [
+    {
+      "test": "enter_then_study",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "STUDY",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "STUDY",
+      "evidence": "Person enters the room. They study an old chart.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "study_then_enter",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "STUDY",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "STUDY",
+      "evidence": "Person studies an old chart. They enter the archive.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "move_then_examine",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "EXAMINE",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "EXAMINE",
+      "evidence": "Person walks across the room. They examine a sealed box.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "hold_then_read",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "READ",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "READ",
+      "evidence": "Person holds a folded note. They read the note.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "open_then_inspect",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "OPEN",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "OPEN",
+      "evidence": "Person opens a cabinet. They inspect the contents.",
+      "errors": [],
+      "note": "The current vocabulary checks OPEN before INSPECT. This test records whether that behavior remains stable."
+    },
+    {
+      "test": "supporting_stands_nearby",
+      "status": "PASSED",
+      "expected_role": "SUPPORTING_PRESENCE",
+      "expected_interaction": "STAND_NEARBY",
+      "actual_role": "SUPPORTING_PRESENCE",
+      "actual_interaction": "STAND_NEARBY",
+      "evidence": "Person stands nearby and watches.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "observer_watches",
+      "status": "PASSED",
+      "expected_role": "OBSERVER",
+      "expected_interaction": "WATCH",
+      "actual_role": "OBSERVER",
+      "actual_interaction": "WATCH",
+      "evidence": "Person watches the doorway.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "while_clause_primary",
+      "status": "PASSED",
+      "expected_role": "ACTIVE_SUBJECT",
+      "expected_interaction": "STUDY",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "STUDY",
+      "evidence": "First Person studies a chart",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "while_clause_supporting",
+      "status": "PASSED",
+      "expected_role": "SUPPORTING_PRESENCE",
+      "expected_interaction": "STAND_NEARBY",
+      "actual_role": "SUPPORTING_PRESENCE",
+      "actual_interaction": "STAND_NEARBY",
+      "evidence": "Second Person stands nearby.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "next_sentence_other_character",
+      "status": "PASSED",
+      "expected_role": "ACTIVE_SUBJECT",
+      "expected_interaction": "EXAMINE",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "EXAMINE",
+      "evidence": "First Person examines a box.",
+      "errors": [],
+      "note": null
+    },
+    {
+      "test": "multi_character_pronoun_not_absorbed",
+      "status": "PASSED",
+      "expected_role": null,
+      "expected_interaction": "ENTER",
+      "actual_role": "ACTIVE_SUBJECT",
+      "actual_interaction": "ENTER",
+      "evidence": "First Person enters the room.",
+      "errors": [],
+      "note": "In a multi-character scene, pronoun continuation is intentionally not linked because the referent is ambiguous."
+    },
+    {
+      "test": "no_known_interaction",
+      "status": "PASSED",
+      "expected_role": "PARTICIPANT",
+      "expected_interaction": "SCENE_PARTICIPATION",
+      "actual_role": "PARTICIPANT",
+      "actual_interaction": "SCENE_PARTICIPATION",
+      "evidence": "Person remains silent beside the doorway.",
+      "errors": [],
+      "note": null
+    }
+  ]
+}

@@ -23,6 +23,7 @@ from app.models.production import (
 
 from app.models.scene_analysis import (
     SceneAnalysis,
+    SceneCharacterRole,
 )
 
 from app.models.state import (
@@ -38,7 +39,13 @@ class ShotPlanner:
 
     ShotGrammar decides HOW each beat is generally filmed.
 
-    ShotPlanner combines both with:
+    SceneAnalysis supplies semantic character information such as:
+    - primary subject
+    - supporting subjects
+    - character roles
+    - character interactions
+
+    ShotPlanner combines all of these with:
     - scene duration
     - scene state
     - camera intent
@@ -46,6 +53,88 @@ class ShotPlanner:
 
     The planner contains no story-specific knowledge.
     """
+
+    # ================================================================
+    # SEMANTIC PERFORMANCE PROFILES
+    # ================================================================
+
+    INTERACTION_PERFORMANCE_PROFILES = {
+        "STUDY": (
+            "CONTROLLED_INSPECTION",
+            "FOCUSED_EXPRESSION",
+        ),
+        "EXAMINE": (
+            "CONTROLLED_INSPECTION",
+            "FOCUSED_EXPRESSION",
+        ),
+        "INSPECT": (
+            "CONTROLLED_INSPECTION",
+            "FOCUSED_EXPRESSION",
+        ),
+        "CHECK": (
+            "CONTROLLED_INSPECTION",
+            "FOCUSED_EXPRESSION",
+        ),
+        "READ": (
+            "CONTROLLED_INSPECTION",
+            "FOCUSED_EXPRESSION",
+        ),
+        "WATCH": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "OBSERVE": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "LISTEN": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "STAND_NEARBY": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "STAND_BEHIND": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "STAND_BESIDE": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "WAIT": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "WAIT_NEARBY": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "REMAIN_NEARBY": (
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+    }
+
+    NON_SPECIFIC_INTERACTIONS = {
+        "",
+        "UNSPECIFIED",
+        "SCENE_PARTICIPATION",
+    }
+
+    ROLE_FALLBACKS = {
+        "SUPPORTING_PRESENCE": (
+            "MAINTAIN_SUPPORTING_PRESENCE",
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+        "OBSERVER": (
+            "OBSERVE",
+            "MINIMAL_IDLE_GESTURE",
+            "ATTENTIVE_NEUTRAL_EXPRESSION",
+        ),
+    }
 
     def __init__(
         self,
@@ -118,9 +207,7 @@ class ShotPlanner:
                 dialogue=(
                     scene.dialogue
                 ),
-                beats=(
-                    beats
-                ),
+                beats=beats,
             )
         )
 
@@ -168,16 +255,16 @@ class ShotPlanner:
             )
 
             shot = ShotPlan(
-                shot_id=self._shot_id(
-                    episode_id=(
-                        episode_id
-                    ),
-                    scene_number=(
-                        scene.scene_number
-                    ),
-                    shot_number=(
-                        index
-                    ),
+                shot_id=(
+                    self._shot_id(
+                        episode_id=(
+                            episode_id
+                        ),
+                        scene_number=(
+                            scene.scene_number
+                        ),
+                        shot_number=index,
+                    )
                 ),
                 scene_number=(
                     scene.scene_number
@@ -219,6 +306,9 @@ class ShotPlanner:
                         ),
                         beat_intent=(
                             beat_intent
+                        ),
+                        analysis=(
+                            analysis
                         ),
                     )
                 ),
@@ -315,7 +405,8 @@ class ShotPlanner:
         ):
 
             selected.append(
-                beat_intent.primary_subject_id
+                beat_intent
+                .primary_subject_id
             )
 
         if (
@@ -331,7 +422,8 @@ class ShotPlanner:
                 if (
                     entity_id in active
                     and
-                    entity_id not in selected
+                    entity_id
+                    not in selected
                 ):
 
                     selected.append(
@@ -558,32 +650,64 @@ class ShotPlanner:
         character_ids: List[str],
         grammar_beat: ShotGrammarBeat,
         beat_intent: ProductionBeatIntent,
+        analysis: SceneAnalysis,
     ) -> List[
         CharacterAction
     ]:
+        """
+        Build role-aware character performance.
+
+        Precedence:
+        1. reaction beat semantics
+        2. specific semantic character interaction
+        3. role-aware fallback
+        4. shot grammar fallback
+
+        This prevents supporting characters from automatically receiving
+        the same action as the primary subject.
+        """
+
+        role_map = (
+            self._character_role_map(
+                analysis
+            )
+        )
 
         actions = []
 
-        for entity_id in character_ids:
+        for entity_id in (
+            character_ids
+        ):
 
-            action = (
-                grammar_beat
-                .character_action
+            role = (
+                role_map.get(
+                    entity_id
+                )
             )
 
-            if (
-                beat_intent
-                .beat_type
-                .upper()
-                == "REACTION"
-            ):
-
-                action = (
-                    "REACT_TO_"
-                    + self._reaction_context(
+            (
+                action,
+                gesture,
+                facial_movement,
+            ) = (
+                self._resolve_character_performance(
+                    entity_id=(
+                        entity_id
+                    ),
+                    role=(
+                        role
+                    ),
+                    grammar_beat=(
+                        grammar_beat
+                    ),
+                    beat_intent=(
                         beat_intent
-                    )
+                    ),
+                    analysis=(
+                        analysis
+                    ),
                 )
+            )
 
             actions.append(
                 CharacterAction(
@@ -594,39 +718,200 @@ class ShotPlanner:
                         action
                     ),
                     gesture=(
-                        grammar_beat
-                        .gesture
+                        gesture
                     ),
                     facial_movement=(
-                        grammar_beat
-                        .facial_movement
+                        facial_movement
                     ),
                 )
             )
 
         return actions
 
-    def _reaction_context(
+    def _character_role_map(
         self,
-        beat_intent: ProductionBeatIntent,
-    ) -> str:
+        analysis: SceneAnalysis,
+    ) -> Dict[
+        str,
+        SceneCharacterRole
+    ]:
 
-        purpose = (
+        return {
+            role.entity_id: role
+            for role in (
+                analysis.character_roles
+            )
+        }
+
+    def _resolve_character_performance(
+        self,
+        entity_id: str,
+        role: Optional[
+            SceneCharacterRole
+        ],
+        grammar_beat: ShotGrammarBeat,
+        beat_intent: ProductionBeatIntent,
+        analysis: SceneAnalysis,
+    ) -> tuple[
+        str,
+        str,
+        str,
+    ]:
+
+        beat_type = (
             beat_intent
-            .purpose
-            .lower()
+            .beat_type
+            .strip()
+            .upper()
         )
 
-        if "discovery" in purpose:
-            return "DISCOVERY"
+        # ------------------------------------------------------------
+        # 1. REACTION BEAT
+        # ------------------------------------------------------------
 
-        if "revelation" in purpose:
-            return "REVELATION"
+        if beat_type == "REACTION":
 
-        if "conflict" in purpose:
-            return "CONFLICT"
+            return (
+                "REACT_TO_"
+                + self._reaction_context(
+                    analysis
+                ),
+                grammar_beat.gesture,
+                grammar_beat.facial_movement,
+            )
 
-        return "EVENT"
+        # ------------------------------------------------------------
+        # 2. SPECIFIC SEMANTIC INTERACTION
+        # ------------------------------------------------------------
+
+        if role is not None:
+
+            interaction = (
+                role.interaction
+                .strip()
+                .upper()
+            )
+
+            if (
+                interaction
+                not in self.NON_SPECIFIC_INTERACTIONS
+            ):
+
+                (
+                    gesture,
+                    facial_movement,
+                ) = (
+                    self._performance_profile_for_interaction(
+                        interaction=(
+                            interaction
+                        ),
+                        grammar_beat=(
+                            grammar_beat
+                        ),
+                    )
+                )
+
+                return (
+                    interaction,
+                    gesture,
+                    facial_movement,
+                )
+
+        # ------------------------------------------------------------
+        # 3. ROLE-AWARE FALLBACK
+        # ------------------------------------------------------------
+
+        if role is not None:
+
+            normalized_role = (
+                role.role
+                .strip()
+                .upper()
+            )
+
+            role_fallback = (
+                self.ROLE_FALLBACKS
+                .get(
+                    normalized_role
+                )
+            )
+
+            if role_fallback:
+
+                return (
+                    role_fallback
+                )
+
+        # ------------------------------------------------------------
+        # 4. SHOT GRAMMAR FALLBACK
+        # ------------------------------------------------------------
+
+        return (
+            grammar_beat
+            .character_action,
+            grammar_beat
+            .gesture,
+            grammar_beat
+            .facial_movement,
+        )
+
+    def _performance_profile_for_interaction(
+        self,
+        interaction: str,
+        grammar_beat: ShotGrammarBeat,
+    ) -> tuple[
+        str,
+        str,
+    ]:
+
+        profile = (
+            self.INTERACTION_PERFORMANCE_PROFILES
+            .get(
+                interaction
+            )
+        )
+
+        if profile:
+
+            return profile
+
+        return (
+            grammar_beat.gesture,
+            grammar_beat.facial_movement,
+        )
+
+    def _reaction_context(
+        self,
+        analysis: SceneAnalysis,
+    ) -> str:
+        """
+        Derive reaction context from structured narrative semantics.
+
+        No beat-purpose text parsing is performed here.
+        """
+
+        narrative_function = (
+            analysis
+            .narrative_function
+            .strip()
+            .upper()
+        )
+
+        context_map = {
+            "DISCOVERY": "DISCOVERY",
+            "REVELATION": "REVELATION",
+            "CONFRONTATION": "CONFLICT",
+            "ESCALATION": "ESCALATION",
+            "RESOLUTION": "RESOLUTION",
+            "TRANSITION": "TRANSITION",
+        }
+
+        return (
+            context_map.get(
+                narrative_function,
+                "EVENT",
+            )
+        )
 
     # ================================================================
     # PROP ACTIONS
@@ -713,6 +998,7 @@ class ShotPlanner:
         )
 
         if not cleaned:
+
             return allocation
 
         preferred_types = [
@@ -771,6 +1057,7 @@ class ShotPlanner:
         )
 
         if count <= 0:
+
             return []
 
         if count == 1:
@@ -946,8 +1233,10 @@ class ShotPlanner:
             ),
         ])
 
-        return self._deduplicate(
-            constraints
+        return (
+            self._deduplicate(
+                constraints
+            )
         )
 
     # ================================================================
@@ -993,6 +1282,7 @@ class ShotPlanner:
             )
 
             if not cleaned:
+
                 continue
 
             key = (
@@ -1000,6 +1290,7 @@ class ShotPlanner:
             )
 
             if key in seen:
+
                 continue
 
             seen.add(

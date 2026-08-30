@@ -1,0 +1,21 @@
+{
+  "episode_id": "EP_TEST_10D_A",
+  "title": "The Embarrassing Photo",
+  "target_duration_seconds": 12,
+  "style": {
+    "tone": "Warm comedy",
+    "visual_style": "Stylized 3D animation"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 12,
+      "visual_description": "Mira enters a sunny kitchen and notices an old photograph on the table. She studies the photograph and reacts with an embarrassed smile.",
+      "characters": [
+        "Mira"
+      ],
+      "location": "Sunny Kitchen",
+      "dialogue": ""
+    }
+  ]
+}

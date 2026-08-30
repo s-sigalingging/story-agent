@@ -73,6 +73,49 @@
       }
     },
     {
+      "stage": "PROP_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP001",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "explicit_props": [],
+            "inferred_props": [],
+            "resolved_props": []
+          },
+          {
+            "scene_number": 2,
+            "explicit_props": [],
+            "inferred_props": [],
+            "resolved_props": []
+          },
+          {
+            "scene_number": 3,
+            "explicit_props": [],
+            "inferred_props": [],
+            "resolved_props": []
+          },
+          {
+            "scene_number": 4,
+            "explicit_props": [],
+            "inferred_props": [
+              {
+                "name": "Mysterious Document",
+                "source": "visual_description:studies",
+                "confidence": 0.98,
+                "visually_important": true
+              }
+            ],
+            "resolved_props": [
+              "Mysterious Document"
+            ]
+          }
+        ]
+      }
+    },
+    {
       "stage": "ENTITY_ANALYSIS",
       "status": "PASSED",
       "details": {
@@ -110,7 +153,9 @@
               "CHAR_REN"
             ],
             "location_id": "LOC_JULIAN_S_OFFICE",
-            "prop_ids": []
+            "prop_ids": [
+              "PROP_MYSTERIOUS_DOCUMENT"
+            ]
           }
         ],
         "registry": {
@@ -167,8 +212,143 @@
               "reference_path": null
             }
           },
-          "props": {}
+          "props": {
+            "PROP_MYSTERIOUS_DOCUMENT": {
+              "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+              "name": "Mysterious Document",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          }
         }
+      }
+    },
+    {
+      "stage": "CHARACTER_ROLE_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP001",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "characters": [
+              {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "SCENE_PARTICIPATION",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sam Bell stands alone near the old docks before dawn, surrounded by dark water, industrial structures, and heavy mist"
+              }
+            ],
+            "primary_subject_id": "CHAR_SAM_BELL",
+            "primary_subject_name": "Sam Bell"
+          },
+          {
+            "scene_number": 2,
+            "characters": [
+              {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "SCENE_PARTICIPATION",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sam Bell looks toward the dark water and abandoned dock structures"
+              }
+            ],
+            "primary_subject_id": "CHAR_SAM_BELL",
+            "primary_subject_name": "Sam Bell"
+          },
+          {
+            "scene_number": 3,
+            "characters": [
+              {
+                "entity_id": "CHAR_STERLING",
+                "name": "Sterling",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "EXAMINE",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sterling examines Samuel Bell's body at the old docks"
+              }
+            ],
+            "primary_subject_id": "CHAR_STERLING",
+            "primary_subject_name": "Sterling"
+          },
+          {
+            "scene_number": 4,
+            "characters": [
+              {
+                "entity_id": "CHAR_JULIAN",
+                "name": "Julian",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "STUDY",
+                "confidence": 0.9,
+                "primary_candidate": true,
+                "evidence": "Julian studies a mysterious document in his office"
+              },
+              {
+                "entity_id": "CHAR_REN",
+                "name": "Ren",
+                "role": "SUPPORTING_PRESENCE",
+                "interaction": "STAND_NEARBY",
+                "confidence": 0.95,
+                "primary_candidate": false,
+                "evidence": "Ren stands nearby"
+              }
+            ],
+            "primary_subject_id": "CHAR_JULIAN",
+            "primary_subject_name": "Julian"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PROP_CONTENT_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP001",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "props": []
+          },
+          {
+            "scene_number": 2,
+            "props": []
+          },
+          {
+            "scene_number": 3,
+            "props": []
+          },
+          {
+            "scene_number": 4,
+            "props": [
+              {
+                "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                "name": "Mysterious Document",
+                "content_modalities": [
+                  "TEXT",
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": true,
+                "visual_detail_sensitive": true,
+                "confidence": 1.0,
+                "evidence": [
+                  "Prop class suggests text-bearing content.",
+                  "Scene context contains text-related information.",
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -199,6 +379,18 @@
             "location_id": "LOC_THE_OLD_DOCKS",
             "prop_ids": [],
             "primary_subject_id": "CHAR_SAM_BELL",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "SCENE_PARTICIPATION",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sam Bell stands alone near the old docks before dawn, surrounded by dark water, industrial structures, and heavy mist"
+              }
+            ],
+            "prop_content": [],
             "environment": {
               "time_of_day": "PRE_DAWN",
               "weather": "FOG",
@@ -236,6 +428,18 @@
             "location_id": "LOC_DOCK_EDGE",
             "prop_ids": [],
             "primary_subject_id": "CHAR_SAM_BELL",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_SAM_BELL",
+                "name": "Sam Bell",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "SCENE_PARTICIPATION",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sam Bell looks toward the dark water and abandoned dock structures"
+              }
+            ],
+            "prop_content": [],
             "environment": {
               "time_of_day": "PRE_DAWN",
               "weather": "UNKNOWN",
@@ -274,6 +478,18 @@
             "location_id": "LOC_THE_OLD_DOCKS",
             "prop_ids": [],
             "primary_subject_id": "CHAR_STERLING",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_STERLING",
+                "name": "Sterling",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "EXAMINE",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Sterling examines Samuel Bell's body at the old docks"
+              }
+            ],
+            "prop_content": [],
             "environment": {
               "time_of_day": "UNKNOWN",
               "weather": "UNKNOWN",
@@ -305,15 +521,58 @@
               "Ren"
             ],
             "location": "Julian's Office",
-            "props": [],
-            "primary_subject": null,
+            "props": [
+              "Mysterious Document"
+            ],
+            "primary_subject": "Julian",
             "character_ids": [
               "CHAR_JULIAN",
               "CHAR_REN"
             ],
             "location_id": "LOC_JULIAN_S_OFFICE",
-            "prop_ids": [],
-            "primary_subject_id": null,
+            "prop_ids": [
+              "PROP_MYSTERIOUS_DOCUMENT"
+            ],
+            "primary_subject_id": "CHAR_JULIAN",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_JULIAN",
+                "name": "Julian",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "STUDY",
+                "confidence": 0.9,
+                "primary_candidate": true,
+                "evidence": "Julian studies a mysterious document in his office"
+              },
+              {
+                "entity_id": "CHAR_REN",
+                "name": "Ren",
+                "role": "SUPPORTING_PRESENCE",
+                "interaction": "STAND_NEARBY",
+                "confidence": 0.95,
+                "primary_candidate": false,
+                "evidence": "Ren stands nearby"
+              }
+            ],
+            "prop_content": [
+              {
+                "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                "name": "Mysterious Document",
+                "content_modalities": [
+                  "TEXT",
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": true,
+                "visual_detail_sensitive": true,
+                "confidence": 1.0,
+                "evidence": [
+                  "Prop class suggests text-bearing content.",
+                  "Scene context contains text-related information.",
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ],
             "environment": {
               "time_of_day": "UNKNOWN",
               "weather": "UNKNOWN",
@@ -328,7 +587,8 @@
             "visual_constraints": [
               "Transition from the docks to Julian's office as the first major narrative shift.",
               "Preserve established character identity throughout the scene.",
-              "Preserve the established location and environment throughout the scene."
+              "Preserve the established location and environment throughout the scene.",
+              "Preserve established prop identity and appearance throughout the scene."
             ]
           }
         ]
@@ -412,36 +672,49 @@
           {
             "scene_number": 4,
             "narrative_function": "DISCOVERY",
-            "primary_subject_id": null,
+            "primary_subject_id": "CHAR_JULIAN",
             "supporting_subject_ids": [
-              "CHAR_JULIAN",
               "CHAR_REN"
             ],
-            "important_prop_ids": [],
+            "important_prop_ids": [
+              "PROP_MYSTERIOUS_DOCUMENT"
+            ],
             "dialogue_present": true,
-            "visual_priority": "CHARACTER",
+            "visual_priority": "CHARACTER_AND_PROP",
             "pacing": "CONTROLLED",
             "beats": [
               {
                 "beat_type": "INVESTIGATION",
                 "purpose": "Show the subject examining or encountering new information.",
-                "primary_subject_id": null,
+                "primary_subject_id": "CHAR_JULIAN",
                 "supporting_subject_ids": [
-                  "CHAR_JULIAN",
                   "CHAR_REN"
                 ],
-                "important_prop_ids": [],
+                "important_prop_ids": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
                 "emphasis": "NORMAL"
+              },
+              {
+                "beat_type": "PROP_REVEAL",
+                "purpose": "Emphasize the important prop or information.",
+                "primary_subject_id": null,
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
+                "emphasis": "HIGH"
               },
               {
                 "beat_type": "REACTION",
                 "purpose": "Show the dramatic response to the discovery.",
-                "primary_subject_id": null,
+                "primary_subject_id": "CHAR_JULIAN",
                 "supporting_subject_ids": [
-                  "CHAR_JULIAN",
                   "CHAR_REN"
                 ],
-                "important_prop_ids": [],
+                "important_prop_ids": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
                 "emphasis": "HIGH"
               }
             ]
@@ -589,7 +862,19 @@
                 "Transition from the docks to Julian's office as the first major narrative shift."
               ]
             },
-            "prop_states": [],
+            "prop_states": [
+              {
+                "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                "name": "Mysterious Document",
+                "appearance": "UNKNOWN",
+                "condition": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": [
+                  "Transition from the docks to Julian's office as the first major narrative shift."
+                ]
+              }
+            ],
             "continuity_notes": [
               "Transition from the docks to Julian's office as the first major narrative shift."
             ]
@@ -680,7 +965,19 @@
             ]
           }
         },
-        "final_prop_states": {}
+        "final_prop_states": {
+          "PROP_MYSTERIOUS_DOCUMENT": {
+            "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+            "name": "Mysterious Document",
+            "appearance": "UNKNOWN",
+            "condition": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": [
+              "Transition from the docks to Julian's office as the first major narrative shift."
+            ]
+          }
+        }
       }
     },
     {
@@ -786,7 +1083,20 @@
             "reference_required": true
           }
         },
-        "props": {},
+        "props": {
+          "PROP_MYSTERIOUS_DOCUMENT": {
+            "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+            "name": "Mysterious Document",
+            "appearance": "UNKNOWN",
+            "state": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": [
+              "Transition from the docks to Julian's office as the first major narrative shift."
+            ],
+            "reference_required": true
+          }
+        },
         "scene_states": {
           "1": {
             "scene_number": 1,
@@ -940,12 +1250,27 @@
               ],
               "reference_required": true
             },
-            "props": {},
+            "props": {
+              "PROP_MYSTERIOUS_DOCUMENT": {
+                "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                "name": "Mysterious Document",
+                "appearance": "UNKNOWN",
+                "state": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": [
+                  "Transition from the docks to Julian's office as the first major narrative shift."
+                ],
+                "reference_required": true
+              }
+            },
             "active_characters": [
               "CHAR_JULIAN",
               "CHAR_REN"
             ],
-            "active_props": []
+            "active_props": [
+              "PROP_MYSTERIOUS_DOCUMENT"
+            ]
           }
         },
         "inherited_world_state": true,
@@ -1049,7 +1374,20 @@
               "reference_required": true
             }
           },
-          "props": {}
+          "props": {
+            "PROP_MYSTERIOUS_DOCUMENT": {
+              "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+              "name": "Mysterious Document",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [
+                "Transition from the docks to Julian's office as the first major narrative shift."
+              ],
+              "reference_required": true
+            }
+          }
         }
       }
     },
@@ -1159,7 +1497,20 @@
               "reference_required": true
             }
           },
-          "props": {}
+          "props": {
+            "PROP_MYSTERIOUS_DOCUMENT": {
+              "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+              "name": "Mysterious Document",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [
+                "Transition from the docks to Julian's office as the first major narrative shift."
+              ],
+              "reference_required": true
+            }
+          }
         }
       }
     },
@@ -1327,9 +1678,9 @@
                 "character_actions": [
                   {
                     "entity_id": "CHAR_STERLING",
-                    "action": "PERFORM_SCENE_ACTION",
-                    "gesture": "SUBTLE_NATURAL_GESTURE",
-                    "facial_movement": "CONTROLLED_EXPRESSION"
+                    "action": "EXAMINE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
                   }
                 ],
                 "prop_actions": [],
@@ -1354,48 +1705,58 @@
             "scene_number": 4,
             "duration_seconds": 20,
             "location_id": "LOC_JULIAN_S_OFFICE",
-            "shot_count": 2,
+            "shot_count": 3,
             "shots": [
               {
                 "shot_id": "EP001-S04-SHOT01",
                 "scene_number": 4,
-                "duration_seconds": 6,
+                "duration_seconds": 4,
                 "purpose": "Show the subject examining or encountering new information.",
                 "characters": [
                   "CHAR_JULIAN",
                   "CHAR_REN"
                 ],
-                "props": [],
+                "props": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
                 "camera": {
                   "shot_type": "MEDIUM",
                   "camera_movement": "STATIC_OR_SUBTLE_PUSH",
                   "framing": "SUBJECT_AND_CONTEXT",
-                  "composition": "Maintain a clear spatial relationship between the active characters."
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
                 },
                 "character_actions": [
                   {
                     "entity_id": "CHAR_JULIAN",
-                    "action": "INVESTIGATE",
+                    "action": "STUDY",
                     "gesture": "CONTROLLED_INSPECTION",
                     "facial_movement": "FOCUSED_EXPRESSION"
                   },
                   {
                     "entity_id": "CHAR_REN",
-                    "action": "INVESTIGATE",
-                    "gesture": "CONTROLLED_INSPECTION",
-                    "facial_movement": "FOCUSED_EXPRESSION"
+                    "action": "STAND_NEARBY",
+                    "gesture": "MINIMAL_IDLE_GESTURE",
+                    "facial_movement": "ATTENTIVE_NEUTRAL_EXPRESSION"
                   }
                 ],
-                "prop_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
                 "visual_constraints": [
                   "Transition from the docks to Julian's office as the first major narrative shift.",
                   "Preserve established character identity throughout the scene.",
                   "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
                   "Preserve established character identity and proportions.",
                   "Preserve established wardrobe and physical condition.",
                   "Avoid unnecessary character movement.",
                   "Preserve the established environment.",
                   "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
                   "Do not introduce unrelated characters.",
                   "Avoid unnecessary camera movement.",
                   "Do not create artificial transitions inside the shot."
@@ -1405,28 +1766,61 @@
               {
                 "shot_id": "EP001-S04-SHOT02",
                 "scene_number": 4,
-                "duration_seconds": 14,
+                "duration_seconds": 8,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Transition from the docks to Julian's office as the first major narrative shift.",
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "scene_number": 4,
+                "duration_seconds": 8,
                 "purpose": "Show the dramatic response to the discovery.",
                 "characters": [
-                  "CHAR_JULIAN",
-                  "CHAR_REN"
+                  "CHAR_JULIAN"
                 ],
                 "props": [],
                 "camera": {
                   "shot_type": "MEDIUM_CLOSE",
                   "camera_movement": "SUBTLE_PUSH_IN",
                   "framing": "SUBJECT_FOCUSED",
-                  "composition": "Maintain a clear spatial relationship between the active characters."
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
                 },
                 "character_actions": [
                   {
                     "entity_id": "CHAR_JULIAN",
-                    "action": "REACT_TO_DISCOVERY",
-                    "gesture": "MINIMAL_REACTION",
-                    "facial_movement": "CONTROLLED_REALIZATION"
-                  },
-                  {
-                    "entity_id": "CHAR_REN",
                     "action": "REACT_TO_DISCOVERY",
                     "gesture": "MINIMAL_REACTION",
                     "facial_movement": "CONTROLLED_REALIZATION"
@@ -1437,11 +1831,14 @@
                   "Transition from the docks to Julian's office as the first major narrative shift.",
                   "Preserve established character identity throughout the scene.",
                   "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
                   "Preserve established character identity and proportions.",
                   "Preserve established wardrobe and physical condition.",
                   "Avoid unnecessary character movement.",
                   "Preserve the established environment.",
                   "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
                   "Do not introduce unrelated characters.",
                   "Avoid unnecessary camera movement.",
                   "Do not create artificial transitions inside the shot."
@@ -1526,6 +1923,16 @@
             "asset_type": "LOCATION",
             "name": "Julian's Office",
             "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+            "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+            "asset_type": "PROP",
+            "name": "Mysterious Document",
+            "purpose": "Master prop reference",
             "required": true,
             "master_reference_required": false,
             "reference_path": null
@@ -1745,6 +2152,16 @@
                 "required": true,
                 "master_reference_required": false,
                 "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                "asset_type": "PROP",
+                "name": "Mysterious Document",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
               }
             ],
             "shots": [
@@ -1780,6 +2197,16 @@
                     "required": true,
                     "master_reference_required": false,
                     "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
                   }
                 ]
               },
@@ -1787,20 +2214,35 @@
                 "shot_id": "EP001-S04-SHOT02",
                 "assets": [
                   {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "assets": [
+                  {
                     "asset_id": "ASSET_CHAR_JULIAN_MASTER",
                     "entity_id": "CHAR_JULIAN",
                     "asset_type": "CHARACTER",
                     "name": "Julian",
-                    "purpose": "Master character reference",
-                    "required": true,
-                    "master_reference_required": true,
-                    "reference_path": null
-                  },
-                  {
-                    "asset_id": "ASSET_CHAR_REN_MASTER",
-                    "entity_id": "CHAR_REN",
-                    "asset_type": "CHARACTER",
-                    "name": "Ren",
                     "purpose": "Master character reference",
                     "required": true,
                     "master_reference_required": true,
@@ -2055,9 +2497,9 @@
                 "character_actions": [
                   {
                     "entity_id": "CHAR_STERLING",
-                    "action": "PERFORM_SCENE_ACTION",
-                    "gesture": "SUBTLE_NATURAL_GESTURE",
-                    "facial_movement": "CONTROLLED_EXPRESSION"
+                    "action": "EXAMINE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
                   }
                 ],
                 "prop_actions": [],
@@ -2104,48 +2546,58 @@
             "scene_number": 4,
             "duration_seconds": 20,
             "location_id": "LOC_JULIAN_S_OFFICE",
-            "shot_count": 2,
+            "shot_count": 3,
             "shots": [
               {
                 "shot_id": "EP001-S04-SHOT01",
                 "scene_number": 4,
-                "duration_seconds": 6,
+                "duration_seconds": 4,
                 "purpose": "Show the subject examining or encountering new information.",
                 "characters": [
                   "CHAR_JULIAN",
                   "CHAR_REN"
                 ],
-                "props": [],
+                "props": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
                 "camera": {
                   "shot_type": "MEDIUM",
                   "camera_movement": "STATIC_OR_SUBTLE_PUSH",
                   "framing": "SUBJECT_AND_CONTEXT",
-                  "composition": "Maintain a clear spatial relationship between the active characters."
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
                 },
                 "character_actions": [
                   {
                     "entity_id": "CHAR_JULIAN",
-                    "action": "INVESTIGATE",
+                    "action": "STUDY",
                     "gesture": "CONTROLLED_INSPECTION",
                     "facial_movement": "FOCUSED_EXPRESSION"
                   },
                   {
                     "entity_id": "CHAR_REN",
-                    "action": "INVESTIGATE",
-                    "gesture": "CONTROLLED_INSPECTION",
-                    "facial_movement": "FOCUSED_EXPRESSION"
+                    "action": "STAND_NEARBY",
+                    "gesture": "MINIMAL_IDLE_GESTURE",
+                    "facial_movement": "ATTENTIVE_NEUTRAL_EXPRESSION"
                   }
                 ],
-                "prop_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
                 "visual_constraints": [
                   "Transition from the docks to Julian's office as the first major narrative shift.",
                   "Preserve established character identity throughout the scene.",
                   "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
                   "Preserve established character identity and proportions.",
                   "Preserve established wardrobe and physical condition.",
                   "Avoid unnecessary character movement.",
                   "Preserve the established environment.",
                   "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
                   "Do not introduce unrelated characters.",
                   "Avoid unnecessary camera movement.",
                   "Do not create artificial transitions inside the shot."
@@ -2181,34 +2633,99 @@
                     "required": true,
                     "master_reference_required": false,
                     "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
                   }
                 ]
               },
               {
                 "shot_id": "EP001-S04-SHOT02",
                 "scene_number": 4,
-                "duration_seconds": 14,
+                "duration_seconds": 8,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_MYSTERIOUS_DOCUMENT"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Transition from the docks to Julian's office as the first major narrative shift.",
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "scene_number": 4,
+                "duration_seconds": 8,
                 "purpose": "Show the dramatic response to the discovery.",
                 "characters": [
-                  "CHAR_JULIAN",
-                  "CHAR_REN"
+                  "CHAR_JULIAN"
                 ],
                 "props": [],
                 "camera": {
                   "shot_type": "MEDIUM_CLOSE",
                   "camera_movement": "SUBTLE_PUSH_IN",
                   "framing": "SUBJECT_FOCUSED",
-                  "composition": "Maintain a clear spatial relationship between the active characters."
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
                 },
                 "character_actions": [
                   {
                     "entity_id": "CHAR_JULIAN",
-                    "action": "REACT_TO_DISCOVERY",
-                    "gesture": "MINIMAL_REACTION",
-                    "facial_movement": "CONTROLLED_REALIZATION"
-                  },
-                  {
-                    "entity_id": "CHAR_REN",
                     "action": "REACT_TO_DISCOVERY",
                     "gesture": "MINIMAL_REACTION",
                     "facial_movement": "CONTROLLED_REALIZATION"
@@ -2219,11 +2736,14 @@
                   "Transition from the docks to Julian's office as the first major narrative shift.",
                   "Preserve established character identity throughout the scene.",
                   "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
                   "Preserve established character identity and proportions.",
                   "Preserve established wardrobe and physical condition.",
                   "Avoid unnecessary character movement.",
                   "Preserve the established environment.",
                   "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
                   "Do not introduce unrelated characters.",
                   "Avoid unnecessary camera movement.",
                   "Do not create artificial transitions inside the shot."
@@ -2235,16 +2755,6 @@
                     "entity_id": "CHAR_JULIAN",
                     "asset_type": "CHARACTER",
                     "name": "Julian",
-                    "purpose": "Master character reference",
-                    "required": true,
-                    "master_reference_required": true,
-                    "reference_path": null
-                  },
-                  {
-                    "asset_id": "ASSET_CHAR_REN_MASTER",
-                    "entity_id": "CHAR_REN",
-                    "asset_type": "CHARACTER",
-                    "name": "Ren",
                     "purpose": "Master character reference",
                     "required": true,
                     "master_reference_required": true,
@@ -2385,8 +2895,8 @@
                 "shot_id": "EP001-S03-SHOT01",
                 "scene_number": 3,
                 "duration_seconds": 12,
-                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Establish the active subject and environment. Location: The Old Docks. Environment: pre dawn, fog, low light, somber. Characters visible: Sterling. Character performance: Sterling — perform scene action, gesture: subtle natural gesture, facial expression: controlled expression. Camera and composition: shot type: medium wide; framing: character and environment; camera movement intent: slow push in; composition: Keep the primary subject visually clear while preserving relevant scene context. Continuity requirements: Maintain the same location and atmospheric conditions established in the previous scenes. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: The Old Docks (purpose: Master location reference, required); Sterling (purpose: Master character reference, preserve master reference identity, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
-                "video_prompt": "Animate the approved keyframe for 12 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: slow push in; preserve framing: character and environment; preserve composition: Keep the primary subject visually clear while preserving relevant scene context. Character motion: Sterling — action: perform scene action, gesture: subtle natural gesture, facial movement: controlled expression. Continuity requirements: Maintain the same location and atmospheric conditions established in the previous scenes. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Establish the active subject and environment. Location: The Old Docks. Environment: pre dawn, fog, low light, somber. Characters visible: Sterling. Character performance: Sterling — examine, gesture: controlled inspection, facial expression: focused expression. Camera and composition: shot type: medium wide; framing: character and environment; camera movement intent: slow push in; composition: Keep the primary subject visually clear while preserving relevant scene context. Continuity requirements: Maintain the same location and atmospheric conditions established in the previous scenes. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: The Old Docks (purpose: Master location reference, required); Sterling (purpose: Master character reference, preserve master reference identity, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 12 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: slow push in; preserve framing: character and environment; preserve composition: Keep the primary subject visually clear while preserving relevant scene context. Character motion: Sterling — action: examine, gesture: controlled inspection, facial movement: focused expression. Continuity requirements: Maintain the same location and atmospheric conditions established in the previous scenes. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
                 "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, environment redesign, unexpected location changes, lighting changes, unexpected weather changes, time of day changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
                 "assets": [
                   {
@@ -2420,10 +2930,10 @@
               {
                 "shot_id": "EP001-S04-SHOT01",
                 "scene_number": 4,
-                "duration_seconds": 6,
-                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Show the subject examining or encountering new information. Location: Julian's Office. Environment: neutral. Characters visible: Julian, Ren. Character performance: Julian — investigate, gesture: controlled inspection, facial expression: focused expression; Ren — investigate, gesture: controlled inspection, facial expression: focused expression. Camera and composition: shot type: medium; framing: subject and context; camera movement intent: static or subtle push; composition: Maintain a clear spatial relationship between the active characters. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Julian (purpose: Master character reference, preserve master reference identity, required); Ren (purpose: Master character reference, preserve master reference identity, required); Julian's Office (purpose: Master location reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
-                "video_prompt": "Animate the approved keyframe for 6 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static or subtle push; preserve framing: subject and context; preserve composition: Maintain a clear spatial relationship between the active characters. Character motion: Julian — action: investigate, gesture: controlled inspection, facial movement: focused expression; Ren — action: investigate, gesture: controlled inspection, facial movement: focused expression. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
-                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "duration_seconds": 4,
+                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Show the subject examining or encountering new information. Location: Julian's Office. Environment: neutral. Characters visible: Julian, Ren. Props visible: Mysterious Document. Character performance: Julian — study, gesture: controlled inspection, facial expression: focused expression; Ren — stand nearby, gesture: minimal idle gesture, facial expression: attentive neutral expression. Prop behavior: Mysterious Document — maintain established state. Prop content requirements: Mysterious Document — preserve established textual content and typography consistently, preserve established markings, symbols, codes, and inscriptions consistently, keep story-relevant readable content legible and visually coherent, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: medium; framing: subject and context; camera movement intent: static or subtle push; composition: Keep the primary subject visually clear while preserving relevant scene context. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Julian (purpose: Master character reference, preserve master reference identity, required); Ren (purpose: Master character reference, preserve master reference identity, required); Julian's Office (purpose: Master location reference, required); Mysterious Document (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 4 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static or subtle push; preserve framing: subject and context; preserve composition: Keep the primary subject visually clear while preserving relevant scene context. Character motion: Julian — action: study, gesture: controlled inspection, facial movement: focused expression; Ren — action: stand nearby, gesture: minimal idle gesture, facial movement: attentive neutral expression. Prop motion: Mysterious Document remains visually stable and preserves its established state. Prop content preservation: Mysterious Document — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, keep story-relevant readable content legible and stable across all frames, preserve fine visual details consistently throughout the shot. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
                 "assets": [
                   {
                     "asset_id": "ASSET_CHAR_JULIAN_MASTER",
@@ -2454,6 +2964,16 @@
                     "reference_path": null,
                     "required": true,
                     "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
                   }
                 ],
                 "dialogue": "This isn't a heart attack, Ren. It's a catalog code."
@@ -2461,9 +2981,40 @@
               {
                 "shot_id": "EP001-S04-SHOT02",
                 "scene_number": 4,
-                "duration_seconds": 14,
-                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Show the dramatic response to the discovery. Location: Julian's Office. Environment: neutral. Characters visible: Julian, Ren. Character performance: Julian — react to discovery, gesture: minimal reaction, facial expression: controlled realization; Ren — react to discovery, gesture: minimal reaction, facial expression: controlled realization. Camera and composition: shot type: medium close; framing: subject focused; camera movement intent: subtle push in; composition: Maintain a clear spatial relationship between the active characters. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Julian (purpose: Master character reference, preserve master reference identity, required); Ren (purpose: Master character reference, preserve master reference identity, required); Julian's Office (purpose: Master location reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
-                "video_prompt": "Animate the approved keyframe for 14 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: subtle push in; preserve framing: subject focused; preserve composition: Maintain a clear spatial relationship between the active characters. Character motion: Julian — action: react to discovery, gesture: minimal reaction, facial movement: controlled realization; Ren — action: react to discovery, gesture: minimal reaction, facial movement: controlled realization. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "duration_seconds": 8,
+                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Emphasize the important prop or information. Location: Julian's Office. Environment: neutral. Props visible: Mysterious Document. Prop behavior: Mysterious Document — present important prop. Prop content requirements: Mysterious Document — preserve established textual content and typography consistently, preserve established markings, symbols, codes, and inscriptions consistently, keep story-relevant readable content legible and visually coherent, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: close up; framing: prop focused; camera movement intent: static; composition: Keep the important prop clearly readable while preserving enough surrounding context. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Julian's Office (purpose: Master location reference, required); Mysterious Document (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 8 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static; preserve framing: prop focused; preserve composition: Keep the important prop clearly readable while preserving enough surrounding context. Prop motion: Mysterious Document — present important prop. Prop content preservation: Mysterious Document — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, keep story-relevant readable content legible and stable across all frames, preserve fine visual details consistently throughout the shot. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, camera shake, camera spin, camera rotation, sudden zoom, rapid reframing, unwanted camera movement, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+                    "entity_id": "LOC_JULIAN_S_OFFICE",
+                    "asset_type": "LOCATION",
+                    "name": "Julian's Office",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+                    "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+                    "asset_type": "PROP",
+                    "name": "Mysterious Document",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP001-S04-SHOT03",
+                "scene_number": 4,
+                "duration_seconds": 8,
+                "image_prompt": "Visual style: cinematic 1930s-inspired noir, dark interiors, warm practical lighting, restrained camera movement. Tone: dark mystery, slow-burn investigation, atmospheric noir. Shot purpose: Show the dramatic response to the discovery. Location: Julian's Office. Environment: neutral. Characters visible: Julian. Character performance: Julian — react to discovery, gesture: minimal reaction, facial expression: controlled realization. Camera and composition: shot type: medium close; framing: subject focused; camera movement intent: subtle push in; composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Julian (purpose: Master character reference, preserve master reference identity, required); Julian's Office (purpose: Master location reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 8 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: subtle push in; preserve framing: subject focused; preserve composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Character motion: Julian — action: react to discovery, gesture: minimal reaction, facial movement: controlled realization. Continuity requirements: Transition from the docks to Julian's office as the first major narrative shift. Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
                 "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
                 "assets": [
                   {
@@ -2471,16 +3022,6 @@
                     "entity_id": "CHAR_JULIAN",
                     "asset_type": "CHARACTER",
                     "name": "Julian",
-                    "purpose": "Master character reference",
-                    "reference_path": null,
-                    "required": true,
-                    "master_reference_required": true
-                  },
-                  {
-                    "asset_id": "ASSET_CHAR_REN_MASTER",
-                    "entity_id": "CHAR_REN",
-                    "asset_type": "CHARACTER",
-                    "name": "Ren",
                     "purpose": "Master character reference",
                     "reference_path": null,
                     "required": true,
@@ -2502,7 +3043,7 @@
             ]
           }
         ],
-        "total_shots": 6
+        "total_shots": 7
       }
     }
   ],

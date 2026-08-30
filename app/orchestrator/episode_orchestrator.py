@@ -3,10 +3,16 @@ from typing import Optional
 from app.models.episode import Episode
 from app.models.state import WorldStateSnapshot
 
-from app.story.story_engine import StoryEngine
+from app.story.story_engine import (
+    StoryEngine,
+)
 
 from app.analyzers.story_structure_analyzer import (
     StoryStructureAnalyzer,
+)
+
+from app.analyzers.prop_analyzer import (
+    PropAnalyzer,
 )
 
 from app.analyzers.entity_analyzer import (
@@ -17,12 +23,24 @@ from app.analyzers.scene_analyzer import (
     SceneAnalyzer,
 )
 
+from app.analyzers.character_role_analyzer import (
+    CharacterRoleAnalyzer,
+)
+
+from app.analyzers.prop_content_analyzer import (
+    PropContentAnalyzer,
+)
+
 from app.analyzers.production_intent_analyzer import (
     ProductionIntentAnalyzer,
 )
 
 from app.analyzers.continuity_analyzer import (
     ContinuityAnalyzer,
+)
+
+from app.engines.scene_semantic_enricher import (
+    SceneSemanticEnricher,
 )
 
 from app.engines.state_manager import (
@@ -56,22 +74,27 @@ class EpisodeOrchestrator:
 
     The orchestrator contains no story-specific knowledge.
 
-    Persistent world state may be supplied so that canonical state
-    from previously approved episodes can be inherited.
+    Analysis stages are executed once and their outputs are shared with
+    downstream components.
 
-    Pipeline:
-        Story Analysis
-        Story Structure
-        Entity Analysis
-        Scene Analysis
-        Production Intent
-        Continuity Analysis
-        State Management
-        World State Candidate
-        Production Planning
-        Asset Planning
-        Production Execution
-        Production Prompts
+    Pipeline
+    --------
+    Story Analysis
+    Story Structure
+    Prop Analysis
+    Entity Analysis
+    Base Scene Analysis
+    Character Role Analysis
+    Prop Content Analysis
+    Scene Semantic Enrichment
+    Production Intent
+    Continuity Analysis
+    State Management
+    World State Candidate
+    Production Planning
+    Asset Planning
+    Production Execution
+    Production Prompts
     """
 
     def __init__(
@@ -79,15 +102,11 @@ class EpisodeOrchestrator:
     ):
 
         # ============================================================
-        # WORLD / ENTITY
+        # WORLD
         # ============================================================
 
         self.registry = (
             WorldRegistry()
-        )
-
-        self.entity_analyzer = (
-            EntityAnalyzer()
         )
 
         # ============================================================
@@ -102,8 +121,28 @@ class EpisodeOrchestrator:
             StoryStructureAnalyzer()
         )
 
+        self.prop_analyzer = (
+            PropAnalyzer()
+        )
+
+        self.entity_analyzer = (
+            EntityAnalyzer()
+        )
+
         self.scene_analyzer = (
             SceneAnalyzer()
+        )
+
+        self.character_role_analyzer = (
+            CharacterRoleAnalyzer()
+        )
+
+        self.prop_content_analyzer = (
+            PropContentAnalyzer()
+        )
+
+        self.scene_semantic_enricher = (
+            SceneSemanticEnricher()
         )
 
         self.production_intent_analyzer = (
@@ -170,7 +209,7 @@ class EpisodeOrchestrator:
         }
 
         # ============================================================
-        # STAGE 1 — STORY ANALYSIS
+        # STORY ANALYSIS
         # ============================================================
 
         story_analysis = (
@@ -181,9 +220,7 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "STORY_ANALYSIS"
-            ),
+            "stage": "STORY_ANALYSIS",
             "status": (
                 story_analysis[
                     "status"
@@ -201,14 +238,11 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 2 — STORY STRUCTURE
+        # STORY STRUCTURE
         # ============================================================
 
         story_structure = (
@@ -219,15 +253,12 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "STORY_STRUCTURE"
-            ),
+            "stage": "STORY_STRUCTURE",
             "status": (
                 story_structure.status
             ),
             "details": (
-                story_structure
-                .model_dump()
+                story_structure.model_dump()
             ),
         })
 
@@ -236,38 +267,60 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 3 — ENTITY ANALYSIS
+        # PROP ANALYSIS
+        # ============================================================
+
+        prop_analysis = (
+            self.prop_analyzer
+            .analyze(
+                episode
+            )
+        )
+
+        results["stages"].append({
+            "stage": "PROP_ANALYSIS",
+            "status": (
+                prop_analysis.status
+            ),
+            "details": (
+                prop_analysis.model_dump()
+            ),
+        })
+
+        if (
+            prop_analysis.status
+            == "FAILED"
+        ):
+
+            results["status"] = "FAILED"
+            return results
+
+        # ============================================================
+        # ENTITY ANALYSIS
         # ============================================================
 
         entity_analysis = (
             self.entity_analyzer
             .analyze(
-                episode=(
-                    episode
-                ),
-                registry=(
-                    self.registry
+                episode=episode,
+                registry=self.registry,
+                prop_analysis=(
+                    prop_analysis
                 ),
             )
         )
 
         results["stages"].append({
-            "stage": (
-                "ENTITY_ANALYSIS"
-            ),
+            "stage": "ENTITY_ANALYSIS",
             "status": (
                 entity_analysis.status
             ),
             "details": (
-                entity_analysis
-                .model_dump()
+                entity_analysis.model_dump()
             ),
         })
 
@@ -276,38 +329,151 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 4 — SCENE ANALYSIS
+        # BASE SCENE ANALYSIS
         # ============================================================
 
-        scene_analysis = (
+        base_scene_analysis = (
             self.scene_analyzer
             .analyze(
-                episode=(
-                    episode
+                episode=episode,
+                registry=self.registry,
+                prop_analysis=(
+                    prop_analysis
                 ),
-                registry=(
-                    self.registry
+                entity_analysis=(
+                    entity_analysis
+                ),
+            )
+        )
+
+        if (
+            base_scene_analysis.status
+            == "FAILED"
+        ):
+
+            results["stages"].append({
+                "stage": "SCENE_ANALYSIS",
+                "status": (
+                    base_scene_analysis.status
+                ),
+                "details": (
+                    base_scene_analysis
+                    .model_dump()
+                ),
+            })
+
+            results["status"] = "FAILED"
+            return results
+
+        # ============================================================
+        # CHARACTER ROLE ANALYSIS
+        # ============================================================
+
+        character_role_analysis = (
+            self.character_role_analyzer
+            .analyze(
+                episode=episode,
+                scene_analysis=(
+                    base_scene_analysis
                 ),
             )
         )
 
         results["stages"].append({
             "stage": (
-                "SCENE_ANALYSIS"
+                "CHARACTER_ROLE_ANALYSIS"
             ),
+            "status": (
+                character_role_analysis.status
+            ),
+            "details": (
+                character_role_analysis
+                .model_dump()
+            ),
+        })
+
+        if (
+            character_role_analysis.status
+            == "FAILED"
+        ):
+
+            results["status"] = "FAILED"
+            return results
+
+        # ============================================================
+        # PROP CONTENT ANALYSIS
+        # ============================================================
+
+        prop_content_analysis = (
+            self.prop_content_analyzer
+            .analyze(
+                episode=episode,
+                scene_analysis=(
+                    base_scene_analysis
+                ),
+            )
+        )
+
+        results["stages"].append({
+            "stage": (
+                "PROP_CONTENT_ANALYSIS"
+            ),
+            "status": (
+                prop_content_analysis.status
+            ),
+            "details": (
+                prop_content_analysis
+                .model_dump()
+            ),
+        })
+
+        if (
+            prop_content_analysis.status
+            == "FAILED"
+        ):
+
+            results["status"] = "FAILED"
+            return results
+
+        # ============================================================
+        # SCENE SEMANTIC ENRICHMENT
+        # ============================================================
+
+        scene_analysis = (
+            self.scene_semantic_enricher
+            .enrich_character_roles(
+                scene_analysis=(
+                    base_scene_analysis
+                ),
+                character_role_analysis=(
+                    character_role_analysis
+                ),
+            )
+        )
+
+        scene_analysis = (
+            self.scene_semantic_enricher
+            .enrich_prop_content(
+                scene_analysis=(
+                    scene_analysis
+                ),
+                prop_content_analysis=(
+                    prop_content_analysis
+                ),
+            )
+        )
+
+        results["stages"].append({
+            "stage": "SCENE_ANALYSIS",
             "status": (
                 scene_analysis.status
             ),
             "details": (
-                scene_analysis
-                .model_dump()
+                scene_analysis.model_dump()
             ),
         })
 
@@ -316,22 +482,17 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 5 — PRODUCTION INTENT
+        # PRODUCTION INTENT
         # ============================================================
 
         production_intent = (
             self.production_intent_analyzer
             .analyze(
-                episode=(
-                    episode
-                ),
+                episode=episode,
                 scene_analysis=(
                     scene_analysis
                 ),
@@ -339,15 +500,12 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "PRODUCTION_INTENT"
-            ),
+            "stage": "PRODUCTION_INTENT",
             "status": (
                 production_intent.status
             ),
             "details": (
-                production_intent
-                .model_dump()
+                production_intent.model_dump()
             ),
         })
 
@@ -356,38 +514,28 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 6 — CONTINUITY ANALYSIS
+        # CONTINUITY
         # ============================================================
 
         continuity = (
             self.continuity_analyzer
             .analyze(
-                episode=(
-                    episode
-                ),
-                registry=(
-                    self.registry
-                ),
+                episode=episode,
+                registry=self.registry,
             )
         )
 
         results["stages"].append({
-            "stage": (
-                "CONTINUITY_ANALYSIS"
-            ),
+            "stage": "CONTINUITY_ANALYSIS",
             "status": (
                 continuity.status
             ),
             "details": (
-                continuity
-                .model_dump()
+                continuity.model_dump()
             ),
         })
 
@@ -396,25 +544,18 @@ class EpisodeOrchestrator:
             == "FAILED"
         ):
 
-            results["status"] = (
-                "FAILED"
-            )
-
+            results["status"] = "FAILED"
             return results
 
         # ============================================================
-        # STAGE 7 — STATE MANAGEMENT
+        # STATE
         # ============================================================
 
         episode_state = (
             self.state_manager
             .build_episode_state(
-                episode=(
-                    episode
-                ),
-                continuity=(
-                    continuity
-                ),
+                episode=episode,
+                continuity=continuity,
                 initial_world_state=(
                     initial_world_state
                 ),
@@ -422,34 +563,24 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "STATE_MANAGEMENT"
-            ),
-            "status": (
-                "PASSED"
-            ),
+            "stage": "STATE_MANAGEMENT",
+            "status": "PASSED",
             "details": (
-                episode_state
-                .model_dump()
+                episode_state.model_dump()
             ),
         })
 
         # ============================================================
-        # STAGE 8 — WORLD STATE
+        # WORLD STATE
         # ============================================================
 
         candidate_world_state = (
-            episode_state
-            .final_world_state
+            episode_state.final_world_state
         )
 
         results["stages"].append({
-            "stage": (
-                "WORLD_STATE"
-            ),
-            "status": (
-                "PASSED"
-            ),
+            "stage": "WORLD_STATE",
+            "status": "PASSED",
             "details": {
                 "commit_status": (
                     "PENDING_APPROVAL"
@@ -470,18 +601,14 @@ class EpisodeOrchestrator:
         })
 
         # ============================================================
-        # STAGE 9 — PRODUCTION PLANNING
+        # PRODUCTION PLANNING
         # ============================================================
 
         production_plan = (
             self.production_planner
             .create_plan(
-                episode=(
-                    episode
-                ),
-                state=(
-                    episode_state
-                ),
+                episode=episode,
+                state=episode_state,
                 scene_analysis=(
                     scene_analysis
                 ),
@@ -492,20 +619,15 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "PRODUCTION_PLANNING"
-            ),
-            "status": (
-                "PASSED"
-            ),
+            "stage": "PRODUCTION_PLANNING",
+            "status": "PASSED",
             "details": (
-                production_plan
-                .model_dump()
+                production_plan.model_dump()
             ),
         })
 
         # ============================================================
-        # STAGE 10 — ASSET PLANNING
+        # ASSET PLANNING
         # ============================================================
 
         asset_plan = (
@@ -519,20 +641,15 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "ASSET_PLANNING"
-            ),
-            "status": (
-                "PASSED"
-            ),
+            "stage": "ASSET_PLANNING",
+            "status": "PASSED",
             "details": (
-                asset_plan
-                .model_dump()
+                asset_plan.model_dump()
             ),
         })
 
         # ============================================================
-        # STAGE 11 — PRODUCTION EXECUTION
+        # PRODUCTION EXECUTION
         # ============================================================
 
         self.production_execution = (
@@ -555,24 +672,18 @@ class EpisodeOrchestrator:
             "stage": (
                 "PRODUCTION_EXECUTION"
             ),
-            "status": (
-                "PASSED"
-            ),
-            "details": (
-                execution_plan
-            ),
+            "status": "PASSED",
+            "details": execution_plan,
         })
 
         # ============================================================
-        # STAGE 12 — PRODUCTION PROMPTS
+        # PRODUCTION PROMPTS
         # ============================================================
 
         production_prompts = (
             self.prompt_compiler
             .compile(
-                episode=(
-                    episode
-                ),
+                episode=episode,
                 scene_analysis=(
                     scene_analysis
                 ),
@@ -589,21 +700,13 @@ class EpisodeOrchestrator:
         )
 
         results["stages"].append({
-            "stage": (
-                "PRODUCTION_PROMPTS"
-            ),
-            "status": (
-                "PASSED"
-            ),
+            "stage": "PRODUCTION_PROMPTS",
+            "status": "PASSED",
             "details": (
                 production_prompts
                 .model_dump()
             ),
         })
-
-        # ============================================================
-        # FINAL STATUS
-        # ============================================================
 
         results["status"] = (
             "WAITING_HUMAN_APPROVAL"

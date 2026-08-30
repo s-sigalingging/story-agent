@@ -1,0 +1,451 @@
+{
+  "batch": "10D.2",
+  "status": "PASSED",
+  "total_cases": 5,
+  "passed_cases": 5,
+  "failed_cases": 0,
+  "failed_checks": 0,
+  "defects_by_severity": {},
+  "cases": [
+    {
+      "case_id": "A_COMEDY_IMAGE",
+      "status": "PASSED",
+      "failed_count": 0,
+      "checks": [
+        {
+          "check": "pipeline_status",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "WAITING_HUMAN_APPROVAL",
+          "actual": "WAITING_HUMAN_APPROVAL"
+        },
+        {
+          "check": "characters_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "Mira"
+          ],
+          "actual": [
+            "Mira"
+          ]
+        },
+        {
+          "check": "location_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Sunny Kitchen",
+          "actual": "Sunny Kitchen"
+        },
+        {
+          "check": "prop_contains_photograph",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "photograph",
+          "actual": [
+            "Photograph"
+          ]
+        },
+        {
+          "check": "clean_prop_name:Photograph",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Photograph"
+        },
+        {
+          "check": "primary_subject",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Mira",
+          "actual": "Mira"
+        },
+        {
+          "check": "primary_interaction",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "STUDY",
+          "actual": "STUDY"
+        },
+        {
+          "check": "content_modalities",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "IMAGE"
+          ],
+          "actual": [
+            "IMAGE"
+          ]
+        },
+        {
+          "check": "forbidden_content_signal:TEXT",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "TEXT absent",
+          "actual": [
+            "IMAGE"
+          ]
+        },
+        {
+          "check": "forbidden_content_signal:MARKING",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "MARKING absent",
+          "actual": [
+            "IMAGE"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "B_SCIFI_TEXT",
+      "status": "PASSED",
+      "failed_count": 0,
+      "checks": [
+        {
+          "check": "pipeline_status",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "WAITING_HUMAN_APPROVAL",
+          "actual": "WAITING_HUMAN_APPROVAL"
+        },
+        {
+          "check": "characters_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "Lena"
+          ],
+          "actual": [
+            "Lena"
+          ]
+        },
+        {
+          "check": "location_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Reactor Control Room",
+          "actual": "Reactor Control Room"
+        },
+        {
+          "check": "prop_contains_warning",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "warning",
+          "actual": [
+            "Warning Panel"
+          ]
+        },
+        {
+          "check": "prop_contains_panel",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "panel",
+          "actual": [
+            "Warning Panel"
+          ]
+        },
+        {
+          "check": "clean_prop_name:Warning Panel",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Warning Panel"
+        },
+        {
+          "check": "primary_subject",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Lena",
+          "actual": "Lena"
+        },
+        {
+          "check": "primary_interaction",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "STUDY",
+          "actual": "STUDY"
+        },
+        {
+          "check": "required_content_signal:MARKING",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "MARKING",
+          "actual": [
+            "MARKING"
+          ]
+        },
+        {
+          "check": "text_sensitive",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": true,
+          "actual": true
+        }
+      ]
+    },
+    {
+      "case_id": "C_ACTION_MARKING",
+      "status": "PASSED",
+      "failed_count": 0,
+      "checks": [
+        {
+          "check": "pipeline_status",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "WAITING_HUMAN_APPROVAL",
+          "actual": "WAITING_HUMAN_APPROVAL"
+        },
+        {
+          "check": "characters_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "Nadia"
+          ],
+          "actual": [
+            "Nadia"
+          ]
+        },
+        {
+          "check": "location_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Abandoned Warehouse",
+          "actual": "Abandoned Warehouse"
+        },
+        {
+          "check": "prop_contains_container",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "container",
+          "actual": [
+            "Metal Container"
+          ]
+        },
+        {
+          "check": "clean_prop_name:Metal Container",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Metal Container"
+        },
+        {
+          "check": "primary_subject",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Nadia",
+          "actual": "Nadia"
+        },
+        {
+          "check": "content_modalities",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "MARKING"
+          ],
+          "actual": [
+            "MARKING"
+          ]
+        },
+        {
+          "check": "text_sensitive",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": true,
+          "actual": true
+        }
+      ]
+    },
+    {
+      "case_id": "D_ORDINARY_PROP",
+      "status": "PASSED",
+      "failed_count": 0,
+      "checks": [
+        {
+          "check": "pipeline_status",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "WAITING_HUMAN_APPROVAL",
+          "actual": "WAITING_HUMAN_APPROVAL"
+        },
+        {
+          "check": "characters_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "Theo"
+          ],
+          "actual": [
+            "Theo"
+          ]
+        },
+        {
+          "check": "location_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Small Kitchen",
+          "actual": "Small Kitchen"
+        },
+        {
+          "check": "prop_contains_mug",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "mug",
+          "actual": [
+            "Plain Ceramic Mug"
+          ]
+        },
+        {
+          "check": "clean_prop_name:Plain Ceramic Mug",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Plain Ceramic Mug"
+        },
+        {
+          "check": "primary_subject",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Theo",
+          "actual": "Theo"
+        },
+        {
+          "check": "content_modalities",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [],
+          "actual": []
+        },
+        {
+          "check": "text_sensitive",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "check": "ordinary_prop_no_image_content_rules",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "check": "ordinary_prop_no_video_content_rules",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "check": "ordinary_prop_no_negative_semantic_leakage",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "case_id": "E_MULTI_ENTITY",
+      "status": "PASSED",
+      "failed_count": 0,
+      "checks": [
+        {
+          "check": "pipeline_status",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "WAITING_HUMAN_APPROVAL",
+          "actual": "WAITING_HUMAN_APPROVAL"
+        },
+        {
+          "check": "characters_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "Arin",
+            "Sora"
+          ],
+          "actual": [
+            "Arin",
+            "Sora"
+          ]
+        },
+        {
+          "check": "location_resolved",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Explorer Cabin",
+          "actual": "Explorer Cabin"
+        },
+        {
+          "check": "prop_concept_map",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "map",
+          "actual": [
+            "Old Map",
+            "Plain Metal Compass"
+          ]
+        },
+        {
+          "check": "prop_concept_compass",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "compass",
+          "actual": [
+            "Old Map",
+            "Plain Metal Compass"
+          ]
+        },
+        {
+          "check": "clean_prop_name:Old Map",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Old Map"
+        },
+        {
+          "check": "clean_prop_name:Plain Metal Compass",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Prop name should end on the object phrase.",
+          "actual": "Plain Metal Compass"
+        },
+        {
+          "check": "primary_subject",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "Arin",
+          "actual": "Arin"
+        },
+        {
+          "check": "primary_interaction",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "STUDY",
+          "actual": "STUDY"
+        },
+        {
+          "check": "supporting_role:Sora",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": "SUPPORTING_PRESENCE",
+          "actual": "SUPPORTING_PRESENCE"
+        },
+        {
+          "check": "supporting_interaction:Sora",
+          "status": "PASSED",
+          "severity": "NONE",
+          "expected": [
+            "STAND_BESIDE",
+            "WATCH"
+          ],
+          "actual": "STAND_BESIDE"
+        }
+      ]
+    }
+  ]
+}

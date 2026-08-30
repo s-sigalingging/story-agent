@@ -1,0 +1,21 @@
+{
+  "episode_id": "EP_TEST_10D_B",
+  "title": "Warning Seven",
+  "target_duration_seconds": 15,
+  "style": {
+    "tone": "Tense science fiction",
+    "visual_style": "Cinematic realistic science fiction"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 15,
+      "visual_description": "Engineer Lena studies a warning panel inside the reactor control room. The panel displays warning code RX-7 and a triangular hazard symbol. Lena realizes the reactor is unstable.",
+      "characters": [
+        "Lena"
+      ],
+      "location": "Reactor Control Room",
+      "dialogue": "That code should not be active."
+    }
+  ]
+}

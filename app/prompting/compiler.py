@@ -332,6 +332,7 @@ class PromptCompiler:
             self._build_prop_context(
                 shot=shot,
                 scene_state=scene_state,
+                analysis=analysis,
             )
         )
 
@@ -682,9 +683,18 @@ class PromptCompiler:
         scene_state: Optional[
             SceneState
         ],
+        analysis: Optional[
+            SceneAnalysis
+        ],
     ) -> List[
         PromptPropPerformance
     ]:
+        """
+        Build shot-level prop context from resolved scene state and
+        canonical prop-content semantics.
+
+        The compiler never infers content type from a prop name.
+        """
 
         actions = {
             item.get(
@@ -701,6 +711,17 @@ class PromptCompiler:
                 "entity_id"
             )
         }
+
+        content_map = {}
+
+        if analysis:
+
+            content_map = {
+                item.entity_id: item
+                for item in (
+                    analysis.prop_content
+                )
+            }
 
         result = []
 
@@ -725,6 +746,12 @@ class PromptCompiler:
                 )
             )
 
+            content = (
+                content_map.get(
+                    entity_id
+                )
+            )
+
             result.append(
                 PromptPropPerformance(
                     entity_id=(
@@ -738,6 +765,29 @@ class PromptCompiler:
                             "action",
                             ""
                         )
+                    ),
+                    content_modalities=(
+                        list(
+                            content
+                            .content_modalities
+                        )
+                        if content
+                        else []
+                    ),
+                    text_sensitive=(
+                        content.text_sensitive
+                        if content
+                        else False
+                    ),
+                    readability_required=(
+                        content.readability_required
+                        if content
+                        else False
+                    ),
+                    visual_detail_sensitive=(
+                        content.visual_detail_sensitive
+                        if content
+                        else False
                     ),
                 )
             )

@@ -72,6 +72,17 @@ class VideoPromptBuilder:
                 prop_section
             )
 
+        prop_content_section = (
+            self._build_prop_content_preservation_section(
+                context
+            )
+        )
+
+        if prop_content_section:
+            sections.append(
+                prop_content_section
+            )
+
         continuity_section = (
             self._build_continuity_section(
                 context
@@ -356,6 +367,123 @@ class VideoPromptBuilder:
         return (
             f"{name} — "
             f"{humanized_action}"
+        )
+
+    # ================================================================
+    # PROP CONTENT PRESERVATION
+    # ================================================================
+
+    def _build_prop_content_preservation_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+        """
+        Preserve structured content carried by visible props during
+        animation.
+
+        This method relies only on upstream semantic fields. It does not
+        infer content type from prop names or story-specific keywords.
+        """
+
+        descriptions = []
+
+        for prop in (
+            context.props
+        ):
+
+            description = (
+                self._describe_prop_content_preservation(
+                    prop
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Prop content preservation: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_prop_content_preservation(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        modalities = {
+            item.strip().upper()
+            for item in (
+                prop.content_modalities
+            )
+            if item.strip()
+        }
+
+        has_semantics = (
+            bool(modalities)
+            or prop.text_sensitive
+            or prop.readability_required
+            or prop.visual_detail_sensitive
+        )
+
+        if not has_semantics:
+            return ""
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        requirements = []
+
+        if (
+            "TEXT" in modalities
+            or prop.text_sensitive
+        ):
+            requirements.append(
+                "preserve the approved textual content and typography "
+                "without rewriting, drifting, or morphing"
+            )
+
+        if "MARKING" in modalities:
+            requirements.append(
+                "preserve approved markings, symbols, codes, and "
+                "inscriptions without alteration"
+            )
+
+        if "IMAGE" in modalities:
+            requirements.append(
+                "preserve approved image-bearing content and its "
+                "internal visual relationships without reinterpretation"
+            )
+
+        if prop.readability_required:
+            requirements.append(
+                "keep story-relevant readable content legible and "
+                "stable across all frames"
+            )
+
+        if prop.visual_detail_sensitive:
+            requirements.append(
+                "preserve fine visual details consistently throughout "
+                "the shot"
+            )
+
+        if not requirements:
+            return ""
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                requirements
+            )
         )
 
     # ================================================================

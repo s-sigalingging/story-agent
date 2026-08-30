@@ -85,6 +85,17 @@ class ImagePromptBuilder:
                 performance_section
             )
 
+        prop_content_section = (
+            self._build_prop_content_section(
+                context
+            )
+        )
+
+        if prop_content_section:
+            sections.append(
+                prop_content_section
+            )
+
         camera_section = (
             self._build_camera_section(
                 context
@@ -467,6 +478,121 @@ class ImagePromptBuilder:
         return (
             f"{name} — "
             f"{self._humanize(prop.action)}"
+        )
+
+    # ================================================================
+    # PROP CONTENT SEMANTICS
+    # ================================================================
+
+    def _build_prop_content_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+        """
+        Build prompt guidance from structured prop-content semantics.
+
+        No inference is performed from prop names. The builder only
+        responds to semantic fields supplied by upstream analysis.
+        """
+
+        descriptions = []
+
+        for prop in context.props:
+
+            description = (
+                self._describe_prop_content(
+                    prop
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Prop content requirements: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_prop_content(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        modalities = {
+            item.strip().upper()
+            for item in (
+                prop.content_modalities
+            )
+            if item.strip()
+        }
+
+        if not (
+            modalities
+            or prop.text_sensitive
+            or prop.readability_required
+            or prop.visual_detail_sensitive
+        ):
+            return ""
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        requirements = []
+
+        if "TEXT" in modalities:
+            requirements.append(
+                "preserve established textual content and typography consistently"
+            )
+
+        if "MARKING" in modalities:
+            requirements.append(
+                "preserve established markings, symbols, codes, and inscriptions consistently"
+            )
+
+        if "IMAGE" in modalities:
+            requirements.append(
+                "preserve established image-bearing content and internal visual relationships"
+            )
+
+        if prop.readability_required:
+            requirements.append(
+                "keep story-relevant readable content legible and visually coherent"
+            )
+
+        if prop.text_sensitive:
+            requirements.append(
+                "do not invent unrelated text, letters, numbers, symbols, or markings"
+            )
+
+        if prop.visual_detail_sensitive:
+            requirements.append(
+                "preserve fine visual details without simplification or redesign"
+            )
+
+        requirements = (
+            self._deduplicate(
+                requirements
+            )
+        )
+
+        if not requirements:
+            return ""
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                requirements
+            )
         )
 
     # ================================================================

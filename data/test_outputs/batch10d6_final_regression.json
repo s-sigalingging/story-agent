@@ -1,0 +1,117 @@
+{
+  "batch": "10D.6",
+  "status": "PASSED",
+  "suite_count": 4,
+  "passed_suites": 4,
+  "failed_suites": 0,
+  "suites": [
+    {
+      "name": "PROP_REGRESSION_MATRIX",
+      "status": "PASSED",
+      "return_code": 0,
+      "result_file": "data/test_outputs/batch10d4e_prop_regression_matrix.json",
+      "expected": {
+        "status": "PASSED",
+        "total_tests": 18,
+        "passed": 18,
+        "failed": 0
+      },
+      "actual": {
+        "status": "PASSED",
+        "total_tests": 18,
+        "passed": 18,
+        "failed": 0
+      },
+      "errors": []
+    },
+    {
+      "name": "CHARACTER_INTERACTION_MATRIX",
+      "status": "PASSED",
+      "return_code": 0,
+      "result_file": "data/test_outputs/batch10d5c_interaction_selection_matrix.json",
+      "expected": {
+        "status": "PASSED",
+        "total_tests": 12,
+        "passed": 12,
+        "failed": 0
+      },
+      "actual": {
+        "status": "PASSED",
+        "total_tests": 12,
+        "passed": 12,
+        "failed": 0
+      },
+      "errors": []
+    },
+    {
+      "name": "GENERALIZATION_HARNESS",
+      "status": "PASSED",
+      "return_code": 0,
+      "result_file": "data/test_outputs/batch10d1/summary.json",
+      "expected": {
+        "status": "PASSED",
+        "total_cases": 5,
+        "passed": 5,
+        "failed": 0
+      },
+      "actual": {
+        "status": "PASSED",
+        "total_cases": 5,
+        "passed": 5,
+        "failed": 0
+      },
+      "errors": []
+    },
+    {
+      "name": "SEMANTIC_GENERALIZATION_AUDIT",
+      "status": "PASSED",
+      "return_code": 0,
+      "result_file": "data/test_outputs/batch10d2_semantic_audit.json",
+      "expected": {
+        "status": "PASSED",
+        "total_cases": 5,
+        "passed_cases": 5,
+        "failed_cases": 0,
+        "failed_checks": 0
+      },
+      "actual": {
+        "status": "PASSED",
+        "total_cases": 5,
+        "passed_cases": 5,
+        "failed_cases": 0,
+        "failed_checks": 0
+      },
+      "errors": []
+    }
+  ],
+  "hardcode_audit": {
+    "status": "PASSED",
+    "match_mode": "EXACT_TERM_WITH_IDENTIFIER_BOUNDARIES",
+    "terms_checked": [
+      "Julian",
+      "Ren",
+      "Sterling",
+      "Sam Bell",
+      "Samuel Bell",
+      "Oakhaven",
+      "EP001",
+      "Mira",
+      "Lena",
+      "Nadia",
+      "Theo",
+      "Arin",
+      "Sora",
+      "Mysterious Document",
+      "Old Brass Key",
+      "Metal Compass",
+      "Old Map",
+      "Metal Container",
+      "Ceramic Mug",
+      "Warning Panel",
+      "PROP_MYSTERIOUS_DOCUMENT",
+      "CHAR_JULIAN"
+    ],
+    "finding_count": 0,
+    "findings": []
+  }
+}

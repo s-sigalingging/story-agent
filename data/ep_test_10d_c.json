@@ -1,0 +1,21 @@
+{
+  "episode_id": "EP_TEST_10D_C",
+  "title": "The Marked Container",
+  "target_duration_seconds": 12,
+  "style": {
+    "tone": "Tense action thriller",
+    "visual_style": "Cinematic action animation"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 12,
+      "visual_description": "Nadia searches an abandoned warehouse and discovers a metal container marked with a distinctive red serpent symbol. She examines the marking cautiously.",
+      "characters": [
+        "Nadia"
+      ],
+      "location": "Abandoned Warehouse",
+      "dialogue": ""
+    }
+  ]
+}

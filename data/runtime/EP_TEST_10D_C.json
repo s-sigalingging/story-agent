@@ -1,0 +1,1231 @@
+{
+  "episode_id": "EP_TEST_10D_C",
+  "title": "The Marked Container",
+  "status": "WAITING_HUMAN_APPROVAL",
+  "stages": [
+    {
+      "stage": "STORY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "issues": [],
+        "warnings": [
+          "Scene 1 has no narrative purpose."
+        ],
+        "analysis": {
+          "scene_count": 1,
+          "planned_duration": 12,
+          "target_duration": 12,
+          "duration_difference": 0
+        }
+      }
+    },
+    {
+      "stage": "STORY_STRUCTURE",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "overall_arc": "DISCOVERY",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "dramatic_role": "UNCOVER_INFORMATION",
+            "purpose": "Advance the story through the events depicted in the scene.",
+            "information_revealed": [],
+            "open_questions": [],
+            "tension_level": 3
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PROP_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "explicit_props": [],
+            "inferred_props": [
+              {
+                "name": "Metal Container",
+                "source": "visual_description:discovers",
+                "confidence": 0.98,
+                "visually_important": true
+              }
+            ],
+            "resolved_props": [
+              "Metal Container"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "ENTITY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "character_ids": [
+              "CHAR_NADIA"
+            ],
+            "location_id": "LOC_ABANDONED_WAREHOUSE",
+            "prop_ids": [
+              "PROP_METAL_CONTAINER"
+            ]
+          }
+        ],
+        "registry": {
+          "characters": {
+            "CHAR_NADIA": {
+              "entity_id": "CHAR_NADIA",
+              "name": "Nadia",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          },
+          "locations": {
+            "LOC_ABANDONED_WAREHOUSE": {
+              "entity_id": "LOC_ABANDONED_WAREHOUSE",
+              "name": "Abandoned Warehouse",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          },
+          "props": {
+            "PROP_METAL_CONTAINER": {
+              "entity_id": "PROP_METAL_CONTAINER",
+              "name": "Metal Container",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "CHARACTER_ROLE_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "characters": [
+              {
+                "entity_id": "CHAR_NADIA",
+                "name": "Nadia",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "EXAMINE",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Nadia searches an abandoned warehouse and discovers a metal container marked with a distinctive red serpent symbol. She examines the marking cautiously."
+              }
+            ],
+            "primary_subject_id": "CHAR_NADIA",
+            "primary_subject_name": "Nadia"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PROP_CONTENT_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "props": [
+              {
+                "entity_id": "PROP_METAL_CONTAINER",
+                "name": "Metal Container",
+                "content_modalities": [
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": false,
+                "visual_detail_sensitive": true,
+                "confidence": 0.7,
+                "evidence": [
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "SCENE_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "visual_intent": "Nadia searches an abandoned warehouse and discovers a metal container marked with a distinctive red serpent symbol. She examines the marking cautiously.",
+            "emotional_state": "NEUTRAL",
+            "character_actions": [
+              "Nadia searches an abandoned warehouse and discovers a metal container marked with a distinctive red serpent symbol. She examines the marking cautiously."
+            ],
+            "characters": [
+              "Nadia"
+            ],
+            "location": "Abandoned Warehouse",
+            "props": [
+              "Metal Container"
+            ],
+            "primary_subject": "Nadia",
+            "character_ids": [
+              "CHAR_NADIA"
+            ],
+            "location_id": "LOC_ABANDONED_WAREHOUSE",
+            "prop_ids": [
+              "PROP_METAL_CONTAINER"
+            ],
+            "primary_subject_id": "CHAR_NADIA",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_NADIA",
+                "name": "Nadia",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "EXAMINE",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Nadia searches an abandoned warehouse and discovers a metal container marked with a distinctive red serpent symbol. She examines the marking cautiously."
+              }
+            ],
+            "prop_content": [
+              {
+                "entity_id": "PROP_METAL_CONTAINER",
+                "name": "Metal Container",
+                "content_modalities": [
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": false,
+                "visual_detail_sensitive": true,
+                "confidence": 0.7,
+                "evidence": [
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ],
+            "environment": {
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL"
+            },
+            "camera": {
+              "framing": "UNSPECIFIED",
+              "movement": "STATIC",
+              "focus": "Nadia"
+            },
+            "visual_constraints": [
+              "Preserve established character identity throughout the scene.",
+              "Preserve the established location and environment throughout the scene.",
+              "Preserve established prop identity and appearance throughout the scene."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_INTENT",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "primary_subject_id": "CHAR_NADIA",
+            "supporting_subject_ids": [],
+            "important_prop_ids": [
+              "PROP_METAL_CONTAINER"
+            ],
+            "dialogue_present": false,
+            "visual_priority": "CHARACTER_AND_PROP",
+            "pacing": "CONTROLLED",
+            "beats": [
+              {
+                "beat_type": "INVESTIGATION",
+                "purpose": "Show the subject examining or encountering new information.",
+                "primary_subject_id": "CHAR_NADIA",
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "emphasis": "NORMAL"
+              },
+              {
+                "beat_type": "PROP_REVEAL",
+                "purpose": "Emphasize the important prop or information.",
+                "primary_subject_id": null,
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "emphasis": "HIGH"
+              },
+              {
+                "beat_type": "REACTION",
+                "purpose": "Show the dramatic response to the discovery.",
+                "primary_subject_id": "CHAR_NADIA",
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "emphasis": "HIGH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "CONTINUITY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_C",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "inherited_from_previous_scene": false,
+            "character_states": [
+              {
+                "entity_id": "CHAR_NADIA",
+                "name": "Nadia",
+                "appearance": "UNKNOWN",
+                "wardrobe": "UNKNOWN",
+                "physical_condition": "UNKNOWN",
+                "emotional_state": "NEUTRAL",
+                "position": "UNKNOWN",
+                "notes": []
+              }
+            ],
+            "location_state": {
+              "entity_id": "LOC_ABANDONED_WAREHOUSE",
+              "name": "Abandoned Warehouse",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": []
+            },
+            "prop_states": [
+              {
+                "entity_id": "PROP_METAL_CONTAINER",
+                "name": "Metal Container",
+                "appearance": "UNKNOWN",
+                "condition": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": []
+              }
+            ],
+            "continuity_notes": []
+          }
+        ],
+        "final_character_states": {
+          "CHAR_NADIA": {
+            "entity_id": "CHAR_NADIA",
+            "name": "Nadia",
+            "appearance": "UNKNOWN",
+            "wardrobe": "UNKNOWN",
+            "physical_condition": "UNKNOWN",
+            "emotional_state": "NEUTRAL",
+            "position": "UNKNOWN",
+            "notes": []
+          }
+        },
+        "final_location_states": {
+          "LOC_ABANDONED_WAREHOUSE": {
+            "entity_id": "LOC_ABANDONED_WAREHOUSE",
+            "name": "Abandoned Warehouse",
+            "time_of_day": "UNKNOWN",
+            "weather": "UNKNOWN",
+            "lighting": "UNKNOWN",
+            "atmosphere": "NEUTRAL",
+            "notes": []
+          }
+        },
+        "final_prop_states": {
+          "PROP_METAL_CONTAINER": {
+            "entity_id": "PROP_METAL_CONTAINER",
+            "name": "Metal Container",
+            "appearance": "UNKNOWN",
+            "condition": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": []
+          }
+        }
+      }
+    },
+    {
+      "stage": "STATE_MANAGEMENT",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_C",
+        "title": "The Marked Container",
+        "current_scene": 1,
+        "characters": {
+          "CHAR_NADIA": {
+            "entity_id": "CHAR_NADIA",
+            "name": "Nadia",
+            "appearance": "UNKNOWN",
+            "wardrobe": "UNKNOWN",
+            "emotional_state": "NEUTRAL",
+            "physical_condition": "UNKNOWN",
+            "position": "UNKNOWN",
+            "notes": [],
+            "reference_required": true,
+            "master_character_required": true
+          }
+        },
+        "locations": {
+          "LOC_ABANDONED_WAREHOUSE": {
+            "entity_id": "LOC_ABANDONED_WAREHOUSE",
+            "name": "Abandoned Warehouse",
+            "time_of_day": "UNKNOWN",
+            "weather": "UNKNOWN",
+            "lighting": "UNKNOWN",
+            "atmosphere": "NEUTRAL",
+            "notes": [],
+            "reference_required": true
+          }
+        },
+        "props": {
+          "PROP_METAL_CONTAINER": {
+            "entity_id": "PROP_METAL_CONTAINER",
+            "name": "Metal Container",
+            "appearance": "UNKNOWN",
+            "state": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": [],
+            "reference_required": true
+          }
+        },
+        "scene_states": {
+          "1": {
+            "scene_number": 1,
+            "characters": {
+              "CHAR_NADIA": {
+                "entity_id": "CHAR_NADIA",
+                "name": "Nadia",
+                "appearance": "UNKNOWN",
+                "wardrobe": "UNKNOWN",
+                "emotional_state": "NEUTRAL",
+                "physical_condition": "UNKNOWN",
+                "position": "UNKNOWN",
+                "notes": [],
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_ABANDONED_WAREHOUSE",
+              "name": "Abandoned Warehouse",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            },
+            "props": {
+              "PROP_METAL_CONTAINER": {
+                "entity_id": "PROP_METAL_CONTAINER",
+                "name": "Metal Container",
+                "appearance": "UNKNOWN",
+                "state": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": [],
+                "reference_required": true
+              }
+            },
+            "active_characters": [
+              "CHAR_NADIA"
+            ],
+            "active_props": [
+              "PROP_METAL_CONTAINER"
+            ]
+          }
+        },
+        "inherited_world_state": false,
+        "source_episode_id": null,
+        "final_world_state": {
+          "version": 1,
+          "last_episode_id": "EP_TEST_10D_C",
+          "characters": {
+            "CHAR_NADIA": {
+              "entity_id": "CHAR_NADIA",
+              "name": "Nadia",
+              "appearance": "UNKNOWN",
+              "wardrobe": "UNKNOWN",
+              "emotional_state": "NEUTRAL",
+              "physical_condition": "UNKNOWN",
+              "position": "UNKNOWN",
+              "notes": [],
+              "reference_required": true,
+              "master_character_required": true
+            }
+          },
+          "locations": {
+            "LOC_ABANDONED_WAREHOUSE": {
+              "entity_id": "LOC_ABANDONED_WAREHOUSE",
+              "name": "Abandoned Warehouse",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            }
+          },
+          "props": {
+            "PROP_METAL_CONTAINER": {
+              "entity_id": "PROP_METAL_CONTAINER",
+              "name": "Metal Container",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [],
+              "reference_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "WORLD_STATE",
+      "status": "PASSED",
+      "details": {
+        "commit_status": "PENDING_APPROVAL",
+        "inherited_world_state": false,
+        "source_episode_id": null,
+        "candidate": {
+          "version": 1,
+          "last_episode_id": "EP_TEST_10D_C",
+          "characters": {
+            "CHAR_NADIA": {
+              "entity_id": "CHAR_NADIA",
+              "name": "Nadia",
+              "appearance": "UNKNOWN",
+              "wardrobe": "UNKNOWN",
+              "emotional_state": "NEUTRAL",
+              "physical_condition": "UNKNOWN",
+              "position": "UNKNOWN",
+              "notes": [],
+              "reference_required": true,
+              "master_character_required": true
+            }
+          },
+          "locations": {
+            "LOC_ABANDONED_WAREHOUSE": {
+              "entity_id": "LOC_ABANDONED_WAREHOUSE",
+              "name": "Abandoned Warehouse",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            }
+          },
+          "props": {
+            "PROP_METAL_CONTAINER": {
+              "entity_id": "PROP_METAL_CONTAINER",
+              "name": "Metal Container",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [],
+              "reference_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "PRODUCTION_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_C",
+        "title": "The Marked Container",
+        "target_duration_seconds": 12,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 12,
+            "location_id": "LOC_ABANDONED_WAREHOUSE",
+            "shot_count": 3,
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 2,
+                "purpose": "Show the subject examining or encountering new information.",
+                "characters": [
+                  "CHAR_NADIA"
+                ],
+                "props": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC_OR_SUBTLE_PUSH",
+                  "framing": "SUBJECT_AND_CONTEXT",
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_NADIA",
+                    "action": "EXAMINE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "purpose": "Show the dramatic response to the discovery.",
+                "characters": [
+                  "CHAR_NADIA"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "SUBJECT_FOCUSED",
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_NADIA",
+                    "action": "REACT_TO_DISCOVERY",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "CONTROLLED_REALIZATION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "ASSET_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_C",
+        "title": "The Marked Container",
+        "assets": [
+          {
+            "asset_id": "ASSET_CHAR_NADIA_MASTER",
+            "entity_id": "CHAR_NADIA",
+            "asset_type": "CHARACTER",
+            "name": "Nadia",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+            "entity_id": "LOC_ABANDONED_WAREHOUSE",
+            "asset_type": "LOCATION",
+            "name": "Abandoned Warehouse",
+            "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+            "entity_id": "PROP_METAL_CONTAINER",
+            "asset_type": "PROP",
+            "name": "Metal Container",
+            "purpose": "Master prop reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          }
+        ],
+        "scenes": [
+          {
+            "scene_number": 1,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                "entity_id": "CHAR_NADIA",
+                "asset_type": "CHARACTER",
+                "name": "Nadia",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                "asset_type": "LOCATION",
+                "name": "Abandoned Warehouse",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                "entity_id": "PROP_METAL_CONTAINER",
+                "asset_type": "PROP",
+                "name": "Metal Container",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT02",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT03",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_EXECUTION",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_C",
+        "title": "The Marked Container",
+        "target_duration_seconds": 12,
+        "total_duration_seconds": 12,
+        "scene_count": 1,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 12,
+            "location_id": "LOC_ABANDONED_WAREHOUSE",
+            "shot_count": 3,
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 2,
+                "purpose": "Show the subject examining or encountering new information.",
+                "characters": [
+                  "CHAR_NADIA"
+                ],
+                "props": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC_OR_SUBTLE_PUSH",
+                  "framing": "SUBJECT_AND_CONTEXT",
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_NADIA",
+                    "action": "EXAMINE",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_METAL_CONTAINER"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "purpose": "Show the dramatic response to the discovery.",
+                "characters": [
+                  "CHAR_NADIA"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "SUBJECT_FOCUSED",
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_NADIA",
+                    "action": "REACT_TO_DISCOVERY",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "CONTROLLED_REALIZATION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_PROMPTS",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_C",
+        "title": "The Marked Container",
+        "target_duration_seconds": 12,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "prompts": [
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 2,
+                "image_prompt": "Shot purpose: Show the subject examining or encountering new information. Location: Abandoned Warehouse. Environment: neutral. Characters visible: Nadia. Props visible: Metal Container. Character performance: Nadia — examine, gesture: controlled inspection, facial expression: focused expression. Prop behavior: Metal Container — maintain established state. Prop content requirements: Metal Container — preserve established markings, symbols, codes, and inscriptions consistently, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: medium; framing: subject and context; camera movement intent: static or subtle push; composition: Keep the primary subject visually clear while preserving relevant scene context. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Nadia (purpose: Master character reference, preserve master reference identity, required); Abandoned Warehouse (purpose: Master location reference, required); Metal Container (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 2 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static or subtle push; preserve framing: subject and context; preserve composition: Keep the primary subject visually clear while preserving relevant scene context. Character motion: Nadia — action: examine, gesture: controlled inspection, facial movement: focused expression. Prop motion: Metal Container remains visually stable and preserves its established state. Prop content preservation: Metal Container — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, preserve fine visual details consistently throughout the shot. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": true
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "image_prompt": "Shot purpose: Emphasize the important prop or information. Location: Abandoned Warehouse. Environment: neutral. Props visible: Metal Container. Prop behavior: Metal Container — present important prop. Prop content requirements: Metal Container — preserve established markings, symbols, codes, and inscriptions consistently, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: close up; framing: prop focused; camera movement intent: static; composition: Keep the important prop clearly readable while preserving enough surrounding context. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Abandoned Warehouse (purpose: Master location reference, required); Metal Container (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 5 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static; preserve framing: prop focused; preserve composition: Keep the important prop clearly readable while preserving enough surrounding context. Prop motion: Metal Container — present important prop. Prop content preservation: Metal Container — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, preserve fine visual details consistently throughout the shot. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, camera shake, camera spin, camera rotation, sudden zoom, rapid reframing, unwanted camera movement, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_METAL_CONTAINER_MASTER",
+                    "entity_id": "PROP_METAL_CONTAINER",
+                    "asset_type": "PROP",
+                    "name": "Metal Container",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_C-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 5,
+                "image_prompt": "Shot purpose: Show the dramatic response to the discovery. Location: Abandoned Warehouse. Environment: neutral. Characters visible: Nadia. Character performance: Nadia — react to discovery, gesture: minimal reaction, facial expression: controlled realization. Camera and composition: shot type: medium close; framing: subject focused; camera movement intent: subtle push in; composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Nadia (purpose: Master character reference, preserve master reference identity, required); Abandoned Warehouse (purpose: Master location reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 5 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: subtle push in; preserve framing: subject focused; preserve composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Character motion: Nadia — action: react to discovery, gesture: minimal reaction, facial movement: controlled realization. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_NADIA_MASTER",
+                    "entity_id": "CHAR_NADIA",
+                    "asset_type": "CHARACTER",
+                    "name": "Nadia",
+                    "purpose": "Master character reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": true
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_ABANDONED_WAREHOUSE_MASTER",
+                    "entity_id": "LOC_ABANDONED_WAREHOUSE",
+                    "asset_type": "LOCATION",
+                    "name": "Abandoned Warehouse",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              }
+            ]
+          }
+        ],
+        "total_shots": 3
+      }
+    }
+  ],
+  "world_id": "generalization-test-c_action_marking"
+}

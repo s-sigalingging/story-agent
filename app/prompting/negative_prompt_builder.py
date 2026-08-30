@@ -12,7 +12,8 @@ class NegativePromptBuilder:
     Negative constraints are only added when they are relevant
     to the current shot.
 
-    The builder contains no story-specific knowledge.
+    The builder consumes structured prompt semantics and contains
+    no story-specific knowledge.
     """
 
     # ================================================================
@@ -81,7 +82,7 @@ class NegativePromptBuilder:
         )
 
         # ============================================================
-        # TEXT / DOCUMENT-SPECIFIC
+        # STRUCTURED PROP-CONTENT SEMANTICS
         # ============================================================
 
         if self._shot_has_text_sensitive_content(
@@ -90,6 +91,22 @@ class NegativePromptBuilder:
 
             exclusions.extend(
                 self._text_exclusions()
+            )
+
+        if self._shot_has_marking_sensitive_content(
+            context
+        ):
+
+            exclusions.extend(
+                self._marking_exclusions()
+            )
+
+        if self._shot_has_image_sensitive_content(
+            context
+        ):
+
+            exclusions.extend(
+                self._image_content_exclusions()
             )
 
         # ============================================================
@@ -236,7 +253,6 @@ class NegativePromptBuilder:
             .upper()
         )
 
-        # STATIC means the camera should not invent movement.
         if movement == "STATIC":
 
             return [
@@ -248,8 +264,6 @@ class NegativePromptBuilder:
                 "unwanted camera movement",
             ]
 
-        # A moving camera is allowed to move, but should still avoid
-        # unstable or excessive motion.
         return [
             "random camera shake",
             "camera spin",
@@ -261,7 +275,7 @@ class NegativePromptBuilder:
         ]
 
     # ================================================================
-    # TEXT
+    # STRUCTURED CONTENT SEMANTICS
     # ================================================================
 
     def _shot_has_text_sensitive_content(
@@ -269,37 +283,82 @@ class NegativePromptBuilder:
         context: ShotPromptContext,
     ) -> bool:
         """
-        Detect whether the shot should protect readable text.
+        Return True when at least one visible prop explicitly carries
+        text-sensitive semantics.
 
-        This remains generic and relies on structured context instead
-        of story-specific keywords.
+        No inference is performed from prop names or metadata strings.
         """
 
-        metadata = {
-            key.lower(): value.lower()
-            for key, value
-            in context.metadata.items()
-        }
+        for prop in context.props:
 
-        if (
-            metadata.get(
-                "text_sensitive"
-            )
-            == "true"
-        ):
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
 
-            return True
+            if (
+                prop.text_sensitive
+                or
+                prop.readability_required
+                or
+                "TEXT" in modalities
+            ):
 
-        if (
-            metadata.get(
-                "contains_readable_text"
-            )
-            == "true"
-        ):
-
-            return True
+                return True
 
         return False
+
+    def _shot_has_marking_sensitive_content(
+        self,
+        context: ShotPromptContext,
+    ) -> bool:
+        """
+        Return True when at least one visible prop carries meaningful
+        markings, symbols, codes, inscriptions, or equivalent structured
+        marking semantics.
+        """
+
+        for prop in context.props:
+
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
+
+            if "MARKING" in modalities:
+
+                return True
+
+        return False
+
+    def _shot_has_image_sensitive_content(
+        self,
+        context: ShotPromptContext,
+    ) -> bool:
+        """
+        Return True when at least one visible prop carries structured
+        image-bearing content.
+        """
+
+        for prop in context.props:
+
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
+
+            if "IMAGE" in modalities:
+
+                return True
+
+        return False
+
+    # ================================================================
+    # TEXT
+    # ================================================================
 
     def _text_exclusions(
         self,
@@ -313,6 +372,43 @@ class NegativePromptBuilder:
             "random numbers",
             "text distortion",
             "text morphing",
+            "rewritten text",
+            "missing readable text",
+        ]
+
+    # ================================================================
+    # MARKINGS
+    # ================================================================
+
+    def _marking_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "changing markings",
+            "missing markings",
+            "altered symbols",
+            "random symbols",
+            "changed codes",
+            "changed inscriptions",
+            "marking distortion",
+            "marking morphing",
+        ]
+
+    # ================================================================
+    # IMAGE-BEARING PROP CONTENT
+    # ================================================================
+
+    def _image_content_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "image content distortion",
+            "internal image changes",
+            "image reinterpretation",
+            "image content morphing",
+            "missing image details",
         ]
 
     # ================================================================

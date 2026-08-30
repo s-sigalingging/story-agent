@@ -1,0 +1,1234 @@
+{
+  "episode_id": "EP_TEST_10D_B",
+  "title": "Warning Seven",
+  "status": "WAITING_HUMAN_APPROVAL",
+  "stages": [
+    {
+      "stage": "STORY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "issues": [],
+        "warnings": [
+          "Scene 1 has no narrative purpose."
+        ],
+        "analysis": {
+          "scene_count": 1,
+          "planned_duration": 15,
+          "target_duration": 15,
+          "duration_difference": 0
+        }
+      }
+    },
+    {
+      "stage": "STORY_STRUCTURE",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "overall_arc": "DISCOVERY",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "dramatic_role": "UNCOVER_INFORMATION",
+            "purpose": "Advance the story through the events depicted in the scene.",
+            "information_revealed": [],
+            "open_questions": [],
+            "tension_level": 2
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PROP_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "explicit_props": [],
+            "inferred_props": [
+              {
+                "name": "Warning Panel",
+                "source": "visual_description:studies",
+                "confidence": 0.98,
+                "visually_important": true
+              }
+            ],
+            "resolved_props": [
+              "Warning Panel"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "ENTITY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "character_ids": [
+              "CHAR_LENA"
+            ],
+            "location_id": "LOC_REACTOR_CONTROL_ROOM",
+            "prop_ids": [
+              "PROP_WARNING_PANEL"
+            ]
+          }
+        ],
+        "registry": {
+          "characters": {
+            "CHAR_LENA": {
+              "entity_id": "CHAR_LENA",
+              "name": "Lena",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          },
+          "locations": {
+            "LOC_REACTOR_CONTROL_ROOM": {
+              "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+              "name": "Reactor Control Room",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          },
+          "props": {
+            "PROP_WARNING_PANEL": {
+              "entity_id": "PROP_WARNING_PANEL",
+              "name": "Warning Panel",
+              "aliases": [],
+              "description": "",
+              "reference_path": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "CHARACTER_ROLE_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "characters": [
+              {
+                "entity_id": "CHAR_LENA",
+                "name": "Lena",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "STUDY",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Lena studies a warning panel inside the reactor control room."
+              }
+            ],
+            "primary_subject_id": "CHAR_LENA",
+            "primary_subject_name": "Lena"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PROP_CONTENT_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "props": [
+              {
+                "entity_id": "PROP_WARNING_PANEL",
+                "name": "Warning Panel",
+                "content_modalities": [
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": false,
+                "visual_detail_sensitive": true,
+                "confidence": 0.7,
+                "evidence": [
+                  "Scene context contains text-related information.",
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "SCENE_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "visual_intent": "Engineer Lena studies a warning panel inside the reactor control room. The panel displays warning code RX-7 and a triangular hazard symbol. Lena realizes the reactor is unstable.",
+            "emotional_state": "NEUTRAL",
+            "character_actions": [
+              "Engineer Lena studies a warning panel inside the reactor control room. The panel displays warning code RX-7 and a triangular hazard symbol. Lena realizes the reactor is unstable.",
+              "Characters perform the scene while delivering the supplied dialogue."
+            ],
+            "characters": [
+              "Lena"
+            ],
+            "location": "Reactor Control Room",
+            "props": [
+              "Warning Panel"
+            ],
+            "primary_subject": "Lena",
+            "character_ids": [
+              "CHAR_LENA"
+            ],
+            "location_id": "LOC_REACTOR_CONTROL_ROOM",
+            "prop_ids": [
+              "PROP_WARNING_PANEL"
+            ],
+            "primary_subject_id": "CHAR_LENA",
+            "character_roles": [
+              {
+                "entity_id": "CHAR_LENA",
+                "name": "Lena",
+                "role": "ACTIVE_SUBJECT",
+                "interaction": "STUDY",
+                "confidence": 0.95,
+                "primary_candidate": true,
+                "evidence": "Lena studies a warning panel inside the reactor control room."
+              }
+            ],
+            "prop_content": [
+              {
+                "entity_id": "PROP_WARNING_PANEL",
+                "name": "Warning Panel",
+                "content_modalities": [
+                  "MARKING"
+                ],
+                "text_sensitive": true,
+                "readability_required": false,
+                "visual_detail_sensitive": true,
+                "confidence": 0.7,
+                "evidence": [
+                  "Scene context contains text-related information.",
+                  "Scene context references meaningful markings."
+                ]
+              }
+            ],
+            "environment": {
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL"
+            },
+            "camera": {
+              "framing": "UNSPECIFIED",
+              "movement": "STATIC",
+              "focus": "Lena"
+            },
+            "visual_constraints": [
+              "Preserve established character identity throughout the scene.",
+              "Preserve the established location and environment throughout the scene.",
+              "Preserve established prop identity and appearance throughout the scene."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_INTENT",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "narrative_function": "DISCOVERY",
+            "primary_subject_id": "CHAR_LENA",
+            "supporting_subject_ids": [],
+            "important_prop_ids": [
+              "PROP_WARNING_PANEL"
+            ],
+            "dialogue_present": true,
+            "visual_priority": "CHARACTER_AND_PROP",
+            "pacing": "CONTROLLED",
+            "beats": [
+              {
+                "beat_type": "INVESTIGATION",
+                "purpose": "Show the subject examining or encountering new information.",
+                "primary_subject_id": "CHAR_LENA",
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "emphasis": "NORMAL"
+              },
+              {
+                "beat_type": "PROP_REVEAL",
+                "purpose": "Emphasize the important prop or information.",
+                "primary_subject_id": null,
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "emphasis": "HIGH"
+              },
+              {
+                "beat_type": "REACTION",
+                "purpose": "Show the dramatic response to the discovery.",
+                "primary_subject_id": "CHAR_LENA",
+                "supporting_subject_ids": [],
+                "important_prop_ids": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "emphasis": "HIGH"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "CONTINUITY_ANALYSIS",
+      "status": "PASSED",
+      "details": {
+        "status": "PASSED",
+        "episode_id": "EP_TEST_10D_B",
+        "scenes": [
+          {
+            "scene_number": 1,
+            "inherited_from_previous_scene": false,
+            "character_states": [
+              {
+                "entity_id": "CHAR_LENA",
+                "name": "Lena",
+                "appearance": "UNKNOWN",
+                "wardrobe": "UNKNOWN",
+                "physical_condition": "UNKNOWN",
+                "emotional_state": "NEUTRAL",
+                "position": "UNKNOWN",
+                "notes": []
+              }
+            ],
+            "location_state": {
+              "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+              "name": "Reactor Control Room",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": []
+            },
+            "prop_states": [
+              {
+                "entity_id": "PROP_WARNING_PANEL",
+                "name": "Warning Panel",
+                "appearance": "UNKNOWN",
+                "condition": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": []
+              }
+            ],
+            "continuity_notes": []
+          }
+        ],
+        "final_character_states": {
+          "CHAR_LENA": {
+            "entity_id": "CHAR_LENA",
+            "name": "Lena",
+            "appearance": "UNKNOWN",
+            "wardrobe": "UNKNOWN",
+            "physical_condition": "UNKNOWN",
+            "emotional_state": "NEUTRAL",
+            "position": "UNKNOWN",
+            "notes": []
+          }
+        },
+        "final_location_states": {
+          "LOC_REACTOR_CONTROL_ROOM": {
+            "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+            "name": "Reactor Control Room",
+            "time_of_day": "UNKNOWN",
+            "weather": "UNKNOWN",
+            "lighting": "UNKNOWN",
+            "atmosphere": "NEUTRAL",
+            "notes": []
+          }
+        },
+        "final_prop_states": {
+          "PROP_WARNING_PANEL": {
+            "entity_id": "PROP_WARNING_PANEL",
+            "name": "Warning Panel",
+            "appearance": "UNKNOWN",
+            "condition": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": []
+          }
+        }
+      }
+    },
+    {
+      "stage": "STATE_MANAGEMENT",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_B",
+        "title": "Warning Seven",
+        "current_scene": 1,
+        "characters": {
+          "CHAR_LENA": {
+            "entity_id": "CHAR_LENA",
+            "name": "Lena",
+            "appearance": "UNKNOWN",
+            "wardrobe": "UNKNOWN",
+            "emotional_state": "NEUTRAL",
+            "physical_condition": "UNKNOWN",
+            "position": "UNKNOWN",
+            "notes": [],
+            "reference_required": true,
+            "master_character_required": true
+          }
+        },
+        "locations": {
+          "LOC_REACTOR_CONTROL_ROOM": {
+            "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+            "name": "Reactor Control Room",
+            "time_of_day": "UNKNOWN",
+            "weather": "UNKNOWN",
+            "lighting": "UNKNOWN",
+            "atmosphere": "NEUTRAL",
+            "notes": [],
+            "reference_required": true
+          }
+        },
+        "props": {
+          "PROP_WARNING_PANEL": {
+            "entity_id": "PROP_WARNING_PANEL",
+            "name": "Warning Panel",
+            "appearance": "UNKNOWN",
+            "state": "UNKNOWN",
+            "position": "UNKNOWN",
+            "holder_id": null,
+            "notes": [],
+            "reference_required": true
+          }
+        },
+        "scene_states": {
+          "1": {
+            "scene_number": 1,
+            "characters": {
+              "CHAR_LENA": {
+                "entity_id": "CHAR_LENA",
+                "name": "Lena",
+                "appearance": "UNKNOWN",
+                "wardrobe": "UNKNOWN",
+                "emotional_state": "NEUTRAL",
+                "physical_condition": "UNKNOWN",
+                "position": "UNKNOWN",
+                "notes": [],
+                "reference_required": true,
+                "master_character_required": true
+              }
+            },
+            "location": {
+              "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+              "name": "Reactor Control Room",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            },
+            "props": {
+              "PROP_WARNING_PANEL": {
+                "entity_id": "PROP_WARNING_PANEL",
+                "name": "Warning Panel",
+                "appearance": "UNKNOWN",
+                "state": "UNKNOWN",
+                "position": "UNKNOWN",
+                "holder_id": null,
+                "notes": [],
+                "reference_required": true
+              }
+            },
+            "active_characters": [
+              "CHAR_LENA"
+            ],
+            "active_props": [
+              "PROP_WARNING_PANEL"
+            ]
+          }
+        },
+        "inherited_world_state": false,
+        "source_episode_id": null,
+        "final_world_state": {
+          "version": 1,
+          "last_episode_id": "EP_TEST_10D_B",
+          "characters": {
+            "CHAR_LENA": {
+              "entity_id": "CHAR_LENA",
+              "name": "Lena",
+              "appearance": "UNKNOWN",
+              "wardrobe": "UNKNOWN",
+              "emotional_state": "NEUTRAL",
+              "physical_condition": "UNKNOWN",
+              "position": "UNKNOWN",
+              "notes": [],
+              "reference_required": true,
+              "master_character_required": true
+            }
+          },
+          "locations": {
+            "LOC_REACTOR_CONTROL_ROOM": {
+              "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+              "name": "Reactor Control Room",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            }
+          },
+          "props": {
+            "PROP_WARNING_PANEL": {
+              "entity_id": "PROP_WARNING_PANEL",
+              "name": "Warning Panel",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [],
+              "reference_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "WORLD_STATE",
+      "status": "PASSED",
+      "details": {
+        "commit_status": "PENDING_APPROVAL",
+        "inherited_world_state": false,
+        "source_episode_id": null,
+        "candidate": {
+          "version": 1,
+          "last_episode_id": "EP_TEST_10D_B",
+          "characters": {
+            "CHAR_LENA": {
+              "entity_id": "CHAR_LENA",
+              "name": "Lena",
+              "appearance": "UNKNOWN",
+              "wardrobe": "UNKNOWN",
+              "emotional_state": "NEUTRAL",
+              "physical_condition": "UNKNOWN",
+              "position": "UNKNOWN",
+              "notes": [],
+              "reference_required": true,
+              "master_character_required": true
+            }
+          },
+          "locations": {
+            "LOC_REACTOR_CONTROL_ROOM": {
+              "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+              "name": "Reactor Control Room",
+              "time_of_day": "UNKNOWN",
+              "weather": "UNKNOWN",
+              "lighting": "UNKNOWN",
+              "atmosphere": "NEUTRAL",
+              "notes": [],
+              "reference_required": true
+            }
+          },
+          "props": {
+            "PROP_WARNING_PANEL": {
+              "entity_id": "PROP_WARNING_PANEL",
+              "name": "Warning Panel",
+              "appearance": "UNKNOWN",
+              "state": "UNKNOWN",
+              "position": "UNKNOWN",
+              "holder_id": null,
+              "notes": [],
+              "reference_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "stage": "PRODUCTION_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_B",
+        "title": "Warning Seven",
+        "target_duration_seconds": 15,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 15,
+            "location_id": "LOC_REACTOR_CONTROL_ROOM",
+            "shot_count": 3,
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 3,
+                "purpose": "Show the subject examining or encountering new information.",
+                "characters": [
+                  "CHAR_LENA"
+                ],
+                "props": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC_OR_SUBTLE_PUSH",
+                  "framing": "SUBJECT_AND_CONTEXT",
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_LENA",
+                    "action": "STUDY",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": "That code should not be active."
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "purpose": "Show the dramatic response to the discovery.",
+                "characters": [
+                  "CHAR_LENA"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "SUBJECT_FOCUSED",
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_LENA",
+                    "action": "REACT_TO_DISCOVERY",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "CONTROLLED_REALIZATION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "ASSET_PLANNING",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_B",
+        "title": "Warning Seven",
+        "assets": [
+          {
+            "asset_id": "ASSET_CHAR_LENA_MASTER",
+            "entity_id": "CHAR_LENA",
+            "asset_type": "CHARACTER",
+            "name": "Lena",
+            "purpose": "Master character reference",
+            "required": true,
+            "master_reference_required": true,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+            "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+            "asset_type": "LOCATION",
+            "name": "Reactor Control Room",
+            "purpose": "Master location reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          },
+          {
+            "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+            "entity_id": "PROP_WARNING_PANEL",
+            "asset_type": "PROP",
+            "name": "Warning Panel",
+            "purpose": "Master prop reference",
+            "required": true,
+            "master_reference_required": false,
+            "reference_path": null
+          }
+        ],
+        "scenes": [
+          {
+            "scene_number": 1,
+            "assets": [
+              {
+                "asset_id": "ASSET_CHAR_LENA_MASTER",
+                "entity_id": "CHAR_LENA",
+                "asset_type": "CHARACTER",
+                "name": "Lena",
+                "purpose": "Master character reference",
+                "required": true,
+                "master_reference_required": true,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                "asset_type": "LOCATION",
+                "name": "Reactor Control Room",
+                "purpose": "Master location reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              },
+              {
+                "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                "entity_id": "PROP_WARNING_PANEL",
+                "asset_type": "PROP",
+                "name": "Warning Panel",
+                "purpose": "Master prop reference",
+                "required": true,
+                "master_reference_required": false,
+                "reference_path": null
+              }
+            ],
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT01",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT02",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT03",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_EXECUTION",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_B",
+        "title": "Warning Seven",
+        "target_duration_seconds": 15,
+        "total_duration_seconds": 15,
+        "scene_count": 1,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "duration_seconds": 15,
+            "location_id": "LOC_REACTOR_CONTROL_ROOM",
+            "shot_count": 3,
+            "shots": [
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 3,
+                "purpose": "Show the subject examining or encountering new information.",
+                "characters": [
+                  "CHAR_LENA"
+                ],
+                "props": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "camera": {
+                  "shot_type": "MEDIUM",
+                  "camera_movement": "STATIC_OR_SUBTLE_PUSH",
+                  "framing": "SUBJECT_AND_CONTEXT",
+                  "composition": "Keep the primary subject visually clear while preserving relevant scene context."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_LENA",
+                    "action": "STUDY",
+                    "gesture": "CONTROLLED_INSPECTION",
+                    "facial_movement": "FOCUSED_EXPRESSION"
+                  }
+                ],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "action": "MAINTAIN_ESTABLISHED_STATE"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": "That code should not be active.",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "purpose": "Emphasize the important prop or information.",
+                "characters": [],
+                "props": [
+                  "PROP_WARNING_PANEL"
+                ],
+                "camera": {
+                  "shot_type": "CLOSE_UP",
+                  "camera_movement": "STATIC",
+                  "framing": "PROP_FOCUSED",
+                  "composition": "Keep the important prop clearly readable while preserving enough surrounding context."
+                },
+                "character_actions": [],
+                "prop_actions": [
+                  {
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "action": "PRESENT_IMPORTANT_PROP"
+                  }
+                ],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "purpose": "Show the dramatic response to the discovery.",
+                "characters": [
+                  "CHAR_LENA"
+                ],
+                "props": [],
+                "camera": {
+                  "shot_type": "MEDIUM_CLOSE",
+                  "camera_movement": "SUBTLE_PUSH_IN",
+                  "framing": "SUBJECT_FOCUSED",
+                  "composition": "Keep the primary subject visually dominant while preserving continuity with the previous beat."
+                },
+                "character_actions": [
+                  {
+                    "entity_id": "CHAR_LENA",
+                    "action": "REACT_TO_DISCOVERY",
+                    "gesture": "MINIMAL_REACTION",
+                    "facial_movement": "CONTROLLED_REALIZATION"
+                  }
+                ],
+                "prop_actions": [],
+                "visual_constraints": [
+                  "Preserve established character identity throughout the scene.",
+                  "Preserve the established location and environment throughout the scene.",
+                  "Preserve established prop identity and appearance throughout the scene.",
+                  "Preserve established character identity and proportions.",
+                  "Preserve established wardrobe and physical condition.",
+                  "Avoid unnecessary character movement.",
+                  "Preserve the established environment.",
+                  "Do not arbitrarily change lighting, weather, or time of day.",
+                  "Preserve established prop identity and appearance.",
+                  "Do not introduce unrelated props.",
+                  "Do not introduce unrelated characters.",
+                  "Avoid unnecessary camera movement.",
+                  "Do not create artificial transitions inside the shot."
+                ],
+                "dialogue": null,
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "required": true,
+                    "master_reference_required": true,
+                    "reference_path": null
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "required": true,
+                    "master_reference_required": false,
+                    "reference_path": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "stage": "PRODUCTION_PROMPTS",
+      "status": "PASSED",
+      "details": {
+        "episode_id": "EP_TEST_10D_B",
+        "title": "Warning Seven",
+        "target_duration_seconds": 15,
+        "scenes": [
+          {
+            "scene_number": 1,
+            "prompts": [
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT01",
+                "scene_number": 1,
+                "duration_seconds": 3,
+                "image_prompt": "Shot purpose: Show the subject examining or encountering new information. Location: Reactor Control Room. Environment: neutral. Characters visible: Lena. Props visible: Warning Panel. Character performance: Lena — study, gesture: controlled inspection, facial expression: focused expression. Prop behavior: Warning Panel — maintain established state. Prop content requirements: Warning Panel — preserve established markings, symbols, codes, and inscriptions consistently, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: medium; framing: subject and context; camera movement intent: static or subtle push; composition: Keep the primary subject visually clear while preserving relevant scene context. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Lena (purpose: Master character reference, preserve master reference identity, required); Reactor Control Room (purpose: Master location reference, required); Warning Panel (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 3 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static or subtle push; preserve framing: subject and context; preserve composition: Keep the primary subject visually clear while preserving relevant scene context. Character motion: Lena — action: study, gesture: controlled inspection, facial movement: focused expression. Prop motion: Warning Panel remains visually stable and preserves its established state. Prop content preservation: Warning Panel — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, preserve fine visual details consistently throughout the shot. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": true
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": "That code should not be active."
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT02",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "image_prompt": "Shot purpose: Emphasize the important prop or information. Location: Reactor Control Room. Environment: neutral. Props visible: Warning Panel. Prop behavior: Warning Panel — present important prop. Prop content requirements: Warning Panel — preserve established markings, symbols, codes, and inscriptions consistently, do not invent unrelated text, letters, numbers, symbols, or markings, preserve fine visual details without simplification or redesign. Camera and composition: shot type: close up; framing: prop focused; camera movement intent: static; composition: Keep the important prop clearly readable while preserving enough surrounding context. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Reactor Control Room (purpose: Master location reference, required); Warning Panel (purpose: Master prop reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 6 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: static; preserve framing: prop focused; preserve composition: Keep the important prop clearly readable while preserving enough surrounding context. Prop motion: Warning Panel — present important prop. Prop content preservation: Warning Panel — preserve the approved textual content and typography without rewriting, drifting, or morphing, preserve approved markings, symbols, codes, and inscriptions without alteration, preserve fine visual details consistently throughout the shot. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra props, unrelated objects, prop identity changes, object morphing, object transformation, unmotivated prop movement, environment redesign, unexpected location changes, lighting changes, atmosphere changes, camera shake, camera spin, camera rotation, sudden zoom, rapid reframing, unwanted camera movement, changing text, random typography, unrelated text, random letters, random numbers, text distortion, text morphing, rewritten text, missing readable text, changing markings, missing markings, altered symbols, random symbols, changed codes, changed inscriptions, marking distortion, marking morphing, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  },
+                  {
+                    "asset_id": "ASSET_PROP_WARNING_PANEL_MASTER",
+                    "entity_id": "PROP_WARNING_PANEL",
+                    "asset_type": "PROP",
+                    "name": "Warning Panel",
+                    "purpose": "Master prop reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              },
+              {
+                "shot_id": "EP_TEST_10D_B-S01-SHOT03",
+                "scene_number": 1,
+                "duration_seconds": 6,
+                "image_prompt": "Shot purpose: Show the dramatic response to the discovery. Location: Reactor Control Room. Environment: neutral. Characters visible: Lena. Character performance: Lena — react to discovery, gesture: minimal reaction, facial expression: controlled realization. Camera and composition: shot type: medium close; framing: subject focused; camera movement intent: subtle push in; composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Reference assets: Lena (purpose: Master character reference, preserve master reference identity, required); Reactor Control Room (purpose: Master location reference, required). Create one stable cinematic frame representing a single moment in time. Preserve believable anatomy, coherent spatial relationships, consistent identity, and natural poses. Do not depict a transition between multiple states.",
+                "video_prompt": "Animate the approved keyframe for 6 seconds. Treat the approved keyframe as the fixed visual source for character identity, wardrobe, environment, props, lighting, composition, and visual style. Camera motion: camera movement: subtle push in; preserve framing: subject focused; preserve composition: Keep the primary subject visually dominant while preserving continuity with the previous beat. Character motion: Lena — action: react to discovery, gesture: minimal reaction, facial movement: controlled realization. Continuity requirements: Preserve established character identity throughout the scene. Preserve the established location and environment throughout the scene. Preserve established prop identity and appearance throughout the scene. Preserve established character identity and proportions. Preserve established wardrobe and physical condition. Avoid unnecessary character movement. Preserve the established environment. Do not arbitrarily change lighting, weather, or time of day. Preserve established prop identity and appearance. Do not introduce unrelated props. Do not introduce unrelated characters. Avoid unnecessary camera movement. Do not create artificial transitions inside the shot. Keep all motion restrained, natural, and physically believable. Preserve character identity, facial structure, hairstyle, wardrobe, body proportions, accessories, environment design, lighting, weather, atmosphere, prop appearance, and spatial relationships throughout the shot. Do not redesign or reinterpret the approved keyframe. Do not introduce new characters, unrelated objects, or environmental changes. Do not create artificial transitions inside the shot.",
+                "negative_prompt": "visual glitches, flickering, unstable details, warped geometry, distorted anatomy, inconsistent proportions, unmotivated visual changes, extra characters, duplicate characters, character identity drift, facial identity changes, different hairstyle, incorrect wardrobe, incorrect accessories, body deformation, extra limbs, extra fingers, unnecessary head movement, exaggerated facial expressions, exaggerated acting, unnatural gestures, environment redesign, unexpected location changes, lighting changes, atmosphere changes, random camera shake, camera spin, unmotivated camera rotation, sudden zoom, excessive zoom, rapid reframing, camera movement beyond the planned motion, artificial transitions, scene transitions, crossfades, object transitions, state morphing",
+                "assets": [
+                  {
+                    "asset_id": "ASSET_CHAR_LENA_MASTER",
+                    "entity_id": "CHAR_LENA",
+                    "asset_type": "CHARACTER",
+                    "name": "Lena",
+                    "purpose": "Master character reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": true
+                  },
+                  {
+                    "asset_id": "ASSET_LOC_REACTOR_CONTROL_ROOM_MASTER",
+                    "entity_id": "LOC_REACTOR_CONTROL_ROOM",
+                    "asset_type": "LOCATION",
+                    "name": "Reactor Control Room",
+                    "purpose": "Master location reference",
+                    "reference_path": null,
+                    "required": true,
+                    "master_reference_required": false
+                  }
+                ],
+                "dialogue": null
+              }
+            ]
+          }
+        ],
+        "total_shots": 3
+      }
+    }
+  ],
+  "world_id": "generalization-test-b_scifi_text"
+}

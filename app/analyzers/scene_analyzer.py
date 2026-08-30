@@ -3,19 +3,32 @@ from typing import Dict, List, Optional
 from app.analyzers.entity_analyzer import (
     EntityAnalyzer,
 )
+
+from app.analyzers.prop_analyzer import (
+    PropAnalyzer,
+)
+
+from app.models.analysis import (
+    EpisodePropAnalysis,
+)
+
 from app.models.episode import (
     Episode,
     Scene,
 )
+
 from app.models.scene_analysis import (
     CameraAnalysis,
     EnvironmentAnalysis,
     EpisodeSceneAnalysis,
     SceneAnalysis,
 )
+
 from app.models.world import (
+    EpisodeEntityAnalysis,
     SceneEntityAnalysis,
 )
+
 from app.world.registry import (
     WorldRegistry,
 )
@@ -27,10 +40,11 @@ class SceneAnalyzer:
 
     Responsibilities
     ----------------
-    1. Interpret the narrative and visual meaning of scenes.
+    1. Interpret narrative and visual scene meaning.
     2. Preserve human-readable story entity names.
     3. Attach stable entity IDs resolved by EntityAnalyzer.
-    4. Produce provider-agnostic production intent.
+    4. Integrate resolved semantic props from PropAnalyzer.
+    5. Reuse upstream analysis when supplied by EpisodeOrchestrator.
 
     The analyzer must never contain knowledge about:
     - a specific episode
@@ -38,6 +52,19 @@ class SceneAnalyzer:
     - a specific location
     - a specific prop
     - a specific story world
+
+    Dependency ownership
+    --------------------
+    EpisodeOrchestrator may provide:
+
+        EpisodePropAnalysis
+        EpisodeEntityAnalysis
+
+    When supplied, SceneAnalyzer reuses them and does NOT repeat the
+    analysis.
+
+    When SceneAnalyzer is used independently, it remains backward
+    compatible and performs the required analyses itself.
     """
 
     def __init__(
@@ -46,6 +73,10 @@ class SceneAnalyzer:
 
         self.entity_analyzer = (
             EntityAnalyzer()
+        )
+
+        self.prop_analyzer = (
+            PropAnalyzer()
         )
 
     # ================================================================
@@ -58,20 +89,55 @@ class SceneAnalyzer:
         registry: Optional[
             WorldRegistry
         ] = None,
+        prop_analysis: Optional[
+            EpisodePropAnalysis
+        ] = None,
+        entity_analysis: Optional[
+            EpisodeEntityAnalysis
+        ] = None,
     ) -> EpisodeSceneAnalysis:
         """
         Analyze every scene in an episode.
 
-        Entity resolution is performed once for the entire episode
-        and reused by every scene analysis.
+        If prop_analysis and entity_analysis are provided by an
+        orchestrator, those authoritative results are reused.
+
+        Otherwise SceneAnalyzer performs the missing analysis itself.
         """
 
-        entity_analysis = (
-            self.entity_analyzer.analyze(
-                episode=episode,
-                registry=registry,
+        # ============================================================
+        # PROP ANALYSIS
+        # ============================================================
+
+        if prop_analysis is None:
+
+            prop_analysis = (
+                self.prop_analyzer
+                .analyze(
+                    episode
+                )
             )
-        )
+
+        # ============================================================
+        # ENTITY ANALYSIS
+        # ============================================================
+
+        if entity_analysis is None:
+
+            entity_analysis = (
+                self.entity_analyzer
+                .analyze(
+                    episode=episode,
+                    registry=registry,
+                    prop_analysis=(
+                        prop_analysis
+                    ),
+                )
+            )
+
+        # ============================================================
+        # LOOKUP MAPS
+        # ============================================================
 
         entity_map: Dict[
             int,
@@ -81,15 +147,38 @@ class SceneAnalyzer:
             for item in entity_analysis.scenes
         }
 
+        prop_map: Dict[
+            int,
+            List[str]
+        ] = {
+            item.scene_number: list(
+                item.resolved_props
+            )
+            for item in prop_analysis.scenes
+        }
+
         analyses: List[
             SceneAnalysis
         ] = []
+
+        # ============================================================
+        # SCENE ANALYSIS
+        # ============================================================
 
         for scene in episode.scenes:
 
             resolved_entities = (
                 entity_map.get(
                     scene.scene_number
+                )
+            )
+
+            resolved_props = (
+                prop_map.get(
+                    scene.scene_number,
+                    list(
+                        scene.props
+                    ),
                 )
             )
 
@@ -100,13 +189,20 @@ class SceneAnalyzer:
                     resolved_entities=(
                         resolved_entities
                     ),
+                    resolved_props=(
+                        resolved_props
+                    ),
                 )
             )
 
         return EpisodeSceneAnalysis(
             status="PASSED",
-            episode_id=episode.episode_id,
-            scenes=analyses,
+            episode_id=(
+                episode.episode_id
+            ),
+            scenes=(
+                analyses
+            ),
         )
 
     def analyze_scene(
@@ -116,14 +212,27 @@ class SceneAnalyzer:
         resolved_entities: Optional[
             SceneEntityAnalysis
         ] = None,
+        resolved_props: Optional[
+            List[str]
+        ] = None,
     ) -> SceneAnalysis:
         """
         Analyze one scene.
 
-        resolved_entities is optional so that components such as
-        StoryStructureAnalyzer may still use this method without
-        needing to run entity resolution themselves.
+        resolved_entities and resolved_props remain optional so that
+        other analyzers can use analyze_scene() without executing the
+        complete episode-level entity pipeline.
         """
+
+        resolved_prop_names = (
+            list(
+                resolved_props
+            )
+            if resolved_props is not None
+            else list(
+                scene.props
+            )
+        )
 
         narrative_function = (
             self._infer_narrative_function(
@@ -164,7 +273,10 @@ class SceneAnalyzer:
 
         visual_constraints = (
             self._build_visual_constraints(
-                scene
+                scene=scene,
+                resolved_props=(
+                    resolved_prop_names
+                ),
             )
         )
 
@@ -183,15 +295,18 @@ class SceneAnalyzer:
         if resolved_entities:
 
             character_ids = list(
-                resolved_entities.character_ids
+                resolved_entities
+                .character_ids
             )
 
             location_id = (
-                resolved_entities.location_id
+                resolved_entities
+                .location_id
             )
 
             prop_ids = list(
-                resolved_entities.prop_ids
+                resolved_entities
+                .prop_ids
             )
 
         primary_subject_id = (
@@ -207,7 +322,9 @@ class SceneAnalyzer:
         )
 
         return SceneAnalysis(
-            scene_number=scene.scene_number,
+            scene_number=(
+                scene.scene_number
+            ),
             narrative_function=(
                 narrative_function
             ),
@@ -223,9 +340,11 @@ class SceneAnalyzer:
             characters=list(
                 scene.characters
             ),
-            location=scene.location,
+            location=(
+                scene.location
+            ),
             props=list(
-                scene.props
+                resolved_prop_names
             ),
             primary_subject=(
                 primary_subject
@@ -262,8 +381,10 @@ class SceneAnalyzer:
         scene: Scene,
     ) -> str:
 
-        text = self._scene_text(
-            scene
+        text = (
+            self._scene_text(
+                scene
+            )
         )
 
         keyword_groups = {
@@ -350,7 +471,10 @@ class SceneAnalyzer:
                 keyword in text
                 for keyword in keywords
             ):
-                return function_name
+
+                return (
+                    function_name
+                )
 
         return "DEVELOPMENT"
 
@@ -367,6 +491,7 @@ class SceneAnalyzer:
             scene.visual_description
             .strip()
         ):
+
             return (
                 scene.visual_description
                 .strip()
@@ -376,6 +501,7 @@ class SceneAnalyzer:
             scene.narrative_purpose
             .strip()
         ):
+
             return (
                 "Visually support the "
                 "narrative purpose: "
@@ -383,6 +509,7 @@ class SceneAnalyzer:
             )
 
         if scene.characters:
+
             return (
                 "Maintain visual focus "
                 "on the characters and "
@@ -482,6 +609,7 @@ class SceneAnalyzer:
                 keyword in text
                 for keyword in keywords
             ):
+
                 return state
 
         return "NEUTRAL"
@@ -501,6 +629,7 @@ class SceneAnalyzer:
             scene.visual_description
             .strip()
         ):
+
             actions.append(
                 scene.visual_description
                 .strip()
@@ -509,6 +638,7 @@ class SceneAnalyzer:
         if scene.dialogue.strip():
 
             if scene.characters:
+
                 actions.append(
                     "Characters perform the "
                     "scene while delivering "
@@ -516,14 +646,17 @@ class SceneAnalyzer:
                 )
 
             else:
+
                 actions.append(
                     "Deliver the supplied "
                     "dialogue as established "
                     "by the story."
                 )
 
-        return self._deduplicate(
-            actions
+        return (
+            self._deduplicate(
+                actions
+            )
         )
 
     # ================================================================
@@ -538,6 +671,7 @@ class SceneAnalyzer:
         if len(
             scene.characters
         ) == 1:
+
             return (
                 scene.characters[0]
             )
@@ -557,11 +691,8 @@ class SceneAnalyzer:
         """
         Resolve primary subject ID without guessing.
 
-        Currently, a character becomes the primary subject only when
-        the scene contains exactly one character.
-
-        Multi-character subject priority will later come from semantic
-        analysis / production intent instead of assumptions.
+        Multi-character role priority remains intentionally unresolved
+        here and will later be handled by semantic role analysis.
         """
 
         if not primary_subject:
@@ -571,28 +702,40 @@ class SceneAnalyzer:
             return None
 
         if (
-            len(scene.characters) !=
+            len(
+                scene.characters
+            )
+            !=
             len(
                 resolved_entities
                 .character_ids
             )
         ):
+
             return None
 
         try:
+
             index = (
-                scene.characters.index(
+                scene.characters
+                .index(
                     primary_subject
                 )
             )
 
         except ValueError:
+
             return None
 
-        if index >= len(
-            resolved_entities
-            .character_ids
+        if (
+            index
+            >=
+            len(
+                resolved_entities
+                .character_ids
+            )
         ):
+
             return None
 
         return (
@@ -609,8 +752,10 @@ class SceneAnalyzer:
         scene: Scene,
     ) -> EnvironmentAnalysis:
 
-        text = self._scene_text(
-            scene
+        text = (
+            self._scene_text(
+                scene
+            )
         )
 
         return EnvironmentAnalysis(
@@ -686,10 +831,12 @@ class SceneAnalyzer:
             ),
         ]
 
-        return self._match_group(
-            text=text,
-            groups=patterns,
-            default="UNKNOWN",
+        return (
+            self._match_group(
+                text=text,
+                groups=patterns,
+                default="UNKNOWN",
+            )
         )
 
     def _infer_weather(
@@ -746,10 +893,12 @@ class SceneAnalyzer:
             ),
         ]
 
-        return self._match_group(
-            text=text,
-            groups=patterns,
-            default="UNKNOWN",
+        return (
+            self._match_group(
+                text=text,
+                groups=patterns,
+                default="UNKNOWN",
+            )
         )
 
     def _infer_lighting(
@@ -791,10 +940,12 @@ class SceneAnalyzer:
             ),
         ]
 
-        return self._match_group(
-            text=text,
-            groups=patterns,
-            default="UNKNOWN",
+        return (
+            self._match_group(
+                text=text,
+                groups=patterns,
+                default="UNKNOWN",
+            )
         )
 
     def _infer_atmosphere(
@@ -846,10 +997,12 @@ class SceneAnalyzer:
             ),
         ]
 
-        return self._match_group(
-            text=text,
-            groups=patterns,
-            default="NEUTRAL",
+        return (
+            self._match_group(
+                text=text,
+                groups=patterns,
+                default="NEUTRAL",
+            )
         )
 
     # ================================================================
@@ -866,7 +1019,9 @@ class SceneAnalyzer:
             .strip()
         )
 
-        text = direction.lower()
+        text = (
+            direction.lower()
+        )
 
         framing = "UNSPECIFIED"
 
@@ -907,6 +1062,7 @@ class SceneAnalyzer:
         ) in framing_patterns:
 
             if keyword in text:
+
                 framing = value
                 break
 
@@ -984,6 +1140,7 @@ class SceneAnalyzer:
                 keyword in text
                 for keyword in keywords
             ):
+
                 movement = value
                 break
 
@@ -992,6 +1149,7 @@ class SceneAnalyzer:
         if len(
             scene.characters
         ) == 1:
+
             focus = (
                 scene.characters[0]
             )
@@ -999,15 +1157,25 @@ class SceneAnalyzer:
         elif len(
             scene.characters
         ) > 1:
+
             focus = "CHARACTERS"
 
         elif scene.location:
-            focus = scene.location
+
+            focus = (
+                scene.location
+            )
 
         return CameraAnalysis(
-            framing=framing,
-            movement=movement,
-            focus=focus,
+            framing=(
+                framing
+            ),
+            movement=(
+                movement
+            ),
+            focus=(
+                focus
+            ),
         )
 
     # ================================================================
@@ -1017,6 +1185,9 @@ class SceneAnalyzer:
     def _build_visual_constraints(
         self,
         scene: Scene,
+        resolved_props: Optional[
+            List[str]
+        ] = None,
     ) -> List[str]:
 
         constraints: List[
@@ -1027,12 +1198,14 @@ class SceneAnalyzer:
             scene.continuity_notes
             .strip()
         ):
+
             constraints.append(
                 scene.continuity_notes
                 .strip()
             )
 
         if scene.characters:
+
             constraints.append(
                 "Preserve established "
                 "character identity "
@@ -1040,21 +1213,33 @@ class SceneAnalyzer:
             )
 
         if scene.location:
+
             constraints.append(
                 "Preserve the established "
                 "location and environment "
                 "throughout the scene."
             )
 
-        if scene.props:
+        effective_props = (
+            resolved_props
+            if resolved_props is not None
+            else list(
+                scene.props
+            )
+        )
+
+        if effective_props:
+
             constraints.append(
                 "Preserve established prop "
                 "identity and appearance "
                 "throughout the scene."
             )
 
-        return self._deduplicate(
-            constraints
+        return (
+            self._deduplicate(
+                constraints
+            )
         )
 
     # ================================================================
@@ -1092,6 +1277,7 @@ class SceneAnalyzer:
                 keyword in text
                 for keyword in keywords
             ):
+
                 return value
 
         return default
@@ -1121,7 +1307,9 @@ class SceneAnalyzer:
             if key in seen:
                 continue
 
-            seen.add(key)
+            seen.add(
+                key
+            )
 
             result.append(
                 cleaned

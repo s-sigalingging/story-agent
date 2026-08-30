@@ -1,0 +1,22 @@
+{
+  "episode_id": "EP_TEST_10D_E",
+  "title": "The Map",
+  "target_duration_seconds": 18,
+  "style": {
+    "tone": "Adventure mystery",
+    "visual_style": "Stylized cinematic animation"
+  },
+  "scenes": [
+    {
+      "scene_number": 1,
+      "duration_seconds": 18,
+      "visual_description": "Arin studies an old map spread across a wooden table while Sora stands beside him holding a plain metal compass. The map contains a hand-drawn route and a black star marking the destination. Arin points to the black star while Sora watches.",
+      "characters": [
+        "Arin",
+        "Sora"
+      ],
+      "location": "Explorer Cabin",
+      "dialogue": "This is where the trail ends."
+    }
+  ]
+}

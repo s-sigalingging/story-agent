@@ -71,7 +71,10 @@ class PromptCharacterPerformance(BaseModel):
 
 class PromptPropPerformance(BaseModel):
     """
-    Structured prop behavior used by prompt builders.
+    Structured prop behavior and content semantics used by prompt builders.
+
+    Content semantics are supplied by upstream scene analysis.
+    The prompt layer must not infer them from prop names.
     """
 
     entity_id: str
@@ -79,6 +82,16 @@ class PromptPropPerformance(BaseModel):
     name: str = ""
 
     action: str = ""
+
+    content_modalities: List[str] = Field(
+        default_factory=list
+    )
+
+    text_sensitive: bool = False
+
+    readability_required: bool = False
+
+    visual_detail_sensitive: bool = False
 
 
 class PromptEnvironmentContext(BaseModel):

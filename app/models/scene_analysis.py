@@ -6,9 +6,6 @@ from pydantic import BaseModel, Field
 class EnvironmentAnalysis(BaseModel):
     """
     Production-oriented interpretation of the scene environment.
-
-    UNKNOWN means that the story has not explicitly established
-    a reliable value.
     """
 
     time_of_day: str = "UNKNOWN"
@@ -22,9 +19,7 @@ class EnvironmentAnalysis(BaseModel):
 
 class CameraAnalysis(BaseModel):
     """
-    High-level camera intent derived from story data.
-
-    This is still provider-agnostic.
+    High-level provider-agnostic camera intent.
     """
 
     framing: str = "UNSPECIFIED"
@@ -34,14 +29,65 @@ class CameraAnalysis(BaseModel):
     focus: str = "SCENE"
 
 
+class SceneCharacterRole(BaseModel):
+    """
+    Canonical character-role representation stored inside SceneAnalysis.
+    """
+
+    entity_id: str
+
+    name: str
+
+    role: str = "PARTICIPANT"
+
+    interaction: str = "UNSPECIFIED"
+
+    confidence: float = 0.5
+
+    primary_candidate: bool = False
+
+    evidence: str = ""
+
+
+class ScenePropContent(BaseModel):
+    """
+    Canonical content semantics for one resolved scene prop.
+
+    This is downstream-facing scene data.
+
+    PropContentAnalyzer has its own analysis result model, while this
+    model becomes part of the stable SceneAnalysis contract.
+    """
+
+    entity_id: str
+
+    name: str
+
+    content_modalities: List[str] = Field(
+        default_factory=list
+    )
+
+    text_sensitive: bool = False
+
+    readability_required: bool = False
+
+    visual_detail_sensitive: bool = False
+
+    confidence: float = 0.5
+
+    evidence: List[str] = Field(
+        default_factory=list
+    )
+
+
 class SceneAnalysis(BaseModel):
     """
-    Generic analysis result for a single scene.
+    Generic semantic analysis result for a single scene.
 
-    Story-facing names are retained for readability.
+    Human-readable story-facing names are preserved.
 
-    Stable entity IDs are stored separately for use by downstream
-    production systems.
+    Stable entity IDs and semantic data are stored separately for
+    downstream production systems.
     """
 
     scene_number: int = Field(
@@ -93,6 +139,26 @@ class SceneAnalysis(BaseModel):
     primary_subject_id: Optional[str] = None
 
     # ============================================================
+    # CHARACTER SEMANTICS
+    # ============================================================
+
+    character_roles: List[
+        SceneCharacterRole
+    ] = Field(
+        default_factory=list
+    )
+
+    # ============================================================
+    # PROP CONTENT SEMANTICS
+    # ============================================================
+
+    prop_content: List[
+        ScenePropContent
+    ] = Field(
+        default_factory=list
+    )
+
+    # ============================================================
     # PRODUCTION INTERPRETATION
     # ============================================================
 
@@ -118,6 +184,8 @@ class EpisodeSceneAnalysis(BaseModel):
 
     episode_id: str
 
-    scenes: List[SceneAnalysis] = Field(
+    scenes: List[
+        SceneAnalysis
+    ] = Field(
         default_factory=list
     )

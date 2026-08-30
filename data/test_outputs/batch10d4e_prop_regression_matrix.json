@@ -1,0 +1,215 @@
+{
+  "batch": "10D.4E",
+  "status": "PASSED",
+  "total_tests": 18,
+  "passed": 18,
+  "failed": 0,
+  "tests": [
+    {
+      "test": "basic_box",
+      "status": "PASSED",
+      "resolved_props": [
+        "Small Wooden Box"
+      ],
+      "expected_exact": [
+        "Small Wooden Box"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "basic_mug",
+      "status": "PASSED",
+      "resolved_props": [
+        "Plain Ceramic Mug"
+      ],
+      "expected_exact": [
+        "Plain Ceramic Mug"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "continuous_holding",
+      "status": "PASSED",
+      "resolved_props": [
+        "Plain Metal Compass"
+      ],
+      "expected_exact": [
+        "Plain Metal Compass"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "continuous_studying",
+      "status": "PASSED",
+      "resolved_props": [
+        "Old Paper Map"
+      ],
+      "expected_exact": [
+        "Old Paper Map"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "continuous_carrying",
+      "status": "PASSED",
+      "resolved_props": [
+        "Leather Bag"
+      ],
+      "expected_exact": [
+        "Leather Bag"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "spatial_across_boundary",
+      "status": "PASSED",
+      "resolved_props": [
+        "Old Map"
+      ],
+      "expected_exact": [
+        "Old Map"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "participial_marked_boundary",
+      "status": "PASSED",
+      "resolved_props": [
+        "Metal Container"
+      ],
+      "expected_exact": [
+        "Metal Container"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "spatial_against_boundary",
+      "status": "PASSED",
+      "resolved_props": [
+        "Wooden Crate"
+      ],
+      "expected_exact": [
+        "Wooden Crate"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "preserve_painted_modifier",
+      "status": "PASSED",
+      "resolved_props": [
+        "Painted Wooden Box"
+      ],
+      "expected_exact": [
+        "Painted Wooden Box"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "preserve_broken_modifier",
+      "status": "PASSED",
+      "resolved_props": [
+        "Broken Metal Key"
+      ],
+      "expected_exact": [
+        "Broken Metal Key"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "reject_relaxed_sip",
+      "status": "PASSED",
+      "resolved_props": [],
+      "expected_exact": [],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "reject_nervous_smile",
+      "status": "PASSED",
+      "resolved_props": [],
+      "expected_exact": [],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "reject_quick_glance",
+      "status": "PASSED",
+      "resolved_props": [],
+      "expected_exact": [],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "reject_adverb_tail",
+      "status": "PASSED",
+      "resolved_props": [],
+      "expected_exact": [],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "multi_prop_recall",
+      "status": "PASSED",
+      "resolved_props": [
+        "Old Map",
+        "Plain Metal Compass"
+      ],
+      "expected_exact": null,
+      "expected_contains": [
+        "Old Map",
+        "Plain Metal Compass"
+      ],
+      "errors": []
+    },
+    {
+      "test": "declared_prop_preserved",
+      "status": "PASSED",
+      "resolved_props": [
+        "Wooden Container"
+      ],
+      "expected_exact": [
+        "Wooden Container"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "declared_single_token_conservative",
+      "status": "PASSED",
+      "resolved_props": [
+        "Key",
+        "Red Key"
+      ],
+      "expected_exact": [
+        "Key",
+        "Red Key"
+      ],
+      "expected_contains": [],
+      "errors": []
+    },
+    {
+      "test": "different_material_objects",
+      "status": "PASSED",
+      "resolved_props": [
+        "Wooden Box",
+        "Metal Box"
+      ],
+      "expected_exact": [
+        "Wooden Box",
+        "Metal Box"
+      ],
+      "expected_contains": [],
+      "errors": []
+    }
+  ]
+}
