@@ -67,38 +67,74 @@ from app.world.registry import (
     WorldRegistry,
 )
 
+from app.assets.registry import (
+    AssetRegistry,
+)
+
+from app.assets.resolver import (
+    AssetResolver,
+)
+
+from app.assets.validator import (
+    AssetValidator,
+)
+
+from app.generation.request_compiler import (
+    GenerationRequestCompiler,
+)
+
+from app.generation.runner import (
+    GenerationRunner,
+)
+
+from app.models.generation import (
+    GenerationStatus,
+)
+
 
 class EpisodeOrchestrator:
     """
     Coordinates the complete episode production pipeline.
 
-    The orchestrator contains no story-specific knowledge.
+    Modes
+    -----
+    Legacy mode:
+        EpisodeOrchestrator()
 
-    Analysis stages are executed once and their outputs are shared with
-    downstream components.
+        Runs through production prompts and returns
+        WAITING_HUMAN_APPROVAL.
 
-    Pipeline
-    --------
-    Story Analysis
-    Story Structure
-    Prop Analysis
-    Entity Analysis
-    Base Scene Analysis
-    Character Role Analysis
-    Prop Content Analysis
-    Scene Semantic Enrichment
-    Production Intent
-    Continuity Analysis
-    State Management
-    World State Candidate
-    Production Planning
-    Asset Planning
-    Production Execution
-    Production Prompts
+    Asset-gated mode:
+        EpisodeOrchestrator(
+            asset_registry=registry
+        )
+
+        Resolves and validates physical reference assets before
+        production execution.
+
+    Generation-enabled mode:
+        EpisodeOrchestrator(
+            generation_runner=runner
+        )
+
+        Compiles one KEYFRAME GenerationRequest per production
+        prompt and executes the generation runner.
+
+    Asset-gated + generation-enabled mode:
+        Both systems operate together.
     """
 
     def __init__(
         self,
+        asset_registry: Optional[
+            AssetRegistry
+        ] = None,
+        generation_runner: Optional[
+            GenerationRunner
+        ] = None,
+        generation_request_compiler: Optional[
+            GenerationRequestCompiler
+        ] = None,
     ):
 
         # ============================================================
@@ -108,6 +144,62 @@ class EpisodeOrchestrator:
         self.registry = (
             WorldRegistry()
         )
+
+        # ============================================================
+        # ASSET REGISTRY
+        # ============================================================
+
+        self.asset_registry = (
+            asset_registry
+        )
+
+        self.asset_resolver = None
+        self.asset_validator = None
+
+        if (
+            self.asset_registry
+            is not None
+        ):
+
+            self.asset_resolver = (
+                AssetResolver(
+                    registry=(
+                        self.asset_registry
+                    )
+                )
+            )
+
+            self.asset_validator = (
+                AssetValidator(
+                    registry=(
+                        self.asset_registry
+                    )
+                )
+            )
+
+        # ============================================================
+        # GENERATION
+        # ============================================================
+
+        self.generation_runner = (
+            generation_runner
+        )
+
+        self.generation_request_compiler = (
+            generation_request_compiler
+        )
+
+        if (
+            self.generation_runner
+            is not None
+            and
+            self.generation_request_compiler
+            is None
+        ):
+
+            self.generation_request_compiler = (
+                GenerationRequestCompiler()
+            )
 
         # ============================================================
         # ANALYSIS
@@ -239,6 +331,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -268,6 +361,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -297,6 +391,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -330,6 +425,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -367,6 +463,7 @@ class EpisodeOrchestrator:
             })
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -402,6 +499,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -437,6 +535,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -483,6 +582,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -515,6 +615,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -545,6 +646,7 @@ class EpisodeOrchestrator:
         ):
 
             results["status"] = "FAILED"
+
             return results
 
         # ============================================================
@@ -648,6 +750,96 @@ class EpisodeOrchestrator:
             ),
         })
 
+        production_asset_plan = (
+            asset_plan
+        )
+
+        # ============================================================
+        # ASSET RESOLUTION
+        # ============================================================
+
+        if (
+            self.asset_registry
+            is not None
+        ):
+
+            resolution_report = (
+                self.asset_resolver
+                .resolve_plan(
+                    asset_plan
+                )
+            )
+
+            results["stages"].append({
+                "stage": (
+                    "ASSET_RESOLUTION"
+                ),
+                "status": (
+                    resolution_report
+                    .status
+                ),
+                "details": (
+                    resolution_report
+                    .model_dump()
+                ),
+            })
+
+            production_asset_plan = (
+                self.asset_resolver
+                .hydrate_plan(
+                    asset_plan=(
+                        asset_plan
+                    ),
+                    resolution_report=(
+                        resolution_report
+                    ),
+                )
+            )
+
+            # ========================================================
+            # ASSET VALIDATION
+            # ========================================================
+
+            validation_report = (
+                self.asset_validator
+                .validate_report(
+                    episode_id=(
+                        episode.episode_id
+                    ),
+                    requirements=(
+                        asset_plan.assets
+                    ),
+                    resolution_report=(
+                        resolution_report
+                    ),
+                )
+            )
+
+            results["stages"].append({
+                "stage": (
+                    "ASSET_VALIDATION"
+                ),
+                "status": (
+                    validation_report
+                    .status
+                ),
+                "details": (
+                    validation_report
+                    .model_dump()
+                ),
+            })
+
+            if (
+                validation_report.status
+                != "PRODUCTION_READY"
+            ):
+
+                results["status"] = (
+                    "WAITING_ASSET_READINESS"
+                )
+
+                return results
+
         # ============================================================
         # PRODUCTION EXECUTION
         # ============================================================
@@ -658,7 +850,7 @@ class EpisodeOrchestrator:
                     production_plan
                 ),
                 asset_plan=(
-                    asset_plan
+                    production_asset_plan
                 ),
             )
         )
@@ -694,7 +886,7 @@ class EpisodeOrchestrator:
                     execution_plan
                 ),
                 asset_plan=(
-                    asset_plan
+                    production_asset_plan
                 ),
             )
         )
@@ -708,8 +900,146 @@ class EpisodeOrchestrator:
             ),
         })
 
+        # ============================================================
+        # LEGACY / NON-GENERATION MODE
+        # ============================================================
+
+        if (
+            self.generation_runner
+            is None
+        ):
+
+            results["status"] = (
+                "WAITING_HUMAN_APPROVAL"
+            )
+
+            return results
+
+        # ============================================================
+        # GENERATION REQUESTS
+        # ============================================================
+
+        generation_requests = (
+            self.generation_request_compiler
+            .compile(
+                production_prompts
+            )
+        )
+
+        results["stages"].append({
+            "stage": (
+                "GENERATION_REQUESTS"
+            ),
+            "status": "PASSED",
+            "details": {
+                "total_requests": (
+                    len(
+                        generation_requests
+                    )
+                ),
+                "requests": [
+                    request.model_dump()
+                    for request
+                    in generation_requests
+                ],
+            },
+        })
+
+        # ============================================================
+        # KEYFRAME GENERATION
+        # ============================================================
+
+        generation_results = []
+
+        generation_failed = False
+
+        for request in (
+            generation_requests
+        ):
+
+            generation_result = (
+                self.generation_runner
+                .run(
+                    request
+                )
+            )
+
+            generation_results.append(
+                generation_result
+            )
+
+            if (
+                generation_result.status
+                != GenerationStatus.SUCCEEDED
+            ):
+
+                generation_failed = True
+
+        generation_stage_status = (
+            "FAILED"
+            if generation_failed
+            else "PASSED"
+        )
+
+        results["stages"].append({
+            "stage": (
+                "KEYFRAME_GENERATION"
+            ),
+            "status": (
+                generation_stage_status
+            ),
+            "details": {
+                "total_requests": (
+                    len(
+                        generation_requests
+                    )
+                ),
+                "successful": sum(
+                    1
+                    for result
+                    in generation_results
+                    if (
+                        result.status
+                        ==
+                        GenerationStatus.SUCCEEDED
+                    )
+                ),
+                "failed": sum(
+                    1
+                    for result
+                    in generation_results
+                    if (
+                        result.status
+                        !=
+                        GenerationStatus.SUCCEEDED
+                    )
+                ),
+                "results": [
+                    result.model_dump()
+                    for result
+                    in generation_results
+                ],
+            },
+        })
+
+        # ============================================================
+        # GENERATION FAILURE
+        # ============================================================
+
+        if generation_failed:
+
+            results["status"] = (
+                "GENERATION_FAILED"
+            )
+
+            return results
+
+        # ============================================================
+        # KEYFRAME REVIEW
+        # ============================================================
+
         results["status"] = (
-            "WAITING_HUMAN_APPROVAL"
+            "WAITING_KEYFRAME_REVIEW"
         )
 
         return results
