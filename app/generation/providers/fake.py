@@ -13,6 +13,10 @@ from app.models.generation import (
     GenerationStatus,
 )
 
+from app.models.generation_provider import (
+    ProviderCapabilities,
+)
+
 
 class FakeGenerationProvider(
     GenerationProvider
@@ -43,6 +47,9 @@ class FakeGenerationProvider(
         ] = None,
         output_count: int = 1,
         fail_attempts: int = 1,
+        capabilities: Optional[
+            ProviderCapabilities
+        ] = None,
     ):
 
         self.mode = (
@@ -85,6 +92,31 @@ class FakeGenerationProvider(
             output_root
         )
 
+        if capabilities is None:
+
+            capabilities = (
+                ProviderCapabilities(
+                    supports_keyframe=True,
+                    supports_reference_images=True,
+                    max_reference_images=None,
+                    supports_negative_prompt=True,
+                    supported_output_formats=[
+                        "png",
+                        "jpg",
+                        "jpeg",
+                        "webp",
+                    ],
+                    supported_aspect_ratios=[],
+                    supported_media_types=[
+                        "IMAGE"
+                    ],
+                )
+            )
+
+        self._capabilities = (
+            capabilities
+        )
+
     # ================================================================
     # PROVIDER NAME
     # ================================================================
@@ -95,6 +127,22 @@ class FakeGenerationProvider(
     ) -> str:
 
         return "FAKE_PROVIDER"
+
+    # ================================================================
+    # PROVIDER CAPABILITIES
+    # ================================================================
+
+    @property
+    def capabilities(
+        self,
+    ) -> ProviderCapabilities:
+
+        return (
+            self._capabilities
+            .model_copy(
+                deep=True
+            )
+        )
 
     # ================================================================
     # GENERATE
@@ -114,10 +162,6 @@ class FakeGenerationProvider(
             raise ValueError(
                 "attempt_number must be at least 1."
             )
-
-        # ------------------------------------------------------------
-        # ALWAYS RETRYABLE FAILURE
-        # ------------------------------------------------------------
 
         if (
             self.mode
@@ -141,10 +185,6 @@ class FakeGenerationProvider(
                 )
             )
 
-        # ------------------------------------------------------------
-        # ALWAYS PERMANENT FAILURE
-        # ------------------------------------------------------------
-
         if (
             self.mode
             == "PERMANENT_FAILURE"
@@ -166,10 +206,6 @@ class FakeGenerationProvider(
                     retryable=False,
                 )
             )
-
-        # ------------------------------------------------------------
-        # FAIL FIRST N ATTEMPTS, THEN SUCCEED
-        # ------------------------------------------------------------
 
         if (
             self.mode
@@ -206,10 +242,6 @@ class FakeGenerationProvider(
                     ),
                 )
             )
-
-        # ------------------------------------------------------------
-        # SUCCESS
-        # ------------------------------------------------------------
 
         if (
             self.mode
