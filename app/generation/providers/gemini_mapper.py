@@ -2,6 +2,9 @@ import base64
 from pathlib import Path
 
 from app.models.generation import (
+    GenerationReferenceAsset,
+    GenerationReferenceRole,
+    GenerationReferenceTransformation,
     GenerationRequest,
     GenerationType,
 )
@@ -24,6 +27,8 @@ class GeminiRequestMapper:
     - preserve reference ordering
     - encode reference bytes as base64
     - detect supported reference MIME types
+    - attach generation-time semantic reference roles
+    - preserve identity-vs-transformation semantics
     - preserve requested aspect ratio and output format
 
     This mapper performs no network calls.
@@ -155,13 +160,6 @@ class GeminiRequestMapper:
         self,
         request: GenerationRequest,
     ) -> str:
-        """
-        Gemini does not use the provider-agnostic negative_prompt
-        field as a dedicated API parameter.
-
-        Instead, negative constraints are translated into explicit
-        natural-language instructions.
-        """
 
         base_prompt = (
             request.prompt.strip()
@@ -195,7 +193,7 @@ class GeminiRequestMapper:
 
     def _map_reference(
         self,
-        reference,
+        reference: GenerationReferenceAsset,
     ) -> GeminiInputImage:
 
         reference_path = Path(
@@ -240,6 +238,36 @@ class GeminiRequestMapper:
             )
         )
 
+        role = (
+            self._reference_role(
+                reference
+            )
+        )
+
+        preserve_attributes = (
+            reference.preserve_attributes
+            or
+            self._default_preserve_attributes(
+                role
+            )
+        )
+
+        allowed_transformations = (
+            reference.allowed_transformations
+            or
+            self._default_allowed_transformations(
+                role
+            )
+        )
+
+        usage_instruction = (
+            reference.usage_instruction
+            or
+            self._default_usage_instruction(
+                role
+            )
+        )
+
         return (
             GeminiInputImage(
                 asset_id=(
@@ -254,7 +282,233 @@ class GeminiRequestMapper:
                 data_base64=(
                     encoded
                 ),
+                reference_role=(
+                    role.value
+                ),
+                preserve_attributes=[
+                    value.strip()
+                    for value
+                    in preserve_attributes
+                    if value.strip()
+                ],
+                allowed_transformations=[
+                    transformation.value
+                    for transformation
+                    in allowed_transformations
+                ],
+                usage_instruction=(
+                    usage_instruction.strip()
+                ),
             )
+        )
+
+    # ================================================================
+    # REFERENCE ROLE
+    # ================================================================
+
+    def _reference_role(
+        self,
+        reference: GenerationReferenceAsset,
+    ) -> GenerationReferenceRole:
+
+        if (
+            reference.reference_role
+            is not None
+        ):
+
+            return (
+                reference.reference_role
+            )
+
+        asset_type = (
+            reference.asset_type
+            .strip()
+            .upper()
+        )
+
+        mapping = {
+            "CHARACTER": (
+                GenerationReferenceRole.CHARACTER
+            ),
+            "LOCATION": (
+                GenerationReferenceRole.LOCATION
+            ),
+            "PROP": (
+                GenerationReferenceRole.PROP
+            ),
+            "STYLE": (
+                GenerationReferenceRole.STYLE
+            ),
+        }
+
+        return (
+            mapping.get(
+                asset_type,
+                GenerationReferenceRole.GENERIC,
+            )
+        )
+
+    # ================================================================
+    # DEFAULT PRESERVATION SEMANTICS
+    # ================================================================
+
+    def _default_preserve_attributes(
+        self,
+        role: GenerationReferenceRole,
+    ):
+
+        mapping = {
+            GenerationReferenceRole.CHARACTER: [
+                "facial identity",
+                "apparent age",
+                "hairstyle",
+                "facial proportions",
+                "body identity",
+                "canonical wardrobe identity",
+            ],
+
+            GenerationReferenceRole.LOCATION: [
+                "architectural identity",
+                "materials",
+                "recognizable landmarks",
+                "environmental design language",
+                "spatial character",
+            ],
+
+            GenerationReferenceRole.PROP: [
+                "object identity",
+                "material",
+                "color",
+                "shape",
+                "construction",
+                "recognizable design features",
+            ],
+
+            GenerationReferenceRole.STYLE: [
+                "rendering language",
+                "texture treatment",
+                "edge treatment",
+                "tonal language",
+                "cinematic visual style",
+            ],
+
+            GenerationReferenceRole.GENERIC: [
+                "recognizable visual identity",
+            ],
+        }
+
+        return list(
+            mapping[
+                role
+            ]
+        )
+
+    # ================================================================
+    # DEFAULT TRANSFORMATION PERMISSIONS
+    # ================================================================
+
+    def _default_allowed_transformations(
+        self,
+        role: GenerationReferenceRole,
+    ):
+
+        mapping = {
+            GenerationReferenceRole.CHARACTER: [
+                GenerationReferenceTransformation.CHANGE_POSE,
+                GenerationReferenceTransformation.CHANGE_EXPRESSION,
+                GenerationReferenceTransformation.REFRAME,
+                GenerationReferenceTransformation.RELIGHT,
+                GenerationReferenceTransformation.CHANGE_PERSPECTIVE,
+            ],
+
+            GenerationReferenceRole.LOCATION: [
+                GenerationReferenceTransformation.CHANGE_VIEWPOINT,
+                GenerationReferenceTransformation.REFRAME,
+                GenerationReferenceTransformation.RELIGHT,
+                GenerationReferenceTransformation.CHANGE_PERSPECTIVE,
+            ],
+
+            GenerationReferenceRole.PROP: [
+                GenerationReferenceTransformation.ROTATE,
+                GenerationReferenceTransformation.CHANGE_PERSPECTIVE,
+                GenerationReferenceTransformation.REFRAME,
+                GenerationReferenceTransformation.RELIGHT,
+                GenerationReferenceTransformation.OPEN_CLOSE,
+                GenerationReferenceTransformation.ADAPT_TO_INTERACTION,
+            ],
+
+            GenerationReferenceRole.STYLE: [
+                GenerationReferenceTransformation.REFRAME,
+                GenerationReferenceTransformation.RELIGHT,
+                GenerationReferenceTransformation.CHANGE_PERSPECTIVE,
+            ],
+
+            GenerationReferenceRole.GENERIC: [
+                GenerationReferenceTransformation.REFRAME,
+                GenerationReferenceTransformation.RELIGHT,
+                GenerationReferenceTransformation.CHANGE_PERSPECTIVE,
+            ],
+        }
+
+        return list(
+            mapping[
+                role
+            ]
+        )
+
+    # ================================================================
+    # DEFAULT ROLE INSTRUCTION
+    # ================================================================
+
+    def _default_usage_instruction(
+        self,
+        role: GenerationReferenceRole,
+    ) -> str:
+
+        mapping = {
+            GenerationReferenceRole.CHARACTER: (
+                "Use this image as a character identity reference. "
+                "Preserve identity-defining characteristics, but do "
+                "not treat the exact pose, facial expression, camera "
+                "angle, lighting, or framing as immutable."
+            ),
+
+            GenerationReferenceRole.LOCATION: (
+                "Use this image as a location identity reference. "
+                "Preserve recognizable environmental identity and "
+                "design language, but allow camera viewpoint, "
+                "perspective, framing, and lighting to adapt to "
+                "the requested shot."
+            ),
+
+            GenerationReferenceRole.PROP: (
+                "Use this image as a prop identity reference. "
+                "Preserve the object's recognizable physical identity, "
+                "but allow orientation, rotation, perspective, visible "
+                "side, open or closed state, and hand interaction to "
+                "change naturally according to the requested action. "
+                "Do not force the camera-facing orientation of the "
+                "reference image into the generated scene."
+            ),
+
+            GenerationReferenceRole.STYLE: (
+                "Use this image only as a visual style reference. "
+                "Transfer rendering language and visual treatment, "
+                "not the depicted objects, environment, composition, "
+                "or camera viewpoint."
+            ),
+
+            GenerationReferenceRole.GENERIC: (
+                "Use this image as a visual reference while preserving "
+                "its relevant identity without copying its exact "
+                "composition."
+            ),
+        }
+
+        return (
+            mapping[
+                role
+            ]
         )
 
     # ================================================================

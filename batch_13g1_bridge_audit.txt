@@ -1,3 +1,10 @@
+STORY-AGENT — BATCH 13G.1 BRIDGE AUDIT
+Generated: Thu Sep  3 19:52:52 WIB 2026
+
+
+============================================================
+FILE: app/models/prompt.py
+============================================================
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
@@ -15,11 +22,6 @@ class PromptAssetReference(BaseModel):
 
     The prompt layer does not decide whether an asset exists.
     It only receives resolved asset references from upstream planning.
-
-    This model describes WHAT physical/canonical asset is available.
-
-    Shot-specific instructions describing HOW that reference may be
-    used belong to PromptReferenceUsage instead.
     """
 
     asset_id: str
@@ -37,54 +39,6 @@ class PromptAssetReference(BaseModel):
     required: bool = True
 
     master_reference_required: bool = False
-
-
-# ================================================================
-# REFERENCE USAGE SEMANTICS
-# ================================================================
-
-
-class PromptReferenceUsage(BaseModel):
-    """
-    Provider-agnostic, shot-specific semantics for one reference asset.
-
-    A PromptAssetReference describes WHAT physical asset is available.
-
-    PromptReferenceUsage describes HOW that asset is allowed to
-    influence one particular shot.
-
-    This distinction is important because the same canonical asset may
-    be used differently across different shots.
-
-    Example:
-
-        A folder may remain closed on a desk in one shot, be opened
-        and read by a character in another shot, and appear in a
-        document close-up in a third shot.
-
-    The canonical asset identity does not change, but the allowed
-    spatial and interaction transformations do.
-
-    Transformation values intentionally remain provider-agnostic
-    strings at the prompt boundary. The generation subsystem owns the
-    canonical GenerationReferenceTransformation contract.
-    """
-
-    asset_id: str
-
-    entity_id: str
-
-    reference_role: str
-
-    preserve_attributes: List[str] = Field(
-        default_factory=list
-    )
-
-    allowed_transformations: List[str] = Field(
-        default_factory=list
-    )
-
-    usage_instruction: Optional[str] = None
 
 
 # ================================================================
@@ -190,11 +144,6 @@ class ShotPromptContext(BaseModel):
 
     Prompt builders should compile from this model instead of reading
     arbitrary upstream dictionaries or inventing missing story facts.
-
-    Reference usage semantics are intentionally not stored here.
-    This context already contains the structured character, prop,
-    environment, and asset information from which those semantics can
-    be compiled.
     """
 
     shot_id: str
@@ -263,13 +212,6 @@ class ProductionPrompt(BaseModel):
 
     negative_prompt:
         contains shot-relevant exclusions only.
-
-    assets:
-        physical/canonical references available to generation.
-
-    reference_usages:
-        shot-specific instructions describing how those references may
-        influence this particular generation request.
     """
 
     shot_id: str
@@ -286,12 +228,6 @@ class ProductionPrompt(BaseModel):
 
     assets: List[
         PromptAssetReference
-    ] = Field(
-        default_factory=list
-    )
-
-    reference_usages: List[
-        PromptReferenceUsage
     ] = Field(
         default_factory=list
     )
@@ -331,3 +267,97 @@ class EpisodeProductionPrompts(BaseModel):
     )
 
     total_shots: int = 0
+============================================================
+FILE: app/models/production.py
+============================================================
+from pydantic import BaseModel
+from typing import List, Optional
+
+
+class CameraPlan(BaseModel):
+
+    shot_type: str
+
+    camera_movement: str
+
+    framing: str
+
+    composition: str
+
+
+class CharacterAction(BaseModel):
+
+    entity_id: str
+
+    action: str
+
+    gesture: Optional[str] = None
+
+    facial_movement: Optional[str] = None
+
+
+class PropAction(BaseModel):
+
+    entity_id: str
+
+    action: str
+
+
+class ShotPlan(BaseModel):
+
+    shot_id: str
+
+    scene_number: int
+
+    duration_seconds: int
+
+    purpose: str
+
+    characters: List[str]
+
+    props: List[str]
+
+    camera: CameraPlan
+
+    character_actions: List[CharacterAction]
+
+    prop_actions: List[PropAction]
+
+    visual_constraints: List[str]
+
+    dialogue: Optional[str] = None
+
+
+class SceneProductionPlan(BaseModel):
+
+    scene_number: int
+
+    duration_seconds: int
+
+    location_id: str
+
+    shot_count: int
+
+    shots: List[ShotPlan]
+
+
+class ProductionPlan(BaseModel):
+
+    episode_id: str
+
+    title: str
+
+    target_duration_seconds: int
+
+    scenes: List[SceneProductionPlan]
+============================================================
+REFERENCE / PROMPT RELATED FILES
+============================================================
+app/assets/resolver.py
+app/engines/asset_planner.py
+app/models/asset.py
+app/models/asset_registry.py
+app/models/prompt.py
+app/prompting/image_prompt_builder.py
+app/prompting/negative_prompt_builder.py
+app/prompting/video_prompt_builder.py

@@ -905,7 +905,7 @@ class EpisodeOrchestrator:
         # ============================================================
 
         if (
-            self.generation_request_compiler
+            self.generation_runner
             is None
         ):
 
@@ -944,25 +944,6 @@ class EpisodeOrchestrator:
                 ],
             },
         })
-
-        # ============================================================
-        # GENERATION DRY-RUN BOUNDARY
-        # ============================================================
-        #
-        # A request compiler without a runner prepares executable
-        # generation requests but performs no provider call.
-        # ============================================================
-
-        if (
-            self.generation_runner
-            is None
-        ):
-
-            results["status"] = (
-                "GENERATION_READY"
-            )
-
-            return results
 
         # ============================================================
         # KEYFRAME GENERATION

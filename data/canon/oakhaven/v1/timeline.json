@@ -1,0 +1,11 @@
+{
+  "timeline_id": "TIMELINE_OAKHAVEN_V1",
+  "universe_id": "UNIVERSE_OAKHAVEN",
+  "canon_version": "1.0",
+  "historical_layer_order": [
+    "HIST_1856",
+    "HIST_1930",
+    "HIST_1970S",
+    "HIST_2026_PRESENT"
+  ]
+}

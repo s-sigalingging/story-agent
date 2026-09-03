@@ -1,0 +1,101 @@
+169-        ]
+170-
+171-        return self._sort_records(
+172-            result
+173-        )
+174-
+175-    # ================================================================
+176-    # FILTERED LOOKUP
+177-    # ================================================================
+178-
+179:    def find(
+180-        self,
+181-        entity_id: Optional[
+182-            str
+183-        ] = None,
+184-        asset_type: Optional[
+185-            RegistryAssetType
+186-        ] = None,
+187-        role: Optional[
+188-            AssetRole
+189-        ] = None,
+190-        status: Optional[
+191-            AssetStatus
+192-        ] = None,
+193-    ) -> List[
+194-        AssetRecord
+195-    ]:
+196-
+197-        result = []
+198-
+199-        for record in (
+200-            self.records.values()
+201-        ):
+202-
+203-            if (
+204-                entity_id is not None
+205-                and
+206-                record.entity_id
+207-                != entity_id
+208-            ):
+209-
+210-                continue
+211-
+212-            if (
+213-                asset_type is not None
+214-                and
+215-                record.asset_type
+216-                != asset_type
+217-            ):
+218-
+219-                continue
+220-
+221-            if (
+222-                role is not None
+223-                and
+224-                record.role
+225-                != role
+226-            ):
+227-
+228-                continue
+229-
+230-            if (
+231-                status is not None
+232-                and
+233-                record.status
+234-                != status
+235-            ):
+236-
+237-                continue
+238-
+239-            result.append(
+240-                record
+241-            )
+242-
+243-        return self._sort_records(
+244-            result
+245-        )
+246-
+247-    # ================================================================
+248-    # APPROVED LOOKUP
+249-    # ================================================================
+250-
+251-    def approved_for_entity(
+252-        self,
+253-        entity_id: str,
+254-        asset_type: Optional[
+255-            RegistryAssetType
+256-        ] = None,
+257-        role: Optional[
+258-            AssetRole
+259-        ] = None,
+260-    ) -> List[
+261-        AssetRecord
+262-    ]:
+263-        """
+264-        Return only production-eligible APPROVED assets.
+265-        """
+266-
+267-        return self.find(
+268-            entity_id=entity_id,
+269-            asset_type=asset_type,

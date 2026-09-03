@@ -1,0 +1,526 @@
+[
+  {
+    "location_id": "LOC_PIKE_HILL_MANOR",
+    "name": "Pike Hill Manor Estate",
+    "description": "The isolated ancestral estate of Oakhaven's founding family, positioned on Pike Hill among persistent fog and pine forest.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Center of inherited Pike family power.",
+      "Repository for surviving family material connected to the 1856 layer."
+    ],
+    "associated_faction_ids": [
+      "FACTION_PIKE_HILL_ELITE"
+    ],
+    "historical_layer_ids": [
+      "HIST_1856"
+    ],
+    "atmosphere_tags": [
+      "isolated",
+      "foggy",
+      "old money",
+      "gothic",
+      "elevated"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "Victorian-Gothic mansion"
+      ],
+      "materials": [
+        "aged stone",
+        "dark timber"
+      ],
+      "landmarks": [
+        "ancestral manor",
+        "surrounding pine forest"
+      ],
+      "environmental_character": [
+        "persistent fog",
+        "secluded hilltop setting"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_ST_JUDES",
+    "name": "St. Jude's Hospital",
+    "description": "A cold institutional hospital associated with medical concealment, missing records, and the suppression of living witnesses.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Medical institution where official diagnoses may conceal hidden events.",
+      "Location associated with missing or manipulated witness records."
+    ],
+    "associated_faction_ids": [
+      "FACTION_PIKE_HILL_ELITE"
+    ],
+    "historical_layer_ids": [],
+    "atmosphere_tags": [
+      "clinical",
+      "cold",
+      "institutional",
+      "uneasy"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "cold concrete institutional building",
+        "dull glass surfaces"
+      ],
+      "materials": [
+        "concrete",
+        "aged glass",
+        "metal"
+      ],
+      "landmarks": [
+        "flickering fluorescent lighting"
+      ],
+      "environmental_character": [
+        "antiseptic smell",
+        "metallic odor",
+        "cold institutional atmosphere"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_CITY_ARCHIVES",
+    "name": "City Archives",
+    "description": "Oakhaven's central historical archive, where surviving documents may be fragmented, miscatalogued, torn, falsified, or separated from their original context.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Primary documentary investigation location.",
+      "Repository of incomplete and manipulated historical evidence.",
+      "Source of clues and interpretive traps."
+    ],
+    "associated_faction_ids": [
+      "FACTION_CUSTODIANS_OF_MEMORY"
+    ],
+    "historical_layer_ids": [
+      "HIST_1856",
+      "HIST_1930",
+      "HIST_1970S"
+    ],
+    "atmosphere_tags": [
+      "dusty",
+      "claustrophobic",
+      "archival",
+      "dim",
+      "historically layered"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "narrow archival corridors",
+        "large wooden shelving"
+      ],
+      "materials": [
+        "aged wood",
+        "paper",
+        "dust"
+      ],
+      "landmarks": [
+        "towering document shelves",
+        "orange desk lamps"
+      ],
+      "environmental_character": [
+        "dim light",
+        "dense paper storage",
+        "quiet enclosed atmosphere"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_DISTRICT_POLICE",
+    "name": "District Police",
+    "description": "The institutional headquarters of the Oakhaven Police Department, where public narratives are enforced and evidence may disappear through concealment, corruption, or bureaucracy.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [
+      "LOC_OPD_BASEMENT_HOLDING_CELLS"
+    ],
+    "narrative_functions": [
+      "Center of OPD institutional authority.",
+      "Location for investigation, obstruction, evidence handling, and internal conflict."
+    ],
+    "associated_faction_ids": [
+      "FACTION_OPD"
+    ],
+    "historical_layer_ids": [
+      "HIST_2026_PRESENT"
+    ],
+    "atmosphere_tags": [
+      "bureaucratic",
+      "institutional",
+      "damp",
+      "oppressive"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "weathered red-brick police building",
+        "damp underground holding spaces"
+      ],
+      "materials": [
+        "aged brick",
+        "wood",
+        "paper",
+        "metal"
+      ],
+      "landmarks": [
+        "manual case-file desks",
+        "wooden evidence boards",
+        "basement holding cells"
+      ],
+      "environmental_character": [
+        "cluttered files",
+        "institutional decay",
+        "humid lower levels"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_THE_ANCHOR",
+    "name": "The Anchor",
+    "description": "A coffee shop and bar functioning as neutral ground for rumors, independent testimony, confidential conversations, and exchanges between institutional and street-level knowledge networks.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Neutral ground.",
+      "Information exchange point.",
+      "Meeting place for confidential dialogue and informal testimony."
+    ],
+    "associated_faction_ids": [
+      "FACTION_CUSTODIANS_OF_MEMORY"
+    ],
+    "historical_layer_ids": [],
+    "atmosphere_tags": [
+      "intimate",
+      "dark wood",
+      "smoky",
+      "neutral",
+      "street-level"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "corner coffee shop and bar",
+        "dark wooden interior"
+      ],
+      "materials": [
+        "dark wood"
+      ],
+      "landmarks": [
+        "street-corner frontage",
+        "coffee and bar interior"
+      ],
+      "environmental_character": [
+        "roasted coffee aroma",
+        "tobacco scent",
+        "low-key conversational atmosphere"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_CENTRAL_DEPOT",
+    "name": "Central Depot & Train Station",
+    "description": "Oakhaven's eastern rail and freight hub, used for legitimate transport as well as covert movement of documents, cargo, and people.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Secret logistics hub.",
+      "Covert transportation route.",
+      "Location for rail-based investigation, escape, and evidence movement."
+    ],
+    "associated_faction_ids": [
+      "FACTION_SHADOW_OPERATIVES"
+    ],
+    "historical_layer_ids": [],
+    "atmosphere_tags": [
+      "industrial",
+      "rusted",
+      "oily",
+      "railway",
+      "smoky"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "industrial railway infrastructure",
+        "freight loading areas"
+      ],
+      "materials": [
+        "rusted steel",
+        "rail metal",
+        "oil-stained surfaces"
+      ],
+      "landmarks": [
+        "rusted tracks",
+        "abandoned coal cars"
+      ],
+      "environmental_character": [
+        "lubricating oil smell",
+        "industrial smoke",
+        "distant metal noise"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_TENEMENTS",
+    "name": "The Tenements",
+    "description": "A dense working-class residential district where collective memory and oral history preserve distorted fragments of Oakhaven's past.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Working-class residential center.",
+      "Source of oral history and community memory.",
+      "Counterpoint to official documentary history."
+    ],
+    "associated_faction_ids": [
+      "FACTION_WATERFRONT_COLLECTIVE"
+    ],
+    "historical_layer_ids": [
+      "HIST_1930"
+    ],
+    "atmosphere_tags": [
+      "dense",
+      "working class",
+      "damp",
+      "residential",
+      "communal"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "closely packed brick housing",
+        "external iron stairways",
+        "narrow residential alleys"
+      ],
+      "materials": [
+        "brick",
+        "iron",
+        "weathered fabric"
+      ],
+      "landmarks": [
+        "external staircases",
+        "laundry lines"
+      ],
+      "environmental_character": [
+        "humid corridors",
+        "dense community presence"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_BLACKWOOD",
+    "name": "Blackwood Cemetery & Salt Marsh",
+    "description": "A dangerous cemetery and salt-marsh region containing physical evidence of the 1930 tragedy and governed by tide-dependent access.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [
+      "LOC_BLACKWOOD_TIDELAND_PATH"
+    ],
+    "narrative_functions": [
+      "Physical repository of evidence connected to the 1930 tragedy.",
+      "Geographically constrained investigation location.",
+      "Environment for concealment, recovery, and movement of evidence."
+    ],
+    "associated_faction_ids": [
+      "FACTION_SHADOW_OPERATIVES"
+    ],
+    "historical_layer_ids": [
+      "HIST_1930"
+    ],
+    "atmosphere_tags": [
+      "marsh",
+      "muddy",
+      "isolated",
+      "dangerous",
+      "tide-dependent"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "old stone cemetery structures"
+      ],
+      "materials": [
+        "old stone",
+        "black mud",
+        "marsh water"
+      ],
+      "landmarks": [
+        "partially sunken gravestones",
+        "dead leafless trees"
+      ],
+      "environmental_character": [
+        "black marsh mud",
+        "salt-marsh isolation",
+        "restricted natural access"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_OLD_DOCKS",
+    "name": "The Old Docks & Warehouses",
+    "description": "Oakhaven's aging southern waterfront and warehouse district, where Arc 1 begins and surviving material associated with PL-1930 has remained hidden or forgotten.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Primary Arc 1 crime scene.",
+      "Waterfront investigation location.",
+      "Storage area historically associated with PL-1930 material."
+    ],
+    "associated_faction_ids": [
+      "FACTION_WATERFRONT_COLLECTIVE"
+    ],
+    "historical_layer_ids": [
+      "HIST_1930",
+      "HIST_2026_PRESENT"
+    ],
+    "atmosphere_tags": [
+      "maritime",
+      "industrial decay",
+      "weathered",
+      "rusted",
+      "working waterfront"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "weathered wooden docks",
+        "aging waterfront warehouses"
+      ],
+      "materials": [
+        "old timber",
+        "rusted metal",
+        "weathered containers"
+      ],
+      "landmarks": [
+        "wooden piers",
+        "rusted cargo containers",
+        "warehouse structures"
+      ],
+      "environmental_character": [
+        "waves striking timber supports",
+        "maritime moisture",
+        "industrial decay"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_FISH_MARKET_ALLEY",
+    "name": "Fish Market Alley",
+    "description": "A wet maze of narrow market alleys functioning as both an escape route and a black-market information exchange.",
+    "status": "HARD_CANON",
+    "parent_location_id": null,
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Street-level information market.",
+      "Black-market exchange point.",
+      "Labyrinthine escape environment."
+    ],
+    "associated_faction_ids": [
+      "FACTION_WATERFRONT_COLLECTIVE"
+    ],
+    "historical_layer_ids": [],
+    "atmosphere_tags": [
+      "wet",
+      "narrow",
+      "market",
+      "working class",
+      "labyrinthine"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "narrow market alleys"
+      ],
+      "materials": [
+        "wet pavement",
+        "market timber",
+        "metal fixtures"
+      ],
+      "landmarks": [
+        "bare hanging bulbs",
+        "fish-market stalls"
+      ],
+      "environmental_character": [
+        "wet ground",
+        "fish scales underfoot",
+        "crowded alley texture"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_OPD_BASEMENT_HOLDING_CELLS",
+    "name": "OPD Basement Holding Cells",
+    "description": "The damp underground holding-cell area beneath District Police.",
+    "status": "HARD_CANON",
+    "parent_location_id": "LOC_DISTRICT_POLICE",
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Persistent detention area within District Police."
+    ],
+    "associated_faction_ids": [
+      "FACTION_OPD"
+    ],
+    "historical_layer_ids": [],
+    "atmosphere_tags": [
+      "underground",
+      "damp",
+      "institutional",
+      "confined"
+    ],
+    "visual_identity": {
+      "architecture": [
+        "underground holding cells"
+      ],
+      "materials": [
+        "aged masonry",
+        "metal"
+      ],
+      "landmarks": [
+        "holding cells"
+      ],
+      "environmental_character": [
+        "damp underground atmosphere"
+      ]
+    }
+  },
+  {
+    "location_id": "LOC_BLACKWOOD_TIDELAND_PATH",
+    "name": "The Tideland Path",
+    "description": "A hidden mud path through the Blackwood salt marsh that becomes traversable only during the canonical low-tide window.",
+    "status": "HARD_CANON",
+    "parent_location_id": "LOC_BLACKWOOD",
+    "sublocation_ids": [],
+    "narrative_functions": [
+      "Secret access route through Blackwood.",
+      "Time-constrained route for investigation, concealment, and evidence recovery."
+    ],
+    "associated_faction_ids": [
+      "FACTION_SHADOW_OPERATIVES"
+    ],
+    "historical_layer_ids": [
+      "HIST_1930"
+    ],
+    "atmosphere_tags": [
+      "hidden",
+      "muddy",
+      "tidal",
+      "dangerous",
+      "time-constrained"
+    ],
+    "visual_identity": {
+      "architecture": [],
+      "materials": [
+        "black marsh mud",
+        "salt water"
+      ],
+      "landmarks": [
+        "temporary mud path through the marsh"
+      ],
+      "environmental_character": [
+        "exposed only during low tide",
+        "cold hazardous marsh environment"
+      ]
+    }
+  }
+]

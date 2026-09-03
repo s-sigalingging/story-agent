@@ -42,6 +42,64 @@ class GenerationStatus(
 
 
 # ================================================================
+# REFERENCE ROLE
+# ================================================================
+
+
+class GenerationReferenceRole(
+    str,
+    Enum,
+):
+    """
+    Semantic role played by one physical reference during generation.
+
+    This is deliberately separate from the permanent asset registry.
+
+    The same physical asset may be used with different generation
+    semantics in different shots.
+    """
+
+    CHARACTER = "CHARACTER"
+    LOCATION = "LOCATION"
+    PROP = "PROP"
+    STYLE = "STYLE"
+    GENERIC = "GENERIC"
+
+
+# ================================================================
+# REFERENCE TRANSFORMATION
+# ================================================================
+
+
+class GenerationReferenceTransformation(
+    str,
+    Enum,
+):
+    """
+    Transformations that a provider may apply while preserving the
+    semantic identity of a reference.
+
+    These describe permission, not a mandatory action.
+    """
+
+    ROTATE = "ROTATE"
+    CHANGE_PERSPECTIVE = "CHANGE_PERSPECTIVE"
+    CHANGE_VIEWPOINT = "CHANGE_VIEWPOINT"
+
+    REFRAME = "REFRAME"
+    RELIGHT = "RELIGHT"
+
+    CHANGE_POSE = "CHANGE_POSE"
+    CHANGE_EXPRESSION = "CHANGE_EXPRESSION"
+
+    OPEN_CLOSE = "OPEN_CLOSE"
+
+    ADAPT_TO_INTERACTION = (
+        "ADAPT_TO_INTERACTION"
+    )
+
+
+# ================================================================
 # REFERENCE ASSET
 # ================================================================
 
@@ -51,6 +109,16 @@ class GenerationReferenceAsset(
 ):
     """
     Physical reference asset supplied to a generation provider.
+
+    The asset identifies WHAT visual source is available.
+
+    reference_role / preserve_attributes / allowed_transformations /
+    usage_instruction describe HOW that source should influence this
+    specific generation request.
+
+    This distinction prevents providers from treating the exact pose,
+    camera-facing side, or perspective of a master reference as an
+    invariant when only its identity should remain invariant.
     """
 
     asset_id: str
@@ -70,6 +138,30 @@ class GenerationReferenceAsset(
     required: bool = True
 
     master_reference_required: bool = False
+
+    # ------------------------------------------------------------
+    # Generation-time usage semantics
+    # ------------------------------------------------------------
+
+    reference_role: Optional[
+        GenerationReferenceRole
+    ] = None
+
+    preserve_attributes: List[
+        str
+    ] = Field(
+        default_factory=list
+    )
+
+    allowed_transformations: List[
+        GenerationReferenceTransformation
+    ] = Field(
+        default_factory=list
+    )
+
+    usage_instruction: Optional[
+        str
+    ] = None
 
 
 # ================================================================

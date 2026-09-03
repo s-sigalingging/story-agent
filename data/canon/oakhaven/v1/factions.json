@@ -1,0 +1,91 @@
+[
+  {
+    "faction_id": "FACTION_PIKE_HILL_ELITE",
+    "name": "The Pike Hill Elite",
+    "description": "Descendants of Oakhaven's founding families, property interests, and senior officials whose power is tied to inherited status and land legitimacy.",
+    "status": "HARD_CANON",
+    "motivations": [
+      "Protect inherited social status.",
+      "Protect the perceived legitimacy of inherited land ownership.",
+      "Avoid public discredit.",
+      "Avoid financial collapse caused by challenges to historical land legitimacy."
+    ],
+    "knowledge_limits": [
+      "The present generation believes their ancestors acquired Oakhaven land legally in 1856.",
+      "They do not know that the deeper historical evidence points to an illegal foundation in 1856.",
+      "When PL-1930 surfaces, they misunderstand its true significance and initially interpret it as evidence of ordinary corruption or murder.",
+      "Faction membership does not imply that every member possesses identical knowledge."
+    ]
+  },
+  {
+    "faction_id": "FACTION_OPD",
+    "name": "Oakhaven Police Department",
+    "description": "Oakhaven's local police institution, divided between institutional preservation and field investigators confronting irregularities in the city.",
+    "status": "HARD_CANON",
+    "motivations": [
+      "Maintain institutional stability.",
+      "Preserve public order.",
+      "Avoid reopening historical problems that could destabilize the city.",
+      "For some field personnel, investigate unexplained events despite institutional pressure."
+    ],
+    "knowledge_limits": [
+      "The institution is internally divided and does not possess a single unified understanding of Oakhaven's history.",
+      "Institutional personnel may suppress or reclassify cases without understanding the complete historical truth behind them.",
+      "Field investigators may encounter evidence that senior personnel have not seen or do not acknowledge.",
+      "Faction membership does not imply shared omniscience."
+    ]
+  },
+  {
+    "faction_id": "FACTION_CUSTODIANS_OF_MEMORY",
+    "name": "The Custodians of Memory",
+    "description": "Old librarians, document custodians, and independent local journalists associated with Oakhaven's surviving historical record.",
+    "status": "HARD_CANON",
+    "motivations": [
+      "Identify patterns within Oakhaven's fragmented historical record.",
+      "Preserve surviving documentary evidence.",
+      "Understand missing or damaged portions of the city's history."
+    ],
+    "knowledge_limits": [
+      "They possess incomplete and fragmented historical evidence.",
+      "They may sincerely misinterpret evidence because surviving documents were torn, rearranged, altered, or removed by earlier generations.",
+      "Their interpretations are not automatically equivalent to world truth.",
+      "Faction membership does not imply that every custodian has encountered the same records."
+    ]
+  },
+  {
+    "faction_id": "FACTION_WATERFRONT_COLLECTIVE",
+    "name": "The Waterfront Collective",
+    "description": "Dockworkers, fishermen, factory workers, and working-class residents connected to the Tenements, Old Docks, and Fish Market.",
+    "status": "HARD_CANON",
+    "motivations": [
+      "Survive within Oakhaven's working-class districts.",
+      "Protect community solidarity.",
+      "Protect members of the waterfront community.",
+      "Remain cautious of central authorities, particularly OPD and Pike Hill."
+    ],
+    "knowledge_limits": [
+      "Their historical knowledge is primarily oral rather than documentary.",
+      "Family rumors and inherited stories preserve fragments of the 1930 tragedy.",
+      "Oral history has been distorted across generations by myth, exaggeration, and incomplete transmission.",
+      "Some key historical facts survive within these stories even though the community does not possess the complete truth.",
+      "Faction membership does not imply identical knowledge of every rumor or oral tradition."
+    ]
+  },
+  {
+    "faction_id": "FACTION_SHADOW_OPERATIVES",
+    "name": "The Shadow Operatives",
+    "description": "Former law-enforcement personnel, private security actors, and black-market intermediaries used to perform violent or illicit cleanup operations.",
+    "status": "HARD_CANON",
+    "motivations": [
+      "Carry out paid assignments.",
+      "Follow instructions from powerful clients or intermediaries.",
+      "Protect their own operational survival and anonymity."
+    ],
+    "knowledge_limits": [
+      "They execute killings, kidnappings, intimidation, and document destruction without understanding the deeper historical meaning of their targets.",
+      "They do not know the true significance of the documents they are ordered to recover or destroy.",
+      "Operational instructions do not imply access to the client's complete knowledge or motive.",
+      "Faction membership does not imply shared omniscience."
+    ]
+  }
+]

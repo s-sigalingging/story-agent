@@ -1,0 +1,1491 @@
+STORY-AGENT — BATCH 13G.1 SOURCE AUDIT
+Generated: Thu Sep  3 19:49:41 WIB 2026
+
+============================================================
+PROJECT FILE STRUCTURE
+============================================================
+app/generation/__init__.py
+app/generation/artifact_store.py
+app/generation/keyframe_generator.py
+app/generation/providers/__init__.py
+app/generation/providers/artifact_fake.py
+app/generation/providers/base.py
+app/generation/providers/fake.py
+app/generation/providers/gemini.py
+app/generation/providers/gemini_contract.py
+app/generation/providers/gemini_mapper.py
+app/generation/request_compiler.py
+app/generation/runner.py
+app/generation/store.py
+app/models/__init__.py
+app/models/analysis.py
+app/models/asset.py
+app/models/asset_registry.py
+app/models/character_role.py
+app/models/continuity.py
+app/models/episode.py
+app/models/generation.py
+app/models/generation_provider.py
+app/models/production.py
+app/models/prompt.py
+app/models/prop_content.py
+app/models/scene_analysis.py
+app/models/state.py
+app/models/story_structure.py
+app/models/world.py
+
+============================================================
+FILE: app/generation/request_compiler.py
+============================================================
+from typing import List
+
+from app.models.generation import (
+    GenerationOutputSpec,
+    GenerationReferenceAsset,
+    GenerationRequest,
+    GenerationType,
+)
+
+from app.models.prompt import (
+    EpisodeProductionPrompts,
+    ProductionPrompt,
+)
+
+
+class GenerationRequestCompiler:
+    """
+    Converts provider-agnostic production prompts into
+    provider-agnostic generation requests.
+
+    This compiler is the boundary between the prompt pipeline
+    and the generation execution subsystem.
+
+    Responsibilities:
+
+    - create one KEYFRAME request per ProductionPrompt
+    - preserve episode and shot lineage
+    - forward image and negative prompts
+    - forward resolved physical reference assets
+    - define provider-agnostic output requirements
+
+    This compiler must not:
+
+    - call generation providers
+    - perform asset resolution
+    - perform asset validation
+    - implement retry behavior
+    - make creative approval decisions
+    """
+
+    def __init__(
+        self,
+        default_width: int = 1024,
+        default_height: int = 1024,
+        default_aspect_ratio: str = "1:1",
+        default_output_format: str = "png",
+    ):
+
+        if default_width < 1:
+
+            raise ValueError(
+                "default_width must be at least 1."
+            )
+
+        if default_height < 1:
+
+            raise ValueError(
+                "default_height must be at least 1."
+            )
+
+        if not default_aspect_ratio.strip():
+
+            raise ValueError(
+                "default_aspect_ratio cannot be empty."
+            )
+
+        if not default_output_format.strip():
+
+            raise ValueError(
+                "default_output_format cannot be empty."
+            )
+
+        self.output_spec = (
+            GenerationOutputSpec(
+                width=default_width,
+                height=default_height,
+                aspect_ratio=(
+                    default_aspect_ratio
+                ),
+                output_format=(
+                    default_output_format
+                ),
+            )
+        )
+
+    # ================================================================
+    # COMPILE EPISODE
+    # ================================================================
+
+    def compile(
+        self,
+        prompts: EpisodeProductionPrompts,
+    ) -> List[
+        GenerationRequest
+    ]:
+        """
+        Compile all shot prompts in one episode into KEYFRAME
+        generation requests.
+        """
+
+        requests = []
+
+        for scene in prompts.scenes:
+
+            for prompt in scene.prompts:
+
+                requests.append(
+                    self.compile_prompt(
+                        episode_id=(
+                            prompts.episode_id
+                        ),
+                        prompt=prompt,
+                    )
+                )
+
+        return requests
+
+    # ================================================================
+    # COMPILE ONE PROMPT
+    # ================================================================
+
+    def compile_prompt(
+        self,
+        episode_id: str,
+        prompt: ProductionPrompt,
+    ) -> GenerationRequest:
+
+        if not episode_id.strip():
+
+            raise ValueError(
+                "episode_id cannot be empty."
+            )
+
+        if not prompt.shot_id.strip():
+
+            raise ValueError(
+                "ProductionPrompt shot_id "
+                "cannot be empty."
+            )
+
+        if not prompt.image_prompt.strip():
+
+            raise ValueError(
+                "ProductionPrompt image_prompt "
+                "cannot be empty."
+            )
+
+        reference_assets = (
+            self._compile_reference_assets(
+                prompt
+            )
+        )
+
+        request_id = (
+            self._request_id(
+                episode_id=episode_id,
+                shot_id=prompt.shot_id,
+            )
+        )
+
+        return (
+            GenerationRequest(
+                request_id=request_id,
+                episode_id=episode_id,
+                shot_id=prompt.shot_id,
+                generation_type=(
+                    GenerationType.KEYFRAME
+                ),
+                prompt=(
+                    prompt.image_prompt
+                ),
+                negative_prompt=(
+                    prompt.negative_prompt
+                ),
+                reference_assets=(
+                    reference_assets
+                ),
+                output=(
+                    self.output_spec.model_copy(
+                        deep=True
+                    )
+                ),
+                metadata={
+                    "scene_number": str(
+                        prompt.scene_number
+                    ),
+                    "duration_seconds": str(
+                        prompt.duration_seconds
+                    ),
+                    "source": (
+                        "PRODUCTION_PROMPTS"
+                    ),
+                },
+            )
+        )
+
+    # ================================================================
+    # REFERENCE ASSETS
+    # ================================================================
+
+    def _compile_reference_assets(
+        self,
+        prompt: ProductionPrompt,
+    ) -> List[
+        GenerationReferenceAsset
+    ]:
+
+        references = []
+
+        for asset in prompt.assets:
+
+            reference_path = (
+                asset.reference_path
+            )
+
+            # --------------------------------------------------------
+            # Generation providers can only consume physical
+            # references.
+            #
+            # Logical unresolved assets remain an upstream concern
+            # and must not be invented here.
+            # --------------------------------------------------------
+
+            if (
+                reference_path is None
+                or
+                not reference_path.strip()
+            ):
+
+                continue
+
+            references.append(
+                GenerationReferenceAsset(
+                    asset_id=(
+                        asset.asset_id
+                    ),
+                    entity_id=(
+                        asset.entity_id
+                    ),
+                    asset_type=(
+                        asset.asset_type
+                    ),
+                    name=(
+                        asset.name
+                    ),
+                    reference_path=(
+                        reference_path
+                    ),
+                    purpose=(
+                        asset.purpose
+                    ),
+                    required=(
+                        asset.required
+                    ),
+                    master_reference_required=(
+                        asset.master_reference_required
+                    ),
+                )
+            )
+
+        return references
+
+    # ================================================================
+    # REQUEST ID
+    # ================================================================
+
+    def _request_id(
+        self,
+        episode_id: str,
+        shot_id: str,
+    ) -> str:
+        """
+        Build a deterministic request ID.
+
+        Recompiling the same episode/shot therefore produces the
+        same logical generation request identifier.
+        """
+
+        return (
+            f"GEN_REQ_"
+            f"{episode_id}_"
+            f"{shot_id}"
+        )
+============================================================
+FILE: app/generation/keyframe_generator.py
+============================================================
+from app.generation.providers.base import (
+    GenerationProvider,
+)
+
+from app.models.generation import (
+    GenerationRequest,
+    GenerationResult,
+    GenerationStatus,
+    GenerationType,
+)
+
+
+class KeyframeGenerator:
+    """
+    Provider-agnostic execution engine for keyframe generation.
+
+    The generator coordinates one GenerationRequest with one
+    GenerationProvider.
+
+    Batch 12D intentionally performs a single attempt only.
+
+    Retry policy and exception recovery belong to a later generation
+    orchestration layer.
+    """
+
+    def __init__(
+        self,
+        provider: GenerationProvider,
+    ):
+
+        self.provider = provider
+
+    # ================================================================
+    # GENERATE
+    # ================================================================
+
+    def generate(
+        self,
+        request: GenerationRequest,
+    ) -> GenerationResult:
+        """
+        Execute one keyframe generation attempt.
+
+        The provider returns a GenerationAttempt.
+
+        The generator converts that attempt into the aggregate
+        GenerationResult contract used by downstream systems.
+        """
+
+        self._validate_request(
+            request
+        )
+
+        attempt = (
+            self.provider.generate(
+                request=request,
+                attempt_number=1,
+            )
+        )
+
+        self._validate_attempt(
+            request=request,
+            attempt=attempt,
+        )
+
+        if (
+            attempt.status
+            == GenerationStatus.SUCCEEDED
+        ):
+
+            outputs = list(
+                attempt.outputs
+            )
+
+            return (
+                GenerationResult(
+                    request_id=(
+                        request.request_id
+                    ),
+                    episode_id=(
+                        request.episode_id
+                    ),
+                    shot_id=(
+                        request.shot_id
+                    ),
+                    generation_type=(
+                        request.generation_type
+                    ),
+                    status=(
+                        GenerationStatus.SUCCEEDED
+                    ),
+                    attempts=[
+                        attempt
+                    ],
+                    outputs=(
+                        outputs
+                    ),
+                    selected_output_id=None,
+                    metadata={
+                        "provider": (
+                            self.provider.name
+                        ),
+                        "attempt_count": "1",
+                    },
+                )
+            )
+
+        return (
+            GenerationResult(
+                request_id=(
+                    request.request_id
+                ),
+                episode_id=(
+                    request.episode_id
+                ),
+                shot_id=(
+                    request.shot_id
+                ),
+                generation_type=(
+                    request.generation_type
+                ),
+                status=(
+                    GenerationStatus.FAILED
+                ),
+                attempts=[
+                    attempt
+                ],
+                outputs=[],
+                selected_output_id=None,
+                metadata={
+                    "provider": (
+                        self.provider.name
+                    ),
+                    "attempt_count": "1",
+                },
+            )
+        )
+
+    # ================================================================
+    # REQUEST VALIDATION
+    # ================================================================
+
+    def _validate_request(
+        self,
+        request: GenerationRequest,
+    ) -> None:
+
+        if (
+            request.generation_type
+            != GenerationType.KEYFRAME
+        ):
+
+            raise ValueError(
+                "KeyframeGenerator only supports "
+                "KEYFRAME generation requests."
+            )
+
+        if (
+            not request.request_id.strip()
+        ):
+
+            raise ValueError(
+                "Generation request_id "
+                "cannot be empty."
+            )
+
+        if (
+            not request.episode_id.strip()
+        ):
+
+            raise ValueError(
+                "Generation episode_id "
+                "cannot be empty."
+            )
+
+        if (
+            not request.shot_id.strip()
+        ):
+
+            raise ValueError(
+                "Generation shot_id "
+                "cannot be empty."
+            )
+
+        if (
+            not request.prompt.strip()
+        ):
+
+            raise ValueError(
+                "Keyframe generation prompt "
+                "cannot be empty."
+            )
+
+    # ================================================================
+    # ATTEMPT VALIDATION
+    # ================================================================
+
+    def _validate_attempt(
+        self,
+        request: GenerationRequest,
+        attempt,
+    ) -> None:
+        """
+        Protect the core pipeline from malformed provider adapters.
+
+        Provider implementations must preserve request lineage.
+        """
+
+        if (
+            attempt.request_id
+            != request.request_id
+        ):
+
+            raise ValueError(
+                "Provider returned an attempt "
+                "for a different request_id."
+            )
+
+        if (
+            attempt.attempt_number
+            != 1
+        ):
+
+            raise ValueError(
+                "Provider returned an unexpected "
+                "attempt number."
+            )
+
+        if (
+            attempt.status
+            == GenerationStatus.SUCCEEDED
+            and
+            not attempt.outputs
+        ):
+
+            raise ValueError(
+                "Successful generation attempt "
+                "must contain at least one output."
+            )
+
+        if (
+            attempt.status
+            == GenerationStatus.FAILED
+            and
+            attempt.error
+            is None
+        ):
+
+            raise ValueError(
+                "Failed generation attempt "
+                "must contain structured error "
+                "information."
+            )
+
+        if (
+            attempt.status
+            not in {
+                GenerationStatus.SUCCEEDED,
+                GenerationStatus.FAILED,
+            }
+        ):
+
+            raise ValueError(
+                "Provider returned a non-terminal "
+                "generation attempt status."
+            )
+============================================================
+FILE: app/generation/runner.py
+============================================================
+from typing import Optional
+
+from app.generation.providers.base import (
+    GenerationProvider,
+)
+
+from app.generation.store import (
+    GenerationStore,
+)
+
+from app.models.generation import (
+    GenerationAttempt,
+    GenerationRequest,
+    GenerationResult,
+    GenerationStatus,
+    GenerationType,
+)
+
+
+class GenerationRunner:
+    """
+    Retry-aware execution coordinator.
+
+    The runner owns technical retry policy.
+
+    It does not perform creative review or output approval.
+    """
+
+    def __init__(
+        self,
+        provider: GenerationProvider,
+        max_attempts: int = 3,
+        store: Optional[
+            GenerationStore
+        ] = None,
+    ):
+
+        if (
+            max_attempts
+            < 1
+        ):
+
+            raise ValueError(
+                "max_attempts must be at least 1."
+            )
+
+        self.provider = provider
+
+        self.max_attempts = (
+            max_attempts
+        )
+
+        self.store = store
+
+    # ================================================================
+    # RUN
+    # ================================================================
+
+    def run(
+        self,
+        request: GenerationRequest,
+    ) -> GenerationResult:
+
+        self._validate_request(
+            request
+        )
+
+        self._ensure_persisted(
+            request
+        )
+
+        attempts = []
+        outputs = []
+
+        final_status = (
+            GenerationStatus.FAILED
+        )
+
+        for attempt_number in range(
+            1,
+            self.max_attempts + 1,
+        ):
+
+            attempt = (
+                self.provider.generate(
+                    request=request,
+                    attempt_number=(
+                        attempt_number
+                    ),
+                )
+            )
+
+            self._validate_attempt(
+                request=request,
+                attempt=attempt,
+                expected_attempt_number=(
+                    attempt_number
+                ),
+            )
+
+            attempts.append(
+                attempt
+            )
+
+            # ========================================================
+            # SUCCESS
+            # ========================================================
+
+            if (
+                attempt.status
+                == GenerationStatus.SUCCEEDED
+            ):
+
+                outputs.extend(
+                    attempt.outputs
+                )
+
+                final_status = (
+                    GenerationStatus.SUCCEEDED
+                )
+
+                break
+
+            # ========================================================
+            # FAILURE
+            # ========================================================
+
+            error = (
+                attempt.error
+            )
+
+            if (
+                error is None
+            ):
+
+                break
+
+            if (
+                not error.retryable
+            ):
+
+                break
+
+        result = (
+            GenerationResult(
+                request_id=(
+                    request.request_id
+                ),
+                episode_id=(
+                    request.episode_id
+                ),
+                shot_id=(
+                    request.shot_id
+                ),
+                generation_type=(
+                    request.generation_type
+                ),
+                status=(
+                    final_status
+                ),
+                attempts=(
+                    attempts
+                ),
+                outputs=(
+                    outputs
+                ),
+                selected_output_id=None,
+                metadata={
+                    "provider": (
+                        self.provider.name
+                    ),
+                    "attempt_count": (
+                        str(
+                            len(attempts)
+                        )
+                    ),
+                    "max_attempts": (
+                        str(
+                            self.max_attempts
+                        )
+                    ),
+                },
+            )
+        )
+
+        self._persist_result(
+            result
+        )
+
+        return result
+
+    # ================================================================
+    # REQUEST VALIDATION
+    # ================================================================
+
+    def _validate_request(
+        self,
+        request: GenerationRequest,
+    ) -> None:
+
+        if (
+            request.generation_type
+            != GenerationType.KEYFRAME
+        ):
+
+            raise ValueError(
+                "GenerationRunner currently "
+                "supports KEYFRAME requests only."
+            )
+
+        if (
+            not request.request_id.strip()
+        ):
+
+            raise ValueError(
+                "request_id cannot be empty."
+            )
+
+        if (
+            not request.episode_id.strip()
+        ):
+
+            raise ValueError(
+                "episode_id cannot be empty."
+            )
+
+        if (
+            not request.shot_id.strip()
+        ):
+
+            raise ValueError(
+                "shot_id cannot be empty."
+            )
+
+        if (
+            not request.prompt.strip()
+        ):
+
+            raise ValueError(
+                "Generation prompt cannot be empty."
+            )
+
+    # ================================================================
+    # ATTEMPT VALIDATION
+    # ================================================================
+
+    def _validate_attempt(
+        self,
+        request: GenerationRequest,
+        attempt: GenerationAttempt,
+        expected_attempt_number: int,
+    ) -> None:
+
+        if (
+            attempt.request_id
+            != request.request_id
+        ):
+
+            raise ValueError(
+                "Provider returned attempt "
+                "for a different request."
+            )
+
+        if (
+            attempt.attempt_number
+            != expected_attempt_number
+        ):
+
+            raise ValueError(
+                "Provider returned incorrect "
+                "attempt number."
+            )
+
+        if (
+            attempt.status
+            == GenerationStatus.SUCCEEDED
+        ):
+
+            if (
+                not attempt.outputs
+            ):
+
+                raise ValueError(
+                    "Successful attempt must "
+                    "contain output."
+                )
+
+            return
+
+        if (
+            attempt.status
+            == GenerationStatus.FAILED
+        ):
+
+            if (
+                attempt.error
+                is None
+            ):
+
+                raise ValueError(
+                    "Failed attempt must contain "
+                    "structured error information."
+                )
+
+            return
+
+        raise ValueError(
+            "Provider returned non-terminal "
+            "generation status."
+        )
+
+    # ================================================================
+    # PERSISTENCE
+    # ================================================================
+
+    def _ensure_persisted(
+        self,
+        request: GenerationRequest,
+    ) -> None:
+
+        if (
+            self.store
+            is None
+        ):
+
+            return
+
+        exists = (
+            self.store.exists(
+                episode_id=(
+                    request.episode_id
+                ),
+                request_id=(
+                    request.request_id
+                ),
+            )
+        )
+
+        if not exists:
+
+            self.store.create(
+                request
+            )
+
+    def _persist_result(
+        self,
+        result: GenerationResult,
+    ) -> None:
+
+        if (
+            self.store
+            is None
+        ):
+
+            return
+
+        self.store.save_result(
+            result
+        )
+============================================================
+FILE: app/generation/__init__.py
+============================================================
+from app.generation.artifact_store import (
+    GenerationArtifactStore,
+)
+
+from app.generation.keyframe_generator import (
+    KeyframeGenerator,
+)
+
+from app.generation.providers import (
+    ArtifactFakeGenerationProvider,
+    FakeGenerationProvider,
+    GenerationProvider,
+    GeminiGenerationPlan,
+    GeminiGenerationProvider,
+    GeminiInputImage,
+    GeminiRequestMapper,
+)
+
+from app.generation.request_compiler import (
+    GenerationRequestCompiler,
+)
+
+from app.generation.runner import (
+    GenerationRunner,
+)
+
+from app.generation.store import (
+    GenerationStore,
+)
+
+
+__all__ = [
+    "ArtifactFakeGenerationProvider",
+    "FakeGenerationProvider",
+    "GenerationArtifactStore",
+    "GenerationProvider",
+    "GenerationRequestCompiler",
+    "GenerationRunner",
+    "GenerationStore",
+    "GeminiGenerationPlan",
+    "GeminiGenerationProvider",
+    "GeminiInputImage",
+    "GeminiRequestMapper",
+    "KeyframeGenerator",
+]
+============================================================
+FILE: app/models/generation.py
+============================================================
+from enum import Enum
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel, Field
+
+
+# ================================================================
+# GENERATION TYPE
+# ================================================================
+
+
+class GenerationType(
+    str,
+    Enum,
+):
+    """
+    Type of media generation requested by the production pipeline.
+    """
+
+    KEYFRAME = "KEYFRAME"
+
+
+# ================================================================
+# GENERATION STATUS
+# ================================================================
+
+
+class GenerationStatus(
+    str,
+    Enum,
+):
+    """
+    Technical lifecycle state of one generation attempt/result.
+
+    Creative approval is intentionally not part of this enum.
+    """
+
+    PENDING = "PENDING"
+    RUNNING = "RUNNING"
+    SUCCEEDED = "SUCCEEDED"
+    FAILED = "FAILED"
+
+
+# ================================================================
+# REFERENCE ROLE
+# ================================================================
+
+
+class GenerationReferenceRole(
+    str,
+    Enum,
+):
+    """
+    Semantic role played by one physical reference during generation.
+
+    This is deliberately separate from the permanent asset registry.
+
+    The same physical asset may be used with different generation
+    semantics in different shots.
+    """
+
+    CHARACTER = "CHARACTER"
+    LOCATION = "LOCATION"
+    PROP = "PROP"
+    STYLE = "STYLE"
+    GENERIC = "GENERIC"
+
+
+# ================================================================
+# REFERENCE TRANSFORMATION
+# ================================================================
+
+
+class GenerationReferenceTransformation(
+    str,
+    Enum,
+):
+    """
+    Transformations that a provider may apply while preserving the
+    semantic identity of a reference.
+
+    These describe permission, not a mandatory action.
+    """
+
+    ROTATE = "ROTATE"
+    CHANGE_PERSPECTIVE = "CHANGE_PERSPECTIVE"
+    CHANGE_VIEWPOINT = "CHANGE_VIEWPOINT"
+
+    REFRAME = "REFRAME"
+    RELIGHT = "RELIGHT"
+
+    CHANGE_POSE = "CHANGE_POSE"
+    CHANGE_EXPRESSION = "CHANGE_EXPRESSION"
+
+    OPEN_CLOSE = "OPEN_CLOSE"
+
+    ADAPT_TO_INTERACTION = (
+        "ADAPT_TO_INTERACTION"
+    )
+
+
+# ================================================================
+# REFERENCE ASSET
+# ================================================================
+
+
+class GenerationReferenceAsset(
+    BaseModel
+):
+    """
+    Physical reference asset supplied to a generation provider.
+
+    The asset identifies WHAT visual source is available.
+
+    reference_role / preserve_attributes / allowed_transformations /
+    usage_instruction describe HOW that source should influence this
+    specific generation request.
+
+    This distinction prevents providers from treating the exact pose,
+    camera-facing side, or perspective of a master reference as an
+    invariant when only its identity should remain invariant.
+    """
+
+    asset_id: str
+
+    entity_id: str
+
+    asset_type: str
+
+    name: str
+
+    reference_path: str
+
+    purpose: Optional[
+        str
+    ] = None
+
+    required: bool = True
+
+    master_reference_required: bool = False
+
+    # ------------------------------------------------------------
+    # Generation-time usage semantics
+    # ------------------------------------------------------------
+
+    reference_role: Optional[
+        GenerationReferenceRole
+    ] = None
+
+    preserve_attributes: List[
+        str
+    ] = Field(
+        default_factory=list
+    )
+
+    allowed_transformations: List[
+        GenerationReferenceTransformation
+    ] = Field(
+        default_factory=list
+    )
+
+    usage_instruction: Optional[
+        str
+    ] = None
+
+
+# ================================================================
+# OUTPUT SPECIFICATION
+# ================================================================
+
+
+class GenerationOutputSpec(
+    BaseModel
+):
+    """
+    Provider-agnostic output requirements.
+    """
+
+    width: int = Field(
+        default=1024,
+        gt=0,
+    )
+
+    height: int = Field(
+        default=1024,
+        gt=0,
+    )
+
+    aspect_ratio: str = "1:1"
+
+    output_format: str = "png"
+
+
+# ================================================================
+# GENERATION REQUEST
+# ================================================================
+
+
+class GenerationRequest(
+    BaseModel
+):
+    """
+    Provider-agnostic request for one media generation operation.
+    """
+
+    request_id: str
+
+    episode_id: str
+
+    shot_id: str
+
+    generation_type: GenerationType
+
+    prompt: str
+
+    negative_prompt: Optional[
+        str
+    ] = None
+
+    reference_assets: List[
+        GenerationReferenceAsset
+    ] = Field(
+        default_factory=list
+    )
+
+    output: GenerationOutputSpec = Field(
+        default_factory=(
+            GenerationOutputSpec
+        )
+    )
+
+    metadata: Dict[
+        str,
+        str,
+    ] = Field(
+        default_factory=dict
+    )
+
+
+# ================================================================
+# GENERATION ERROR
+# ================================================================
+
+
+class GenerationError(
+    BaseModel
+):
+    """
+    Structured technical failure information.
+    """
+
+    code: str
+
+    message: str
+
+    retryable: bool = False
+
+
+# ================================================================
+# GENERATION OUTPUT
+# ================================================================
+
+
+class GenerationOutput(
+    BaseModel
+):
+    """
+    One physical artifact produced by a generation attempt.
+    """
+
+    output_id: str
+
+    output_path: str
+
+    media_type: str = "IMAGE"
+
+    mime_type: str = "image/png"
+
+    width: Optional[
+        int
+    ] = None
+
+    height: Optional[
+        int
+    ] = None
+
+    metadata: Dict[
+        str,
+        str,
+    ] = Field(
+        default_factory=dict
+    )
+
+
+# ================================================================
+# GENERATION ATTEMPT
+# ================================================================
+
+
+class GenerationAttempt(
+    BaseModel
+):
+    """
+    Technical record for one provider invocation.
+    """
+
+    attempt_id: str
+
+    request_id: str
+
+    attempt_number: int = Field(
+        ge=1
+    )
+
+    provider: str
+
+    status: GenerationStatus
+
+    outputs: List[
+        GenerationOutput
+    ] = Field(
+        default_factory=list
+    )
+
+    error: Optional[
+        GenerationError
+    ] = None
+
+    metadata: Dict[
+        str,
+        str,
+    ] = Field(
+        default_factory=dict
+    )
+
+
+# ================================================================
+# GENERATION RESULT
+# ================================================================
+
+
+class GenerationResult(
+    BaseModel
+):
+    """
+    Aggregate technical result for one GenerationRequest.
+
+    selected_output_id identifies a chosen technical output,
+    but does not represent creative approval.
+    """
+
+    request_id: str
+
+    episode_id: str
+
+    shot_id: str
+
+    generation_type: GenerationType
+
+    status: GenerationStatus
+
+    attempts: List[
+        GenerationAttempt
+    ] = Field(
+        default_factory=list
+    )
+
+    outputs: List[
+        GenerationOutput
+    ] = Field(
+        default_factory=list
+    )
+
+    selected_output_id: Optional[
+        str
+    ] = None
+
+    metadata: Dict[
+        str,
+        str,
+    ] = Field(
+        default_factory=dict
+    )
+
+
+# ================================================================
+# GENERATION RECORD
+# ================================================================
+
+
+class GenerationRecord(
+    BaseModel
+):
+    """
+    Persistent lineage record for one generation request.
+
+    This record groups the immutable request with its latest
+    aggregate technical result.
+
+    Persistence does not imply creative approval.
+    """
+
+    request: GenerationRequest
+
+    result: Optional[
+        GenerationResult
+    ] = None
+
+
+# ================================================================
+# GENERATION STORE SNAPSHOT
+# ================================================================
+
+
+class GenerationStoreSnapshot(
+    BaseModel
+):
+    """
+    Serializable collection of generation records.
+
+    The store implementation may persist individual records or
+    aggregate snapshots. This model provides the canonical
+    persistence contract.
+    """
+
+    records: Dict[
+        str,
+        GenerationRecord,
+    ] = Field(
+        default_factory=dict
+    )
+============================================================
+FILE: app/models/production_prompt.py
+============================================================
+[FILE NOT FOUND]
+
+============================================================
+FILE: app/models/asset.py
+============================================================
+from pydantic import BaseModel
+from typing import List, Optional
+
+
+class AssetReference(BaseModel):
+
+    asset_id: str
+
+    entity_id: str
+
+    asset_type: str
+
+    name: str
+
+    purpose: str
+
+    required: bool = True
+
+    master_reference_required: bool = False
+
+    reference_path: Optional[str] = None
+
+
+class ShotAssetPlan(BaseModel):
+
+    shot_id: str
+
+    assets: List[AssetReference]
+
+
+class SceneAssetPlan(BaseModel):
+
+    scene_number: int
+
+    assets: List[AssetReference]
+
+    shots: List[ShotAssetPlan]
+
+
+class AssetPlan(BaseModel):
+
+    episode_id: str
+
+    title: str
+
+    assets: List[AssetReference]
+
+    scenes: List[SceneAssetPlan]

@@ -7,10 +7,13 @@ class GeminiInputImage(
     BaseModel
 ):
     """
-    One physical reference image prepared for Gemini.
+    One physical reference prepared for Gemini.
 
-    This model belongs to the Gemini adapter boundary and must not
-    leak into provider-agnostic generation models.
+    Beside the image bytes, this contract carries provider-facing
+    semantic instructions describing how the image should influence
+    generation.
+
+    It is still not the actual Google SDK payload.
     """
 
     asset_id: str
@@ -21,6 +24,24 @@ class GeminiInputImage(
 
     data_base64: str
 
+    reference_role: str = (
+        "GENERIC"
+    )
+
+    preserve_attributes: List[
+        str
+    ] = Field(
+        default_factory=list
+    )
+
+    allowed_transformations: List[
+        str
+    ] = Field(
+        default_factory=list
+    )
+
+    usage_instruction: str = ""
+
 
 class GeminiGenerationPlan(
     BaseModel
@@ -30,8 +51,8 @@ class GeminiGenerationPlan(
 
     This is NOT the Google SDK payload itself.
 
-    The real Gemini provider adapter will translate this plan into
-    the currently supported SDK/API request format.
+    GeminiGenerationProvider translates this plan into the runtime
+    SDK request.
     """
 
     model: str

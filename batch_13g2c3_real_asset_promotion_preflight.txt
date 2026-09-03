@@ -1,0 +1,115 @@
+STORY-AGENT — BATCH 13G.2-C3 REAL ASSET PROMOTION PREFLIGHT
+Generated: Thu Sep  3 23:01:17 WIB 2026
+
+============================================================
+EP001 LOGICAL ASSETS
+============================================================
+{
+  "asset_id": "ASSET_CHAR_SAM_BELL_MASTER",
+  "entity_id": "CHAR_SAM_BELL",
+  "asset_type": "CHARACTER",
+  "name": "Sam Bell",
+  "purpose": "Master character reference",
+  "required": true,
+  "master_reference_required": true,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_LOC_THE_OLD_DOCKS_MASTER",
+  "entity_id": "LOC_THE_OLD_DOCKS",
+  "asset_type": "LOCATION",
+  "name": "The Old Docks",
+  "purpose": "Master location reference",
+  "required": true,
+  "master_reference_required": false,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_LOC_DOCK_EDGE_MASTER",
+  "entity_id": "LOC_DOCK_EDGE",
+  "asset_type": "LOCATION",
+  "name": "Dock Edge",
+  "purpose": "Master location reference",
+  "required": true,
+  "master_reference_required": false,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_CHAR_STERLING_MASTER",
+  "entity_id": "CHAR_STERLING",
+  "asset_type": "CHARACTER",
+  "name": "Sterling",
+  "purpose": "Master character reference",
+  "required": true,
+  "master_reference_required": true,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_CHAR_JULIAN_MASTER",
+  "entity_id": "CHAR_JULIAN",
+  "asset_type": "CHARACTER",
+  "name": "Julian",
+  "purpose": "Master character reference",
+  "required": true,
+  "master_reference_required": true,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_CHAR_REN_MASTER",
+  "entity_id": "CHAR_REN",
+  "asset_type": "CHARACTER",
+  "name": "Ren",
+  "purpose": "Master character reference",
+  "required": true,
+  "master_reference_required": true,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_LOC_JULIAN_S_OFFICE_MASTER",
+  "entity_id": "LOC_JULIAN_S_OFFICE",
+  "asset_type": "LOCATION",
+  "name": "Julian's Office",
+  "purpose": "Master location reference",
+  "required": true,
+  "master_reference_required": false,
+  "reference_path": null
+}
+
+{
+  "asset_id": "ASSET_PROP_MYSTERIOUS_DOCUMENT_MASTER",
+  "entity_id": "PROP_MYSTERIOUS_DOCUMENT",
+  "asset_type": "PROP",
+  "name": "Mysterious Document",
+  "purpose": "Master prop reference",
+  "required": true,
+  "master_reference_required": false,
+  "reference_path": null
+}
+
+
+============================================================
+EXISTING VISUAL CANDIDATES
+============================================================
+data/generated/gemini/character_location_identity_smoke/EP_REAL_GEMINI_CHARLOC_IDENTITY/EP_REAL_GEMINI_CHARLOC_IDENTITY-S01-SHOT01/GEN_REQ_REAL_GEMINI_CHARLOC_IDENTITY_20260902T152833Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/character_location_prop_smoke/EP_REAL_GEMINI_CHAR_LOC_PROP/EP_REAL_GEMINI_CHAR_LOC_PROP-S01-SHOT01/GEN_REQ_REAL_GEMINI_CHAR_LOC_PROP_20260902T161127Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/character_location_smoke/EP_REAL_GEMINI_CHAR_LOC/EP_REAL_GEMINI_CHAR_LOC-S01-SHOT01/GEN_REQ_REAL_GEMINI_CHAR_LOC_20260901T181730Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/identity_smoke/EP_REAL_GEMINI_IDENTITY/EP_REAL_GEMINI_IDENTITY-S01-SHOT01/GEN_REQ_REAL_GEMINI_IDENTITY_20260901T180356Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/location_viewpoint_smoke/EP_REAL_GEMINI_VIEWPOINT/EP_REAL_GEMINI_VIEWPOINT-S01-SHOT01/GEN_REQ_REAL_GEMINI_VIEWPOINT_20260902T151724Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/prop_interaction_smoke/EP_REAL_GEMINI_PROP_INTERACTION/EP_REAL_GEMINI_PROP_INTERACTION-S01-SHOT01/GEN_REQ_REAL_GEMINI_PROP_INTERACTION_20260902T163236Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/reference_smoke/EP_REAL_GEMINI_REFERENCE/EP_REAL_GEMINI_REFERENCE-S01-SHOT01/GEN_REQ_REAL_GEMINI_REFERENCE_20260901T175233Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/smoke/EP_REAL_GEMINI_SMOKE/EP_REAL_GEMINI_SMOKE-S01-SHOT01/GEN_REQ_REAL_GEMINI_SMOKE_20260901T173814Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/test_fixtures/location/EP_REAL_GEMINI_LOCATION_FIXTURE/EP_REAL_GEMINI_LOCATION_FIXTURE-S01-SHOT01/GEN_REQ_REAL_GEMINI_LOCATION_FIXTURE_20260901T181318Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/test_fixtures/prop/EP_REAL_GEMINI_PROP_FIXTURE/EP_REAL_GEMINI_PROP_FIXTURE-S01-SHOT01/GEN_REQ_REAL_GEMINI_PROP_FIXTURE_20260902T154044Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/test_fixtures/prop_revision_2/EP_REAL_GEMINI_PROP_FIXTURE_R2/EP_REAL_GEMINI_PROP_FIXTURE_R2-S01-SHOT01/GEN_REQ_REAL_GEMINI_PROP_FIXTURE_R2_20260902T154722Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/test_fixtures/prop_revision_3/EP_REAL_GEMINI_PROP_FIXTURE_R3/EP_REAL_GEMINI_PROP_FIXTURE_R3-S01-SHOT01/GEN_REQ_REAL_GEMINI_PROP_FIXTURE_R3_20260902T155253Z_ATTEMPT_001_OUTPUT_001.png
+data/generated/gemini/test_fixtures/prop_revision_4/EP_REAL_GEMINI_PROP_FIXTURE_R4/EP_REAL_GEMINI_PROP_FIXTURE_R4-S01-SHOT01/GEN_REQ_REAL_GEMINI_PROP_FIXTURE_R4_20260902T160326Z_ATTEMPT_001_OUTPUT_001.png
+
+============================================================
+CURRENT PERSISTENT REGISTRIES
+============================================================

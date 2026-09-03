@@ -1,0 +1,573 @@
+STORY-AGENT — BATCH 13G.2-C2 PROMOTION MODEL AUDIT
+Generated: Thu Sep  3 22:52:13 WIB 2026
+
+============================================================
+ASSET SOURCE / RECORD / SNAPSHOT
+============================================================
+62-    """
+63-
+64-    DRAFT = "DRAFT"
+65-
+66-    REVIEW_REQUIRED = (
+67-        "REVIEW_REQUIRED"
+68-    )
+69-
+70-    APPROVED = "APPROVED"
+71-
+72-    REJECTED = "REJECTED"
+73-
+74-    SUPERSEDED = "SUPERSEDED"
+75-
+76-
+77-# ================================================================
+78-# ASSET SOURCE
+79-# ================================================================
+80-
+81-
+82:class AssetSource(
+83-    str,
+84-    Enum,
+85-):
+86-    """
+87-    Describes where the asset originated.
+88-    """
+89-
+90-    MANUAL = "MANUAL"
+91-    GENERATED = "GENERATED"
+92-    IMPORTED = "IMPORTED"
+93-
+94-
+95-# ================================================================
+96-# ASSET VALIDATION CODE
+97-# ================================================================
+98-
+99-
+100-class AssetValidationCode(
+101-    str,
+102-    Enum,
+103-):
+104-    """
+105-    Machine-readable production validation result.
+106-    """
+107-
+108-    READY = "READY"
+109-
+110-    MISSING_RESOLUTION = (
+111-        "MISSING_RESOLUTION"
+112-    )
+113-
+114-    REGISTRY_RECORD_NOT_FOUND = (
+115-        "REGISTRY_RECORD_NOT_FOUND"
+116-    )
+117-
+118-    NOT_APPROVED = (
+119-        "NOT_APPROVED"
+120-    )
+121-
+122-    MISSING_REFERENCE_PATH = (
+123-        "MISSING_REFERENCE_PATH"
+124-    )
+125-
+126-    REFERENCE_NOT_FOUND = (
+127-        "REFERENCE_NOT_FOUND"
+128-    )
+129-
+130-    ENTITY_MISMATCH = (
+131-        "ENTITY_MISMATCH"
+132-    )
+133-
+134-    TYPE_MISMATCH = (
+135-        "TYPE_MISMATCH"
+136-    )
+137-
+138-    ROLE_MISMATCH = (
+139-        "ROLE_MISMATCH"
+140-    )
+141-
+142-
+143-# ================================================================
+144-# ASSET RECORD
+145-# ================================================================
+146-
+147-
+148:class AssetRecord(BaseModel):
+149-    """
+150-    Canonical registry record for one physical media asset.
+151-
+152-    AssetRecord answers:
+153-
+154-        "What actual asset exists?"
+155-
+156-    It is intentionally separate from AssetReference, which answers:
+157-
+158-        "What asset does production require?"
+159-    """
+160-
+161-    asset_id: str
+162-
+163-    entity_id: str
+164-
+165-    asset_type: RegistryAssetType
+166-
+167-    role: AssetRole = (
+168-        AssetRole.MASTER_REFERENCE
+169-    )
+170-
+171-    version: int = Field(
+172-        default=1,
+173-        ge=1,
+174-    )
+175-
+176-    status: AssetStatus = (
+177-        AssetStatus.DRAFT
+178-    )
+179-
+180-    reference_path: Optional[
+181-        str
+182-    ] = None
+183-
+184-    source: AssetSource = (
+185-        AssetSource.MANUAL
+186-    )
+187-
+188-    supersedes_asset_id: Optional[
+189-        str
+190-    ] = None
+191-
+192-    metadata: Dict[
+193-        str,
+194-        str,
+195-    ] = Field(
+196-        default_factory=dict
+197-    )
+198-
+199-    @model_validator(
+200-        mode="after"
+201-    )
+202-    def validate_record(
+203-        self,
+204-    ):
+205-        """
+206-        Enforce invariants that are true for every registry backend.
+207-        """
+208-
+209-        if not self.asset_id.strip():
+210-
+211-            raise ValueError(
+212-                "asset_id cannot be empty."
+213-            )
+214-
+215-        if not self.entity_id.strip():
+216-
+217-            raise ValueError(
+218-                "entity_id cannot be empty."
+219-            )
+220-
+221-        if (
+222-            self.status
+223-            == AssetStatus.APPROVED
+224-        ):
+225-
+226-            if (
+227-                self.reference_path
+228-                is None
+229-                or
+230-                not self.reference_path.strip()
+231-            ):
+232-
+233-                raise ValueError(
+234-                    "Approved assets require "
+235-                    "a reference_path."
+236-                )
+237-
+238-        if (
+239-            self.supersedes_asset_id
+240-            and
+241-            self.supersedes_asset_id
+242-            == self.asset_id
+243-        ):
+244-
+245-            raise ValueError(
+246-                "An asset cannot supersede itself."
+247-            )
+248-
+249-        return self
+250-
+251-
+252-# ================================================================
+253-# REGISTRY SNAPSHOT
+254-# ================================================================
+255-
+256-
+257:class AssetRegistrySnapshot(
+258-    BaseModel
+259-):
+260-    """
+261-    Serializable snapshot of all known asset records.
+262-    """
+263-
+264-    records: Dict[
+265-        str,
+266-        AssetRecord,
+267-    ] = Field(
+268-        default_factory=dict
+269-    )
+270-
+271-
+272-# ================================================================
+273-# RESOLUTION RESULT
+274-# ================================================================
+275-
+276-
+277-class AssetResolutionResult(
+278-    BaseModel
+279-):
+280-    """
+281-    Result of resolving one production asset requirement.
+282-    """
+283-
+284-    requirement_asset_id: str
+285-
+286-    entity_id: str
+287-
+288-    asset_type: RegistryAssetType
+289-
+290-    role: AssetRole
+291-
+292-    resolved: bool = False
+293-
+294-    resolved_asset_id: Optional[
+295-        str
+296-    ] = None
+297-
+298-    reference_path: Optional[
+299-        str
+300-    ] = None
+301-
+302-    version: Optional[
+303-        int
+304-    ] = None
+305-
+306-    status: Optional[
+307-        AssetStatus
+308-    ] = None
+309-
+310-    reason: str = ""
+311-
+312-
+313-# ================================================================
+314-# EPISODE RESOLUTION
+315-# ================================================================
+316-
+317-
+318-class AssetResolutionReport(
+319-    BaseModel
+320-):
+321-    """
+322-    Aggregate result for all asset requirements of one episode.
+323-    """
+324-
+325-    episode_id: str
+326-
+327-    status: str
+328-
+329-    resolutions: List[
+330-        AssetResolutionResult
+331-    ] = Field(
+332-        default_factory=list
+333-    )
+334-
+335-
+336-# ================================================================
+337-# VALIDATION RESULT
+338-# ================================================================
+339-
+340-
+341-class AssetValidationResult(
+342-    BaseModel
+343-):
+344-    """
+345-    Production-readiness result for one asset requirement.
+346-    """
+347-
+348-    requirement_asset_id: str
+349-
+350-    entity_id: str
+351-
+352-    required: bool
+353-
+354-    ready: bool = False
+355-
+356-    code: AssetValidationCode
+357-
+358-    resolved_asset_id: Optional[
+359-        str
+360-    ] = None
+361-
+362-    reference_path: Optional[
+363-        str
+364-    ] = None
+365-
+366-    reason: str = ""
+367-
+368-
+369-# ================================================================
+370-# VALIDATION REPORT
+371-# ================================================================
+372-
+373-
+374-class AssetValidationReport(
+375-    BaseModel
+376-):
+377-    """
+378-    Aggregate production gate for one episode.
+379-    """
+380-
+381-    episode_id: str
+382-
+383-    status: str
+384-
+385-    results: List[
+386-        AssetValidationResult
+387-    ] = Field(
+388-        default_factory=list
+389-    )
+
+============================================================
+REGISTRY VERSION / UPDATE METHODS
+============================================================
+33-            )
+34-
+35-        self.records = dict(
+36-            snapshot.records
+37-        )
+38-
+39-    # ================================================================
+40-    # REGISTER
+41-    # ================================================================
+42-
+43:    def register(
+44-        self,
+45-        record: AssetRecord,
+46-    ) -> AssetRecord:
+47-        """
+48-        Register a new asset record.
+49-
+50-        Asset IDs are immutable identifiers and may not be silently
+51-        overwritten.
+52-        """
+53-
+54-        if (
+55-            record.asset_id
+56-            in self.records
+57-        ):
+58-
+59-            raise ValueError(
+60-                "Asset already exists: "
+61-                f"{record.asset_id}"
+62-            )
+63-
+64-        self._validate_version_uniqueness(
+65-            record
+66-        )
+67-
+68-        self.records[
+69-            record.asset_id
+70-        ] = record
+71-
+72-        return record
+73-
+74-    # ================================================================
+75-    # GET
+76-    # ================================================================
+77-
+78-    def get(
+79-        self,
+80-        asset_id: str,
+81-    ) -> Optional[
+82-        AssetRecord
+83-    ]:
+84-
+85-        return (
+86-            self.records.get(
+87-                asset_id
+88-            )
+89-        )
+90-
+91-    # ================================================================
+92-    # UPDATE
+93-    # ================================================================
+94-
+95:    def update(
+96-        self,
+97-        record: AssetRecord,
+98-    ) -> AssetRecord:
+99-        """
+100-        Replace an existing asset record.
+101-
+102-        The asset_id must already exist.
+103-        """
+104-
+105-        if (
+106-            record.asset_id
+107-            not in self.records
+108-        ):
+109-
+110-            raise ValueError(
+111-                "Cannot update unknown asset: "
+112-                f"{record.asset_id}"
+113-            )
+114-
+115-        self._validate_version_uniqueness(
+116-            record,
+117-            exclude_asset_id=(
+118-                record.asset_id
+119-            ),
+120-        )
+121-
+122-        self.records[
+123-            record.asset_id
+124-        ] = record
+125-
+126-        return record
+127-
+128-    # ================================================================
+129-    # REMOVE
+130-    # ================================================================
+131-
+132-    def remove(
+133-        self,
+134-        asset_id: str,
+135-    ) -> bool:
+136-
+137-        if (
+138-            asset_id
+139-            not in self.records
+140-        ):
+141-
+142-            return False
+143-
+144-        del self.records[
+145-            asset_id
+146-        ]
+147-
+148-        return True
+149-
+150-    # ================================================================
+151-    # ENTITY LOOKUP
+152-    # ================================================================
+153-
+154-    def list_for_entity(
+155-        self,
+156-        entity_id: str,
+157-    ) -> List[
+158-        AssetRecord
+159-    ]:
+160-
+161-        result = [
+162-            record
+163-            for record
+164-            in self.records.values()
+165-            if (
+166-                record.entity_id
+167-                == entity_id
+168-            )
+169-        ]
+170-
+171-        return self._sort_records(
+172-            result
+173-        )
+174-
+175-    # ================================================================
+--
+241-            )
+242-
+243-        return self._sort_records(
+244-            result
+245-        )
+246-
+247-    # ================================================================
+248-    # APPROVED LOOKUP
+249-    # ================================================================
+250-
+251:    def approved_for_entity(
+252-        self,
+253-        entity_id: str,
+254-        asset_type: Optional[
+255-            RegistryAssetType
+256-        ] = None,
+257-        role: Optional[
+258-            AssetRole
+259-        ] = None,
+260-    ) -> List[
+261-        AssetRecord
+262-    ]:
+263-        """
+264-        Return only production-eligible APPROVED assets.
+265-        """
+266-
+267-        return self.find(
+268-            entity_id=entity_id,
+269-            asset_type=asset_type,
+270-            role=role,
+271-            status=(
+272-                AssetStatus.APPROVED
+273-            ),
+274-        )
+275-
+276-    # ================================================================
+277-    # SNAPSHOT
+278-    # ================================================================
+279-
+280-    def snapshot(
+281-        self,
+282-    ) -> AssetRegistrySnapshot:
+283-
+284-        return (
+285-            AssetRegistrySnapshot(
+286-                records=dict(
+287-                    self.records
+288-                )
+289-            )
+290-        )
+291-
+292-    # ================================================================
+293-    # VERSION VALIDATION
+294-    # ================================================================
+295-
+296-    def _validate_version_uniqueness(
+297-        self,
+298-        record: AssetRecord,
+299-        exclude_asset_id: Optional[
+300-            str
+301-        ] = None,
+302-    ) -> None:
+303-        """
+304-        Prevent duplicate version numbers for the same logical asset
+305-        family.
+306-
+307-        A logical asset family is:
+308-
+309-            entity_id
+310-            + asset_type
+311-            + role
+312-        """
+313-
+314-        for existing in (
+315-            self.records.values()
+316-        ):
+317-
+318-            if (
+319-                exclude_asset_id
+320-                and
+321-                existing.asset_id
+322-                == exclude_asset_id
+323-            ):
+324-
+325-                continue
+326-
+327-            same_family = (
+328-                existing.entity_id
+329-                == record.entity_id
+330-                and
+331-                existing.asset_type

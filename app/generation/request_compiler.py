@@ -1,8 +1,10 @@
-from typing import List
+from typing import Dict, List
 
 from app.models.generation import (
     GenerationOutputSpec,
     GenerationReferenceAsset,
+    GenerationReferenceRole,
+    GenerationReferenceTransformation,
     GenerationRequest,
     GenerationType,
 )
@@ -10,6 +12,7 @@ from app.models.generation import (
 from app.models.prompt import (
     EpisodeProductionPrompts,
     ProductionPrompt,
+    PromptReferenceUsage,
 )
 
 
@@ -27,6 +30,7 @@ class GenerationRequestCompiler:
     - preserve episode and shot lineage
     - forward image and negative prompts
     - forward resolved physical reference assets
+    - apply shot-specific reference usage semantics
     - define provider-agnostic output requirements
 
     This compiler must not:
@@ -36,6 +40,7 @@ class GenerationRequestCompiler:
     - perform asset validation
     - implement retry behavior
     - make creative approval decisions
+    - infer story-specific behavior from asset names
     """
 
     def __init__(
@@ -207,6 +212,12 @@ class GenerationRequestCompiler:
 
         references = []
 
+        usage_map = (
+            self._reference_usage_map(
+                prompt
+            )
+        )
+
         for asset in prompt.assets:
 
             reference_path = (
@@ -228,6 +239,25 @@ class GenerationRequestCompiler:
             ):
 
                 continue
+
+            usage = (
+                usage_map.get(
+                    asset.asset_id
+                )
+            )
+
+            reference_kwargs = {}
+
+            if usage is not None:
+
+                reference_kwargs = (
+                    self._compile_reference_usage(
+                        usage=usage,
+                        expected_entity_id=(
+                            asset.entity_id
+                        ),
+                    )
+                )
 
             references.append(
                 GenerationReferenceAsset(
@@ -255,10 +285,179 @@ class GenerationRequestCompiler:
                     master_reference_required=(
                         asset.master_reference_required
                     ),
+                    **reference_kwargs,
                 )
             )
 
         return references
+
+    # ================================================================
+    # REFERENCE USAGE
+    # ================================================================
+
+    def _reference_usage_map(
+        self,
+        prompt: ProductionPrompt,
+    ) -> Dict[
+        str,
+        PromptReferenceUsage
+    ]:
+        """
+        Build a deterministic asset_id -> usage map.
+
+        Duplicate usage declarations are rejected because two
+        contradictory semantic policies for the same physical
+        reference would make generation behavior ambiguous.
+        """
+
+        usage_map = {}
+
+        for usage in (
+            prompt.reference_usages
+        ):
+
+            if (
+                usage.asset_id
+                in usage_map
+            ):
+
+                raise ValueError(
+                    "Duplicate reference usage for asset_id "
+                    f"'{usage.asset_id}'."
+                )
+
+            usage_map[
+                usage.asset_id
+            ] = usage
+
+        return usage_map
+
+    def _compile_reference_usage(
+        self,
+        usage: PromptReferenceUsage,
+        expected_entity_id: str,
+    ) -> dict:
+        """
+        Convert provider-agnostic prompt-layer reference semantics
+        into the canonical generation-domain contract.
+
+        No provider-specific behavior is introduced here.
+        """
+
+        if (
+            usage.entity_id
+            != expected_entity_id
+        ):
+
+            raise ValueError(
+                "Reference usage entity mismatch for asset_id "
+                f"'{usage.asset_id}'. "
+                f"Expected entity_id '{expected_entity_id}', "
+                f"received '{usage.entity_id}'."
+            )
+
+        role = (
+            self._parse_reference_role(
+                usage.reference_role
+            )
+        )
+
+        transformations = [
+            self._parse_reference_transformation(
+                value
+            )
+            for value in (
+                usage.allowed_transformations
+            )
+        ]
+
+        return {
+            "reference_role": (
+                role
+            ),
+            "preserve_attributes": (
+                list(
+                    usage.preserve_attributes
+                )
+            ),
+            "allowed_transformations": (
+                transformations
+            ),
+            "usage_instruction": (
+                usage.usage_instruction
+            ),
+        }
+
+    def _parse_reference_role(
+        self,
+        value: str,
+    ) -> GenerationReferenceRole:
+        """
+        Parse a prompt-layer role into the generation-domain enum.
+        """
+
+        normalized = (
+            value
+            .strip()
+            .upper()
+        )
+
+        if not normalized:
+
+            raise ValueError(
+                "reference_role cannot be empty."
+            )
+
+        try:
+
+            return (
+                GenerationReferenceRole(
+                    normalized
+                )
+            )
+
+        except ValueError as exc:
+
+            raise ValueError(
+                "Unsupported reference_role "
+                f"'{value}'."
+            ) from exc
+
+    def _parse_reference_transformation(
+        self,
+        value: str,
+    ) -> GenerationReferenceTransformation:
+        """
+        Parse a prompt-layer transformation into the canonical
+        generation-domain enum.
+        """
+
+        normalized = (
+            value
+            .strip()
+            .upper()
+        )
+
+        if not normalized:
+
+            raise ValueError(
+                "Reference transformation cannot be empty."
+            )
+
+        try:
+
+            return (
+                GenerationReferenceTransformation(
+                    normalized
+                )
+            )
+
+        except ValueError as exc:
+
+            raise ValueError(
+                "Unsupported reference transformation "
+                f"'{value}'."
+            ) from exc
 
     # ================================================================
     # REQUEST ID

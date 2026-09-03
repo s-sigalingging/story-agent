@@ -178,8 +178,9 @@ class NegativePromptBuilder:
             "extra props",
             "unrelated objects",
             "prop identity changes",
-            "object morphing",
-            "object transformation",
+            "uncontrolled object morphing",
+            "unmotivated object redesign",
+            "unintended prop replacement",
             "unmotivated prop movement",
         ]
 
@@ -465,3 +466,4 @@ class NegativePromptBuilder:
             )
 
         return result
+

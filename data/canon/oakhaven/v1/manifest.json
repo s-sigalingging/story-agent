@@ -1,0 +1,28 @@
+{
+  "universe_id": "UNIVERSE_OAKHAVEN",
+  "universe_name": "OAKHAVEN",
+  "canon_version": "1.0",
+  "document_status": "FROZEN",
+  "present_day": 2026,
+  "authority_document": "docs/canon/OAKHAVEN_CANON_V1.md",
+  "sources": [
+    {
+      "source_id": "SOURCE_OAKHAVEN_CANON_V1",
+      "path": "docs/canon/OAKHAVEN_CANON_V1.md",
+      "role": "HUMAN_READABLE_CANON_AUTHORITY",
+      "authoritative": true
+    }
+  ],
+  "derived_files": [
+    "data/canon/oakhaven/v1/manifest.json",
+    "data/canon/oakhaven/v1/world.json",
+    "data/canon/oakhaven/v1/timeline.json",
+    "data/canon/oakhaven/v1/factions.json",
+    "data/canon/oakhaven/v1/characters.json",
+    "data/canon/oakhaven/v1/relationships.json",
+    "data/canon/oakhaven/v1/locations.json",
+    "data/canon/oakhaven/v1/knowledge.json",
+    "data/canon/oakhaven/v1/mystery_rules.json",
+    "data/canon/oakhaven/v1/production_style.json"
+  ]
+}

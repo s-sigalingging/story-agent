@@ -1,0 +1,2723 @@
+STORY-AGENT — BATCH 13G.1 SEMANTIC BOUNDARY AUDIT
+Generated: Thu Sep  3 19:59:36 WIB 2026
+
+
+============================================================
+FILE: app/assets/resolver.py
+============================================================
+from typing import Dict, List
+
+from app.assets.registry import (
+    AssetRegistry,
+)
+
+from app.models.asset import (
+    AssetPlan,
+    AssetReference,
+    SceneAssetPlan,
+    ShotAssetPlan,
+)
+
+from app.models.asset_registry import (
+    AssetResolutionReport,
+    AssetResolutionResult,
+    AssetRole,
+    AssetStatus,
+    RegistryAssetType,
+)
+
+
+class AssetResolver:
+    """
+    Resolve logical production asset requirements against
+    the canonical AssetRegistry.
+
+    Responsibilities
+    ----------------
+    - match by entity, asset type, and asset role
+    - consider APPROVED assets only
+    - select the highest approved version
+    - return structured resolution results
+    - hydrate AssetPlan reference paths without mutating the source plan
+    - never modify asset lifecycle state
+    """
+
+    def __init__(
+        self,
+        registry: AssetRegistry,
+    ):
+
+        self.registry = registry
+
+    # ================================================================
+    # SINGLE REQUIREMENT
+    # ================================================================
+
+    def resolve_requirement(
+        self,
+        requirement: AssetReference,
+        role: AssetRole = (
+            AssetRole.MASTER_REFERENCE
+        ),
+    ) -> AssetResolutionResult:
+
+        asset_type = (
+            self._registry_asset_type(
+                requirement.asset_type
+            )
+        )
+
+        candidates = (
+            self.registry.find(
+                entity_id=(
+                    requirement.entity_id
+                ),
+                asset_type=(
+                    asset_type
+                ),
+                role=role,
+                status=(
+                    AssetStatus.APPROVED
+                ),
+            )
+        )
+
+        if not candidates:
+
+            return (
+                AssetResolutionResult(
+                    requirement_asset_id=(
+                        requirement.asset_id
+                    ),
+                    entity_id=(
+                        requirement.entity_id
+                    ),
+                    asset_type=(
+                        asset_type
+                    ),
+                    role=role,
+                    resolved=False,
+                    reason=(
+                        "No approved asset found "
+                        "for the required "
+                        "entity/type/role."
+                    ),
+                )
+            )
+
+        selected = max(
+            candidates,
+            key=lambda item: (
+                item.version,
+                item.asset_id,
+            ),
+        )
+
+        return (
+            AssetResolutionResult(
+                requirement_asset_id=(
+                    requirement.asset_id
+                ),
+                entity_id=(
+                    requirement.entity_id
+                ),
+                asset_type=(
+                    asset_type
+                ),
+                role=role,
+                resolved=True,
+                resolved_asset_id=(
+                    selected.asset_id
+                ),
+                reference_path=(
+                    selected.reference_path
+                ),
+                version=(
+                    selected.version
+                ),
+                status=(
+                    selected.status
+                ),
+                reason=(
+                    "Resolved to highest "
+                    "approved matching "
+                    "asset version."
+                ),
+            )
+        )
+
+    # ================================================================
+    # MANY REQUIREMENTS
+    # ================================================================
+
+    def resolve_requirements(
+        self,
+        episode_id: str,
+        requirements: List[
+            AssetReference
+        ],
+    ) -> AssetResolutionReport:
+
+        resolutions = []
+
+        unresolved_required = []
+
+        for requirement in requirements:
+
+            resolution = (
+                self.resolve_requirement(
+                    requirement
+                )
+            )
+
+            resolutions.append(
+                resolution
+            )
+
+            if (
+                requirement.required
+                and
+                not resolution.resolved
+            ):
+
+                unresolved_required.append(
+                    resolution
+                )
+
+        status = (
+            "PASSED"
+            if not unresolved_required
+            else "BLOCKED"
+        )
+
+        return (
+            AssetResolutionReport(
+                episode_id=(
+                    episode_id
+                ),
+                status=status,
+                resolutions=(
+                    resolutions
+                ),
+            )
+        )
+
+    # ================================================================
+    # ASSET PLAN RESOLUTION
+    # ================================================================
+
+    def resolve_plan(
+        self,
+        asset_plan: AssetPlan,
+    ) -> AssetResolutionReport:
+
+        return (
+            self.resolve_requirements(
+                episode_id=(
+                    asset_plan.episode_id
+                ),
+                requirements=(
+                    asset_plan.assets
+                ),
+            )
+        )
+
+    # ================================================================
+    # ASSET PLAN HYDRATION
+    # ================================================================
+
+    def hydrate_plan(
+        self,
+        asset_plan: AssetPlan,
+        resolution_report: (
+            AssetResolutionReport
+        ),
+    ) -> AssetPlan:
+        """
+        Return a new AssetPlan with resolved reference paths applied.
+
+        The original AssetPlan is never mutated.
+
+        Logical requirement asset IDs are preserved.
+        Only reference_path is hydrated.
+        """
+
+        resolution_map: Dict[
+            str,
+            AssetResolutionResult,
+        ] = {
+            item.requirement_asset_id: item
+            for item
+            in resolution_report.resolutions
+        }
+
+        hydrated_assets = [
+            self._hydrate_asset_reference(
+                asset=asset,
+                resolution_map=(
+                    resolution_map
+                ),
+            )
+            for asset
+            in asset_plan.assets
+        ]
+
+        hydrated_scenes = []
+
+        for scene in asset_plan.scenes:
+
+            hydrated_scene_assets = [
+                self._hydrate_asset_reference(
+                    asset=asset,
+                    resolution_map=(
+                        resolution_map
+                    ),
+                )
+                for asset
+                in scene.assets
+            ]
+
+            hydrated_shots = []
+
+            for shot in scene.shots:
+
+                hydrated_shot_assets = [
+                    self._hydrate_asset_reference(
+                        asset=asset,
+                        resolution_map=(
+                            resolution_map
+                        ),
+                    )
+                    for asset
+                    in shot.assets
+                ]
+
+                hydrated_shots.append(
+                    ShotAssetPlan(
+                        shot_id=(
+                            shot.shot_id
+                        ),
+                        assets=(
+                            hydrated_shot_assets
+                        ),
+                    )
+                )
+
+            hydrated_scenes.append(
+                SceneAssetPlan(
+                    scene_number=(
+                        scene.scene_number
+                    ),
+                    assets=(
+                        hydrated_scene_assets
+                    ),
+                    shots=(
+                        hydrated_shots
+                    ),
+                )
+            )
+
+        return (
+            AssetPlan(
+                episode_id=(
+                    asset_plan.episode_id
+                ),
+                title=(
+                    asset_plan.title
+                ),
+                assets=(
+                    hydrated_assets
+                ),
+                scenes=(
+                    hydrated_scenes
+                ),
+            )
+        )
+
+    def _hydrate_asset_reference(
+        self,
+        asset: AssetReference,
+        resolution_map: Dict[
+            str,
+            AssetResolutionResult,
+        ],
+    ) -> AssetReference:
+
+        resolution = (
+            resolution_map.get(
+                asset.asset_id
+            )
+        )
+
+        if (
+            resolution is None
+            or
+            not resolution.resolved
+            or
+            not resolution.reference_path
+        ):
+
+            return asset.model_copy(
+                deep=True
+            )
+
+        return asset.model_copy(
+            update={
+                "reference_path": (
+                    resolution.reference_path
+                )
+            },
+            deep=True,
+        )
+
+    # ================================================================
+    # TYPE MAPPING
+    # ================================================================
+
+    def _registry_asset_type(
+        self,
+        value: str,
+    ) -> RegistryAssetType:
+
+        normalized = (
+            value
+            or ""
+        ).strip().upper()
+
+        mapping = {
+            "CHARACTER": (
+                RegistryAssetType.CHARACTER
+            ),
+            "LOCATION": (
+                RegistryAssetType.LOCATION
+            ),
+            "PROP": (
+                RegistryAssetType.PROP
+            ),
+        }
+
+        resolved = (
+            mapping.get(
+                normalized
+            )
+        )
+
+        if resolved is None:
+
+            raise ValueError(
+                "Unsupported production "
+                "asset type: "
+                f"{value!r}"
+            )
+
+        return resolved
+============================================================
+FILE: app/engines/asset_planner.py
+============================================================
+
+from app.models.episode import Episode
+from app.models.state import EpisodeState
+from app.models.continuity import EpisodeContinuity
+from app.models.production import ProductionPlan
+
+from app.models.asset import (
+    AssetPlan,
+    AssetReference,
+    SceneAssetPlan,
+    ShotAssetPlan
+)
+
+
+class AssetPlanner:
+
+    def create_plan(
+        self,
+        episode: Episode,
+        state: EpisodeState,
+        continuity: EpisodeContinuity,
+        production_plan: ProductionPlan
+    ) -> AssetPlan:
+
+        all_assets = {}
+
+        scene_plans = []
+
+        for scene_plan in production_plan.scenes:
+
+            scene_state = state.scene_states[
+                scene_plan.scene_number
+            ]
+
+            scene_continuity = next(
+                scene
+                for scene in continuity.scenes
+                if scene.scene_number
+                == scene_plan.scene_number
+            )
+
+            scene_assets = []
+
+            # ========================================================
+            # CHARACTER ASSETS
+            # ========================================================
+
+            for character_id in scene_state.active_characters:
+
+                character = state.characters[
+                    character_id
+                ]
+
+                asset = self.build_character_asset(
+                    character
+                )
+
+                scene_assets.append(asset)
+                all_assets[asset.asset_id] = asset
+
+            # ========================================================
+            # LOCATION ASSET
+            # ========================================================
+
+            location = scene_state.location
+
+            location_asset = (
+                self.build_location_asset(
+                    location
+                )
+            )
+
+            scene_assets.append(location_asset)
+            all_assets[
+                location_asset.asset_id
+            ] = location_asset
+
+            # ========================================================
+            # PROP ASSETS
+            # ========================================================
+
+            for prop_id in scene_state.active_props:
+
+                prop = state.props[
+                    prop_id
+                ]
+
+                asset = self.build_prop_asset(
+                    prop
+                )
+
+                scene_assets.append(asset)
+                all_assets[
+                    asset.asset_id
+                ] = asset
+
+            # ========================================================
+            # SHOT ASSETS
+            # ========================================================
+
+            shot_plans = []
+
+            for shot in scene_plan.shots:
+
+                shot_assets = []
+
+                # Character references
+
+                for character_id in shot.characters:
+
+                    character = state.characters[
+                        character_id
+                    ]
+
+                    asset = self.build_character_asset(
+                        character
+                    )
+
+                    shot_assets.append(asset)
+
+                # Location reference
+
+                location = state.locations[
+                    scene_plan.location_id
+                ]
+
+                location_asset = (
+                    self.build_location_asset(
+                        location
+                    )
+                )
+
+                shot_assets.append(
+                    location_asset
+                )
+
+                # Prop references
+
+                for prop_id in shot.props:
+
+                    prop = state.props[
+                        prop_id
+                    ]
+
+                    asset = self.build_prop_asset(
+                        prop
+                    )
+
+                    shot_assets.append(
+                        asset
+                    )
+
+                shot_plans.append(
+                    ShotAssetPlan(
+                        shot_id=shot.shot_id,
+                        assets=shot_assets
+                    )
+                )
+
+            scene_plans.append(
+                SceneAssetPlan(
+                    scene_number=scene_plan.scene_number,
+
+                    assets=scene_assets,
+
+                    shots=shot_plans
+                )
+            )
+
+        return AssetPlan(
+            episode_id=episode.episode_id,
+
+            title=episode.title,
+
+            assets=list(
+                all_assets.values()
+            ),
+
+            scenes=scene_plans
+        )
+
+    # ================================================================
+    # CHARACTER
+    # ================================================================
+
+    def build_character_asset(
+        self,
+        character
+    ) -> AssetReference:
+
+        asset_id = (
+            f"ASSET_{character.entity_id}_MASTER"
+        )
+
+        return AssetReference(
+            asset_id=asset_id,
+
+            entity_id=character.entity_id,
+
+            asset_type="CHARACTER",
+
+            name=character.name,
+
+            purpose="Master character reference",
+
+            required=True,
+
+            master_reference_required=(
+                character.master_character_required
+            )
+        )
+
+    # ================================================================
+    # LOCATION
+    # ================================================================
+
+    def build_location_asset(
+        self,
+        location
+    ) -> AssetReference:
+
+        asset_id = (
+            f"ASSET_{location.entity_id}_MASTER"
+        )
+
+        return AssetReference(
+            asset_id=asset_id,
+
+            entity_id=location.entity_id,
+
+            asset_type="LOCATION",
+
+            name=location.name,
+
+            purpose="Master location reference",
+
+            required=True,
+
+            master_reference_required=False
+        )
+
+    # ================================================================
+    # PROP
+    # ================================================================
+
+    def build_prop_asset(
+        self,
+        prop
+    ) -> AssetReference:
+
+        asset_id = (
+            f"ASSET_{prop.entity_id}_MASTER"
+        )
+
+        return AssetReference(
+            asset_id=asset_id,
+
+            entity_id=prop.entity_id,
+
+            asset_type="PROP",
+
+            name=prop.name,
+
+            purpose="Master prop reference",
+
+            required=True,
+
+            master_reference_required=False
+        )
+
+
+============================================================
+FILE: app/prompting/image_prompt_builder.py
+============================================================
+from typing import List
+
+from app.models.prompt import (
+    PromptAssetReference,
+    PromptCharacterPerformance,
+    PromptPropPerformance,
+    ShotPromptContext,
+)
+
+
+class ImagePromptBuilder:
+    """
+    Provider-agnostic image prompt builder.
+
+    The builder compiles a still/keyframe prompt from structured
+    ShotPromptContext.
+
+    It must not contain story-specific names, episode IDs,
+    genres, or visual styles.
+    """
+
+    # ================================================================
+    # PUBLIC API
+    # ================================================================
+
+    def build(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        sections: List[str] = []
+
+        style_section = (
+            self._build_style_section(
+                context
+            )
+        )
+
+        if style_section:
+            sections.append(
+                style_section
+            )
+
+        purpose_section = (
+            self._build_purpose_section(
+                context
+            )
+        )
+
+        if purpose_section:
+            sections.append(
+                purpose_section
+            )
+
+        environment_section = (
+            self._build_environment_section(
+                context
+            )
+        )
+
+        if environment_section:
+            sections.append(
+                environment_section
+            )
+
+        subject_section = (
+            self._build_subject_section(
+                context
+            )
+        )
+
+        if subject_section:
+            sections.append(
+                subject_section
+            )
+
+        performance_section = (
+            self._build_performance_section(
+                context
+            )
+        )
+
+        if performance_section:
+            sections.append(
+                performance_section
+            )
+
+        prop_content_section = (
+            self._build_prop_content_section(
+                context
+            )
+        )
+
+        if prop_content_section:
+            sections.append(
+                prop_content_section
+            )
+
+        camera_section = (
+            self._build_camera_section(
+                context
+            )
+        )
+
+        if camera_section:
+            sections.append(
+                camera_section
+            )
+
+        continuity_section = (
+            self._build_continuity_section(
+                context
+            )
+        )
+
+        if continuity_section:
+            sections.append(
+                continuity_section
+            )
+
+        asset_section = (
+            self._build_asset_section(
+                context
+            )
+        )
+
+        if asset_section:
+            sections.append(
+                asset_section
+            )
+
+        sections.append(
+            self._build_stability_section()
+        )
+
+        return self._join_sections(
+            sections
+        )
+
+    # ================================================================
+    # STYLE
+    # ================================================================
+
+    def _build_style_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        parts: List[str] = []
+
+        tone = (
+            context.style
+            .tone
+            .strip()
+        )
+
+        visual_style = (
+            context.style
+            .visual_style
+            .strip()
+        )
+
+        if visual_style:
+            parts.append(
+                f"Visual style: {visual_style}."
+            )
+
+        if tone:
+            parts.append(
+                f"Tone: {tone}."
+            )
+
+        for note in (
+            context.style
+            .additional_style_notes
+        ):
+
+            cleaned = note.strip()
+
+            if cleaned:
+                parts.append(
+                    cleaned
+                    if cleaned.endswith(".")
+                    else f"{cleaned}."
+                )
+
+        return " ".join(
+            parts
+        )
+
+    # ================================================================
+    # PURPOSE
+    # ================================================================
+
+    def _build_purpose_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        purpose = (
+            context.purpose
+            .strip()
+        )
+
+        if not purpose:
+            return ""
+
+        return (
+            "Shot purpose: "
+            f"{purpose.rstrip('.')}."
+        )
+
+    # ================================================================
+    # ENVIRONMENT
+    # ================================================================
+
+    def _build_environment_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        environment = (
+            context.environment
+        )
+
+        parts: List[str] = []
+
+        if environment.location_name.strip():
+            parts.append(
+                f"Location: "
+                f"{environment.location_name.strip()}."
+            )
+
+        known_environment = []
+
+        if (
+            environment.time_of_day
+            and
+            environment.time_of_day
+            != "UNKNOWN"
+        ):
+
+            known_environment.append(
+                self._humanize(
+                    environment.time_of_day
+                )
+            )
+
+        if (
+            environment.weather
+            and
+            environment.weather
+            != "UNKNOWN"
+        ):
+
+            known_environment.append(
+                self._humanize(
+                    environment.weather
+                )
+            )
+
+        if (
+            environment.lighting
+            and
+            environment.lighting
+            != "UNKNOWN"
+        ):
+
+            known_environment.append(
+                self._humanize(
+                    environment.lighting
+                )
+            )
+
+        if (
+            environment.atmosphere
+            and
+            environment.atmosphere
+            != "UNKNOWN"
+        ):
+
+            known_environment.append(
+                self._humanize(
+                    environment.atmosphere
+                )
+            )
+
+        if known_environment:
+
+            parts.append(
+                "Environment: "
+                + ", ".join(
+                    known_environment
+                )
+                + "."
+            )
+
+        return " ".join(
+            parts
+        )
+
+    # ================================================================
+    # SUBJECTS
+    # ================================================================
+
+    def _build_subject_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        parts: List[str] = []
+
+        character_names = [
+            character.name.strip()
+            for character
+            in context.characters
+            if character.name.strip()
+        ]
+
+        prop_names = [
+            prop.name.strip()
+            for prop
+            in context.props
+            if prop.name.strip()
+        ]
+
+        if character_names:
+
+            parts.append(
+                "Characters visible: "
+                + ", ".join(
+                    character_names
+                )
+                + "."
+            )
+
+        if prop_names:
+
+            parts.append(
+                "Props visible: "
+                + ", ".join(
+                    prop_names
+                )
+                + "."
+            )
+
+        return " ".join(
+            parts
+        )
+
+    # ================================================================
+    # PERFORMANCE
+    # ================================================================
+
+    def _build_performance_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        character_descriptions = []
+
+        for character in (
+            context.characters
+        ):
+
+            description = (
+                self._describe_character(
+                    character
+                )
+            )
+
+            if description:
+                character_descriptions.append(
+                    description
+                )
+
+        prop_descriptions = []
+
+        for prop in (
+            context.props
+        ):
+
+            description = (
+                self._describe_prop(
+                    prop
+                )
+            )
+
+            if description:
+                prop_descriptions.append(
+                    description
+                )
+
+        parts = []
+
+        if character_descriptions:
+
+            parts.append(
+                "Character performance: "
+                + "; ".join(
+                    character_descriptions
+                )
+                + "."
+            )
+
+        if prop_descriptions:
+
+            parts.append(
+                "Prop behavior: "
+                + "; ".join(
+                    prop_descriptions
+                )
+                + "."
+            )
+
+        return " ".join(
+            parts
+        )
+
+    def _describe_character(
+        self,
+        character: PromptCharacterPerformance,
+    ) -> str:
+
+        name = (
+            character.name.strip()
+            or character.entity_id
+        )
+
+        elements = []
+
+        if character.action.strip():
+            elements.append(
+                self._humanize(
+                    character.action
+                )
+            )
+
+        if character.gesture.strip():
+            elements.append(
+                "gesture: "
+                + self._humanize(
+                    character.gesture
+                )
+            )
+
+        if character.facial_movement.strip():
+            elements.append(
+                "facial expression: "
+                + self._humanize(
+                    character.facial_movement
+                )
+            )
+
+        if not elements:
+            return name
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                elements
+            )
+        )
+
+    def _describe_prop(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        if not prop.action.strip():
+            return name
+
+        return (
+            f"{name} — "
+            f"{self._humanize(prop.action)}"
+        )
+
+    # ================================================================
+    # PROP CONTENT SEMANTICS
+    # ================================================================
+
+    def _build_prop_content_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+        """
+        Build prompt guidance from structured prop-content semantics.
+
+        No inference is performed from prop names. The builder only
+        responds to semantic fields supplied by upstream analysis.
+        """
+
+        descriptions = []
+
+        for prop in context.props:
+
+            description = (
+                self._describe_prop_content(
+                    prop
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Prop content requirements: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_prop_content(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        modalities = {
+            item.strip().upper()
+            for item in (
+                prop.content_modalities
+            )
+            if item.strip()
+        }
+
+        if not (
+            modalities
+            or prop.text_sensitive
+            or prop.readability_required
+            or prop.visual_detail_sensitive
+        ):
+            return ""
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        requirements = []
+
+        if "TEXT" in modalities:
+            requirements.append(
+                "preserve established textual content and typography consistently"
+            )
+
+        if "MARKING" in modalities:
+            requirements.append(
+                "preserve established markings, symbols, codes, and inscriptions consistently"
+            )
+
+        if "IMAGE" in modalities:
+            requirements.append(
+                "preserve established image-bearing content and internal visual relationships"
+            )
+
+        if prop.readability_required:
+            requirements.append(
+                "keep story-relevant readable content legible and visually coherent"
+            )
+
+        if prop.text_sensitive:
+            requirements.append(
+                "do not invent unrelated text, letters, numbers, symbols, or markings"
+            )
+
+        if prop.visual_detail_sensitive:
+            requirements.append(
+                "preserve fine visual details without simplification or redesign"
+            )
+
+        requirements = (
+            self._deduplicate(
+                requirements
+            )
+        )
+
+        if not requirements:
+            return ""
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                requirements
+            )
+        )
+
+    # ================================================================
+    # CAMERA
+    # ================================================================
+
+    def _build_camera_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        camera = (
+            context.camera
+        )
+
+        parts = []
+
+        if (
+            camera.shot_type
+            and
+            camera.shot_type
+            != "UNSPECIFIED"
+        ):
+
+            parts.append(
+                "shot type: "
+                + self._humanize(
+                    camera.shot_type
+                )
+            )
+
+        if (
+            camera.framing
+            and
+            camera.framing
+            != "UNSPECIFIED"
+        ):
+
+            parts.append(
+                "framing: "
+                + self._humanize(
+                    camera.framing
+                )
+            )
+
+        if (
+            camera.camera_movement
+            and
+            camera.camera_movement
+            != "UNSPECIFIED"
+        ):
+
+            parts.append(
+                "camera movement intent: "
+                + self._humanize(
+                    camera.camera_movement
+                )
+            )
+
+        composition = (
+            camera.composition
+            .strip()
+        )
+
+        if composition:
+            parts.append(
+                "composition: "
+                + composition.rstrip(".")
+            )
+
+        if not parts:
+            return ""
+
+        return (
+            "Camera and composition: "
+            + "; ".join(
+                parts
+            )
+            + "."
+        )
+
+    # ================================================================
+    # CONTINUITY
+    # ================================================================
+
+    def _build_continuity_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        constraints = (
+            self._deduplicate(
+                context
+                .continuity_constraints
+            )
+        )
+
+        if not constraints:
+            return ""
+
+        normalized = []
+
+        for constraint in constraints:
+
+            cleaned = (
+                constraint.strip()
+            )
+
+            if not cleaned:
+                continue
+
+            normalized.append(
+                cleaned
+                if cleaned.endswith(".")
+                else f"{cleaned}."
+            )
+
+        if not normalized:
+            return ""
+
+        return (
+            "Continuity requirements: "
+            + " ".join(
+                normalized
+            )
+        )
+
+    # ================================================================
+    # ASSETS
+    # ================================================================
+
+    def _build_asset_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        assets = (
+            context.assets
+        )
+
+        if not assets:
+            return ""
+
+        descriptions = []
+
+        for asset in assets:
+
+            descriptions.append(
+                self._describe_asset(
+                    asset
+                )
+            )
+
+        return (
+            "Reference assets: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_asset(
+        self,
+        asset: PromptAssetReference,
+    ) -> str:
+
+        parts = [
+            asset.name
+        ]
+
+        if asset.purpose:
+            parts.append(
+                f"purpose: {asset.purpose}"
+            )
+
+        if (
+            asset.master_reference_required
+        ):
+            parts.append(
+                "preserve master reference identity"
+            )
+
+        if asset.reference_path:
+            parts.append(
+                "reference image supplied"
+            )
+
+        if asset.required:
+            parts.append(
+                "required"
+            )
+
+        return (
+            " (".join(
+                [
+                    parts[0],
+                    ", ".join(
+                        parts[1:]
+                    )
+                    + ")"
+                ]
+            )
+            if len(parts) > 1
+            else parts[0]
+        )
+
+    # ================================================================
+    # STABILITY
+    # ================================================================
+
+    def _build_stability_section(
+        self,
+    ) -> str:
+
+        return (
+            "Create one stable cinematic frame representing a single "
+            "moment in time. Preserve believable anatomy, coherent "
+            "spatial relationships, consistent identity, and natural "
+            "poses. Do not depict a transition between multiple states."
+        )
+
+    # ================================================================
+    # UTILITIES
+    # ================================================================
+
+    def _join_sections(
+        self,
+        sections: List[str],
+    ) -> str:
+
+        cleaned = [
+            section.strip()
+            for section
+            in sections
+            if section.strip()
+        ]
+
+        return " ".join(
+            cleaned
+        )
+
+    def _humanize(
+        self,
+        value: str,
+    ) -> str:
+
+        cleaned = (
+            value.strip()
+            .replace("_", " ")
+            .lower()
+        )
+
+        return cleaned
+
+    def _deduplicate(
+        self,
+        values: List[str],
+    ) -> List[str]:
+
+        result = []
+
+        seen = set()
+
+        for value in values:
+
+            cleaned = (
+                value.strip()
+            )
+
+            if not cleaned:
+                continue
+
+            key = (
+                cleaned.lower()
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(
+                key
+            )
+
+            result.append(
+                cleaned
+            )
+
+        return result
+============================================================
+FILE: app/prompting/negative_prompt_builder.py
+============================================================
+from typing import List
+
+from app.models.prompt import (
+    ShotPromptContext,
+)
+
+
+class NegativePromptBuilder:
+    """
+    Provider-agnostic, context-aware negative prompt builder.
+
+    Negative constraints are only added when they are relevant
+    to the current shot.
+
+    The builder consumes structured prompt semantics and contains
+    no story-specific knowledge.
+    """
+
+    # ================================================================
+    # PUBLIC API
+    # ================================================================
+
+    def build(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        exclusions: List[str] = []
+
+        # ============================================================
+        # UNIVERSAL QUALITY / STABILITY
+        # ============================================================
+
+        exclusions.extend(
+            self._base_exclusions()
+        )
+
+        # ============================================================
+        # CHARACTER-SPECIFIC
+        # ============================================================
+
+        if context.characters:
+
+            exclusions.extend(
+                self._character_exclusions()
+            )
+
+        # ============================================================
+        # PROP-SPECIFIC
+        # ============================================================
+
+        if context.props:
+
+            exclusions.extend(
+                self._prop_exclusions()
+            )
+
+        # ============================================================
+        # ENVIRONMENT-SPECIFIC
+        # ============================================================
+
+        if (
+            context.environment.location_id
+            or
+            context.environment.location_name
+        ):
+
+            exclusions.extend(
+                self._environment_exclusions(
+                    context
+                )
+            )
+
+        # ============================================================
+        # CAMERA-SPECIFIC
+        # ============================================================
+
+        exclusions.extend(
+            self._camera_exclusions(
+                context
+            )
+        )
+
+        # ============================================================
+        # STRUCTURED PROP-CONTENT SEMANTICS
+        # ============================================================
+
+        if self._shot_has_text_sensitive_content(
+            context
+        ):
+
+            exclusions.extend(
+                self._text_exclusions()
+            )
+
+        if self._shot_has_marking_sensitive_content(
+            context
+        ):
+
+            exclusions.extend(
+                self._marking_exclusions()
+            )
+
+        if self._shot_has_image_sensitive_content(
+            context
+        ):
+
+            exclusions.extend(
+                self._image_content_exclusions()
+            )
+
+        # ============================================================
+        # TRANSITION / MOTION STABILITY
+        # ============================================================
+
+        exclusions.extend(
+            self._transition_exclusions()
+        )
+
+        return ", ".join(
+            self._deduplicate(
+                exclusions
+            )
+        )
+
+    # ================================================================
+    # BASE
+    # ================================================================
+
+    def _base_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "visual glitches",
+            "flickering",
+            "unstable details",
+            "warped geometry",
+            "distorted anatomy",
+            "inconsistent proportions",
+            "unmotivated visual changes",
+        ]
+
+    # ================================================================
+    # CHARACTERS
+    # ================================================================
+
+    def _character_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "extra characters",
+            "duplicate characters",
+            "character identity drift",
+            "facial identity changes",
+            "different hairstyle",
+            "incorrect wardrobe",
+            "incorrect accessories",
+            "body deformation",
+            "extra limbs",
+            "extra fingers",
+            "unnecessary head movement",
+            "exaggerated facial expressions",
+            "exaggerated acting",
+            "unnatural gestures",
+        ]
+
+    # ================================================================
+    # PROPS
+    # ================================================================
+
+    def _prop_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "extra props",
+            "unrelated objects",
+            "prop identity changes",
+            "object morphing",
+            "object transformation",
+            "unmotivated prop movement",
+        ]
+
+    # ================================================================
+    # ENVIRONMENT
+    # ================================================================
+
+    def _environment_exclusions(
+        self,
+        context: ShotPromptContext,
+    ) -> List[str]:
+
+        exclusions = [
+            "environment redesign",
+            "unexpected location changes",
+            "lighting changes",
+        ]
+
+        environment = (
+            context.environment
+        )
+
+        if (
+            environment.weather
+            and
+            environment.weather
+            != "UNKNOWN"
+        ):
+
+            exclusions.append(
+                "unexpected weather changes"
+            )
+
+        if (
+            environment.time_of_day
+            and
+            environment.time_of_day
+            != "UNKNOWN"
+        ):
+
+            exclusions.append(
+                "time of day changes"
+            )
+
+        if (
+            environment.atmosphere
+            and
+            environment.atmosphere
+            != "UNKNOWN"
+        ):
+
+            exclusions.append(
+                "atmosphere changes"
+            )
+
+        return exclusions
+
+    # ================================================================
+    # CAMERA
+    # ================================================================
+
+    def _camera_exclusions(
+        self,
+        context: ShotPromptContext,
+    ) -> List[str]:
+
+        movement = (
+            context.camera
+            .camera_movement
+            .strip()
+            .upper()
+        )
+
+        if movement == "STATIC":
+
+            return [
+                "camera shake",
+                "camera spin",
+                "camera rotation",
+                "sudden zoom",
+                "rapid reframing",
+                "unwanted camera movement",
+            ]
+
+        return [
+            "random camera shake",
+            "camera spin",
+            "unmotivated camera rotation",
+            "sudden zoom",
+            "excessive zoom",
+            "rapid reframing",
+            "camera movement beyond the planned motion",
+        ]
+
+    # ================================================================
+    # STRUCTURED CONTENT SEMANTICS
+    # ================================================================
+
+    def _shot_has_text_sensitive_content(
+        self,
+        context: ShotPromptContext,
+    ) -> bool:
+        """
+        Return True when at least one visible prop explicitly carries
+        text-sensitive semantics.
+
+        No inference is performed from prop names or metadata strings.
+        """
+
+        for prop in context.props:
+
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
+
+            if (
+                prop.text_sensitive
+                or
+                prop.readability_required
+                or
+                "TEXT" in modalities
+            ):
+
+                return True
+
+        return False
+
+    def _shot_has_marking_sensitive_content(
+        self,
+        context: ShotPromptContext,
+    ) -> bool:
+        """
+        Return True when at least one visible prop carries meaningful
+        markings, symbols, codes, inscriptions, or equivalent structured
+        marking semantics.
+        """
+
+        for prop in context.props:
+
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
+
+            if "MARKING" in modalities:
+
+                return True
+
+        return False
+
+    def _shot_has_image_sensitive_content(
+        self,
+        context: ShotPromptContext,
+    ) -> bool:
+        """
+        Return True when at least one visible prop carries structured
+        image-bearing content.
+        """
+
+        for prop in context.props:
+
+            modalities = {
+                item.strip().upper()
+                for item in prop.content_modalities
+                if item.strip()
+            }
+
+            if "IMAGE" in modalities:
+
+                return True
+
+        return False
+
+    # ================================================================
+    # TEXT
+    # ================================================================
+
+    def _text_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "changing text",
+            "random typography",
+            "unrelated text",
+            "random letters",
+            "random numbers",
+            "text distortion",
+            "text morphing",
+            "rewritten text",
+            "missing readable text",
+        ]
+
+    # ================================================================
+    # MARKINGS
+    # ================================================================
+
+    def _marking_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "changing markings",
+            "missing markings",
+            "altered symbols",
+            "random symbols",
+            "changed codes",
+            "changed inscriptions",
+            "marking distortion",
+            "marking morphing",
+        ]
+
+    # ================================================================
+    # IMAGE-BEARING PROP CONTENT
+    # ================================================================
+
+    def _image_content_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "image content distortion",
+            "internal image changes",
+            "image reinterpretation",
+            "image content morphing",
+            "missing image details",
+        ]
+
+    # ================================================================
+    # TRANSITIONS
+    # ================================================================
+
+    def _transition_exclusions(
+        self,
+    ) -> List[str]:
+
+        return [
+            "artificial transitions",
+            "scene transitions",
+            "crossfades",
+            "object transitions",
+            "state morphing",
+        ]
+
+    # ================================================================
+    # UTILITIES
+    # ================================================================
+
+    def _deduplicate(
+        self,
+        values: List[str],
+    ) -> List[str]:
+
+        result = []
+
+        seen = set()
+
+        for value in values:
+
+            cleaned = (
+                value.strip()
+            )
+
+            if not cleaned:
+                continue
+
+            key = (
+                cleaned.lower()
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(
+                key
+            )
+
+            result.append(
+                cleaned
+            )
+
+        return result
+
+============================================================
+FILE: app/prompting/video_prompt_builder.py
+============================================================
+from typing import List
+
+from app.models.prompt import (
+    PromptCharacterPerformance,
+    PromptPropPerformance,
+    ShotPromptContext,
+)
+
+
+class VideoPromptBuilder:
+    """
+    Provider-agnostic video prompt builder.
+
+    The builder assumes that an approved keyframe already exists.
+
+    Its responsibility is to describe motion only:
+    - camera movement
+    - character movement
+    - prop movement
+    - continuity preservation
+
+    It must not redesign the approved keyframe.
+    """
+
+    # ================================================================
+    # PUBLIC API
+    # ================================================================
+
+    def build(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        sections: List[str] = []
+
+        sections.append(
+            self._build_opening_section(
+                context
+            )
+        )
+
+        camera_section = (
+            self._build_camera_section(
+                context
+            )
+        )
+
+        if camera_section:
+            sections.append(
+                camera_section
+            )
+
+        character_section = (
+            self._build_character_motion_section(
+                context
+            )
+        )
+
+        if character_section:
+            sections.append(
+                character_section
+            )
+
+        prop_section = (
+            self._build_prop_motion_section(
+                context
+            )
+        )
+
+        if prop_section:
+            sections.append(
+                prop_section
+            )
+
+        prop_content_section = (
+            self._build_prop_content_preservation_section(
+                context
+            )
+        )
+
+        if prop_content_section:
+            sections.append(
+                prop_content_section
+            )
+
+        continuity_section = (
+            self._build_continuity_section(
+                context
+            )
+        )
+
+        if continuity_section:
+            sections.append(
+                continuity_section
+            )
+
+        sections.append(
+            self._build_motion_policy_section()
+        )
+
+        return self._join_sections(
+            sections
+        )
+
+    # ================================================================
+    # OPENING
+    # ================================================================
+
+    def _build_opening_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        return (
+            f"Animate the approved keyframe for "
+            f"{context.duration_seconds} seconds. "
+            "Treat the approved keyframe as the fixed visual source "
+            "for character identity, wardrobe, environment, props, "
+            "lighting, composition, and visual style."
+        )
+
+    # ================================================================
+    # CAMERA
+    # ================================================================
+
+    def _build_camera_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        camera = (
+            context.camera
+        )
+
+        parts = []
+
+        movement = (
+            camera.camera_movement
+            .strip()
+        )
+
+        if (
+            movement
+            and
+            movement != "UNSPECIFIED"
+        ):
+            parts.append(
+                "camera movement: "
+                + self._humanize(
+                    movement
+                )
+            )
+
+        framing = (
+            camera.framing
+            .strip()
+        )
+
+        if (
+            framing
+            and
+            framing != "UNSPECIFIED"
+        ):
+            parts.append(
+                "preserve framing: "
+                + self._humanize(
+                    framing
+                )
+            )
+
+        composition = (
+            camera.composition
+            .strip()
+        )
+
+        if composition:
+            parts.append(
+                "preserve composition: "
+                + composition.rstrip(".")
+            )
+
+        if not parts:
+            return ""
+
+        return (
+            "Camera motion: "
+            + "; ".join(
+                parts
+            )
+            + "."
+        )
+
+    # ================================================================
+    # CHARACTER MOTION
+    # ================================================================
+
+    def _build_character_motion_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        descriptions = []
+
+        for character in (
+            context.characters
+        ):
+
+            description = (
+                self._describe_character_motion(
+                    character
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Character motion: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_character_motion(
+        self,
+        character: PromptCharacterPerformance,
+    ) -> str:
+
+        name = (
+            character.name.strip()
+            or character.entity_id
+        )
+
+        parts = []
+
+        action = (
+            character.action
+            .strip()
+        )
+
+        if action:
+            parts.append(
+                "action: "
+                + self._humanize(
+                    action
+                )
+            )
+
+        gesture = (
+            character.gesture
+            .strip()
+        )
+
+        if gesture:
+            parts.append(
+                "gesture: "
+                + self._humanize(
+                    gesture
+                )
+            )
+
+        facial = (
+            character.facial_movement
+            .strip()
+        )
+
+        if facial:
+            parts.append(
+                "facial movement: "
+                + self._humanize(
+                    facial
+                )
+            )
+
+        if not parts:
+            return (
+                f"{name} remains visually stable "
+                "with only subtle natural motion"
+            )
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                parts
+            )
+        )
+
+    # ================================================================
+    # PROP MOTION
+    # ================================================================
+
+    def _build_prop_motion_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        descriptions = []
+
+        for prop in (
+            context.props
+        ):
+
+            description = (
+                self._describe_prop_motion(
+                    prop
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Prop motion: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_prop_motion(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        action = (
+            prop.action.strip()
+        )
+
+        if not action:
+
+            return (
+                f"{name} remains visually stable"
+            )
+
+        humanized_action = (
+            self._humanize(
+                action
+            )
+        )
+
+        if (
+            humanized_action
+            == "maintain established state"
+        ):
+
+            return (
+                f"{name} remains visually stable "
+                "and preserves its established state"
+            )
+
+        return (
+            f"{name} — "
+            f"{humanized_action}"
+        )
+
+    # ================================================================
+    # PROP CONTENT PRESERVATION
+    # ================================================================
+
+    def _build_prop_content_preservation_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+        """
+        Preserve structured content carried by visible props during
+        animation.
+
+        This method relies only on upstream semantic fields. It does not
+        infer content type from prop names or story-specific keywords.
+        """
+
+        descriptions = []
+
+        for prop in (
+            context.props
+        ):
+
+            description = (
+                self._describe_prop_content_preservation(
+                    prop
+                )
+            )
+
+            if description:
+                descriptions.append(
+                    description
+                )
+
+        if not descriptions:
+            return ""
+
+        return (
+            "Prop content preservation: "
+            + "; ".join(
+                descriptions
+            )
+            + "."
+        )
+
+    def _describe_prop_content_preservation(
+        self,
+        prop: PromptPropPerformance,
+    ) -> str:
+
+        modalities = {
+            item.strip().upper()
+            for item in (
+                prop.content_modalities
+            )
+            if item.strip()
+        }
+
+        has_semantics = (
+            bool(modalities)
+            or prop.text_sensitive
+            or prop.readability_required
+            or prop.visual_detail_sensitive
+        )
+
+        if not has_semantics:
+            return ""
+
+        name = (
+            prop.name.strip()
+            or prop.entity_id
+        )
+
+        requirements = []
+
+        if (
+            "TEXT" in modalities
+            or prop.text_sensitive
+        ):
+            requirements.append(
+                "preserve the approved textual content and typography "
+                "without rewriting, drifting, or morphing"
+            )
+
+        if "MARKING" in modalities:
+            requirements.append(
+                "preserve approved markings, symbols, codes, and "
+                "inscriptions without alteration"
+            )
+
+        if "IMAGE" in modalities:
+            requirements.append(
+                "preserve approved image-bearing content and its "
+                "internal visual relationships without reinterpretation"
+            )
+
+        if prop.readability_required:
+            requirements.append(
+                "keep story-relevant readable content legible and "
+                "stable across all frames"
+            )
+
+        if prop.visual_detail_sensitive:
+            requirements.append(
+                "preserve fine visual details consistently throughout "
+                "the shot"
+            )
+
+        if not requirements:
+            return ""
+
+        return (
+            f"{name} — "
+            + ", ".join(
+                requirements
+            )
+        )
+
+    # ================================================================
+    # CONTINUITY
+    # ================================================================
+
+    def _build_continuity_section(
+        self,
+        context: ShotPromptContext,
+    ) -> str:
+
+        constraints = (
+            self._deduplicate(
+                context
+                .continuity_constraints
+            )
+        )
+
+        if not constraints:
+            return ""
+
+        normalized = []
+
+        for constraint in constraints:
+
+            cleaned = (
+                constraint.strip()
+            )
+
+            if not cleaned:
+                continue
+
+            normalized.append(
+                cleaned
+                if cleaned.endswith(".")
+                else f"{cleaned}."
+            )
+
+        if not normalized:
+            return ""
+
+        return (
+            "Continuity requirements: "
+            + " ".join(
+                normalized
+            )
+        )
+
+    # ================================================================
+    # MOTION POLICY
+    # ================================================================
+
+    def _build_motion_policy_section(
+        self,
+    ) -> str:
+
+        return (
+            "Keep all motion restrained, natural, and physically "
+            "believable. Preserve character identity, facial structure, "
+            "hairstyle, wardrobe, body proportions, accessories, "
+            "environment design, lighting, weather, atmosphere, prop "
+            "appearance, and spatial relationships throughout the shot. "
+            "Do not redesign or reinterpret the approved keyframe. "
+            "Do not introduce new characters, unrelated objects, or "
+            "environmental changes. Do not create artificial transitions "
+            "inside the shot."
+        )
+
+    # ================================================================
+    # UTILITIES
+    # ================================================================
+
+    def _join_sections(
+        self,
+        sections: List[str],
+    ) -> str:
+
+        cleaned = [
+            section.strip()
+            for section
+            in sections
+            if section.strip()
+        ]
+
+        return " ".join(
+            cleaned
+        )
+
+    def _humanize(
+        self,
+        value: str,
+    ) -> str:
+
+        return (
+            value.strip()
+            .replace("_", " ")
+            .lower()
+        )
+
+    def _deduplicate(
+        self,
+        values: List[str],
+    ) -> List[str]:
+
+        result = []
+
+        seen = set()
+
+        for value in values:
+
+            cleaned = (
+                value.strip()
+            )
+
+            if not cleaned:
+                continue
+
+            key = (
+                cleaned.lower()
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(
+                key
+            )
+
+            result.append(
+                cleaned
+            )
+
+        return result
+============================================================
+SHOT PROMPT CONTEXT / PRODUCTION PROMPT USAGE
+============================================================
+app/prompting/compiler.py:13:    EpisodeProductionPrompts,
+app/prompting/compiler.py:14:    ProductionPrompt,
+app/prompting/compiler.py:21:    SceneProductionPrompts,
+app/prompting/compiler.py:22:    ShotPromptContext,
+app/prompting/compiler.py:54:    - assemble ShotPromptContext
+app/prompting/compiler.py:59:    - return EpisodeProductionPrompts
+app/prompting/compiler.py:103:    ) -> EpisodeProductionPrompts:
+app/prompting/compiler.py:116:            SceneProductionPrompts
+app/prompting/compiler.py:179:                    ProductionPrompt(
+app/prompting/compiler.py:225:                SceneProductionPrompts(
+app/prompting/compiler.py:235:        return EpisodeProductionPrompts(
+app/prompting/compiler.py:269:    ) -> ShotPromptContext:
+app/prompting/compiler.py:369:        return ShotPromptContext(
+app/prompting/image_prompt_builder.py:7:    ShotPromptContext,
+app/prompting/image_prompt_builder.py:16:    ShotPromptContext.
+app/prompting/image_prompt_builder.py:28:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:146:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:197:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:219:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:308:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:357:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:489:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:604:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:683:        context: ShotPromptContext,
+app/prompting/image_prompt_builder.py:729:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:6:    ShotPromptContext,
+app/prompting/video_prompt_builder.py:31:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:111:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:128:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:199:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:300:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:378:        context: ShotPromptContext,
+app/prompting/video_prompt_builder.py:495:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:4:    ShotPromptContext,
+app/prompting/negative_prompt_builder.py:25:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:192:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:246:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:283:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:314:        context: ShotPromptContext,
+app/prompting/negative_prompt_builder.py:338:        context: ShotPromptContext,
+app/models/prompt.py:134:class ShotPromptContext(BaseModel):
+app/models/prompt.py:196:class ProductionPrompt(BaseModel):
+app/models/prompt.py:231:class SceneProductionPrompts(BaseModel):
+app/models/prompt.py:239:        ProductionPrompt
+app/models/prompt.py:245:class EpisodeProductionPrompts(BaseModel):
+app/models/prompt.py:257:        SceneProductionPrompts
+app/generation/request_compiler.py:11:    EpisodeProductionPrompts,
+app/generation/request_compiler.py:12:    ProductionPrompt,
+app/generation/request_compiler.py:26:    - create one KEYFRAME request per ProductionPrompt
+app/generation/request_compiler.py:92:        prompts: EpisodeProductionPrompts,
+app/generation/request_compiler.py:125:        prompt: ProductionPrompt,
+app/generation/request_compiler.py:137:                "ProductionPrompt shot_id "
+app/generation/request_compiler.py:144:                "ProductionPrompt image_prompt "
+app/generation/request_compiler.py:203:        prompt: ProductionPrompt,

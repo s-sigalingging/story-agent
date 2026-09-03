@@ -33,14 +33,9 @@ class GeminiGenerationProvider(
     """
     Google Gemini image generation provider adapter.
 
-    Important safety rule:
-
     Network execution is disabled by default.
 
-    Unit/regression tests therefore cannot accidentally consume API
-    credits unless network_enabled=True is explicitly supplied.
-
-    A client may also be injected for deterministic offline testing.
+    A client may be injected for deterministic offline testing.
     """
 
     def __init__(
@@ -165,10 +160,6 @@ class GeminiGenerationProvider(
                 "attempt_number must be at least 1."
             )
 
-        # ------------------------------------------------------------
-        # CAPABILITY GATE
-        # ------------------------------------------------------------
-
         capability_result = (
             self.validate_request_capabilities(
                 request
@@ -182,9 +173,7 @@ class GeminiGenerationProvider(
             return (
                 self._failure(
                     request=request,
-                    attempt_number=(
-                        attempt_number
-                    ),
+                    attempt_number=attempt_number,
                     code=(
                         "GEMINI_CAPABILITY_MISMATCH"
                     ),
@@ -197,10 +186,6 @@ class GeminiGenerationProvider(
                 )
             )
 
-        # ------------------------------------------------------------
-        # NETWORK SAFETY GATE
-        # ------------------------------------------------------------
-
         if (
             not self.network_enabled
             and
@@ -211,9 +196,7 @@ class GeminiGenerationProvider(
             return (
                 self._failure(
                     request=request,
-                    attempt_number=(
-                        attempt_number
-                    ),
+                    attempt_number=attempt_number,
                     code=(
                         "GEMINI_NETWORK_DISABLED"
                     ),
@@ -223,10 +206,6 @@ class GeminiGenerationProvider(
                     retryable=False,
                 )
             )
-
-        # ------------------------------------------------------------
-        # MAP GENERIC REQUEST
-        # ------------------------------------------------------------
 
         try:
 
@@ -241,9 +220,7 @@ class GeminiGenerationProvider(
             return (
                 self._failure(
                     request=request,
-                    attempt_number=(
-                        attempt_number
-                    ),
+                    attempt_number=attempt_number,
                     code=(
                         "GEMINI_REQUEST_MAPPING_FAILED"
                     ),
@@ -253,10 +230,6 @@ class GeminiGenerationProvider(
                     retryable=False,
                 )
             )
-
-        # ------------------------------------------------------------
-        # EXECUTE
-        # ------------------------------------------------------------
 
         try:
 
@@ -290,12 +263,8 @@ class GeminiGenerationProvider(
             return (
                 self._materialize_success(
                     request=request,
-                    attempt_number=(
-                        attempt_number
-                    ),
-                    artifact_bytes=(
-                        artifact_bytes
-                    ),
+                    attempt_number=attempt_number,
+                    artifact_bytes=artifact_bytes,
                 )
             )
 
@@ -304,9 +273,7 @@ class GeminiGenerationProvider(
             return (
                 self._failure(
                     request=request,
-                    attempt_number=(
-                        attempt_number
-                    ),
+                    attempt_number=attempt_number,
                     code=(
                         "GEMINI_PROVIDER_ERROR"
                     ),
@@ -365,14 +332,6 @@ class GeminiGenerationProvider(
                 f"{self.api_key_env}."
             )
 
-        # ------------------------------------------------------------
-        # LAZY IMPORT
-        #
-        # The SDK is imported only when actual network execution is
-        # requested. Offline regression tests therefore do not require
-        # google-genai to be installed.
-        # ------------------------------------------------------------
-
         try:
 
             from google import genai
@@ -406,7 +365,7 @@ class GeminiGenerationProvider(
         plan,
     ):
 
-        prompt_text = (
+        execution_prompt = (
             self._build_execution_prompt(
                 plan
             )
@@ -417,21 +376,57 @@ class GeminiGenerationProvider(
         ):
 
             return (
-                prompt_text
+                execution_prompt
             )
+
+        # ------------------------------------------------------------
+        # GLOBAL SHOT INSTRUCTION
+        # ------------------------------------------------------------
 
         sdk_input = [
             {
                 "type": "text",
                 "text": (
-                    prompt_text
+                    execution_prompt
                 ),
             }
         ]
 
-        for image in (
-            plan.input_images
+        # ------------------------------------------------------------
+        # ROLE-AWARE INTERLEAVED REFERENCES
+        #
+        # The text immediately preceding each image explicitly tells
+        # Gemini:
+        #
+        # - what semantic role the image plays
+        # - what visual properties must remain stable
+        # - what transformations are allowed
+        #
+        # This avoids treating every visible aspect of the master
+        # reference as immutable.
+        # ------------------------------------------------------------
+
+        for (
+            index,
+            image,
+        ) in enumerate(
+            plan.input_images,
+            start=1,
         ):
+
+            reference_instruction = (
+                self._reference_instruction(
+                    index=index,
+                    image=image,
+                )
+            )
+
+            sdk_input.append({
+                "type": "text",
+                "text": (
+                    reference_instruction
+                ),
+            })
 
             sdk_input.append({
                 "type": "image",
@@ -447,16 +442,75 @@ class GeminiGenerationProvider(
             sdk_input
         )
 
+    # ================================================================
+    # REFERENCE INSTRUCTION
+    # ================================================================
+
+    def _reference_instruction(
+        self,
+        index: int,
+        image,
+    ) -> str:
+
+        sections = [
+            (
+                f"REFERENCE {index} "
+                f"— ROLE: {image.reference_role}"
+            )
+        ]
+
+        if (
+            image.preserve_attributes
+        ):
+
+            sections.append(
+                "PRESERVE these identity attributes: "
+                +
+                ", ".join(
+                    image.preserve_attributes
+                )
+                +
+                "."
+            )
+
+        if (
+            image.allowed_transformations
+        ):
+
+            sections.append(
+                "The following transformations are ALLOWED "
+                "when required by the shot: "
+                +
+                ", ".join(
+                    image.allowed_transformations
+                )
+                +
+                "."
+            )
+
+        if (
+            image.usage_instruction
+        ):
+
+            sections.append(
+                image.usage_instruction
+            )
+
+        sections.append(
+            "Preserve semantic identity, not the exact pixel "
+            "composition of this reference."
+        )
+
+        return (
+            "\n".join(
+                sections
+            )
+        )
+
     def _build_execution_prompt(
         self,
         plan,
     ) -> str:
-        """
-        Aspect ratio is represented as an explicit textual instruction
-        until the exact native SDK configuration field is verified.
-
-        We intentionally do not invent undocumented SDK arguments.
-        """
 
         return (
             f"{plan.prompt_text}\n\n"
@@ -473,11 +527,6 @@ class GeminiGenerationProvider(
         self,
         interaction,
     ) -> bytes:
-        """
-        Extract image data using the interaction.output_image.data
-        contract shown by the Gemini example we are integrating
-        against.
-        """
 
         output_image = getattr(
             interaction,
@@ -737,17 +786,31 @@ class GeminiGenerationProvider(
         self,
         exc: Exception,
     ) -> bool:
-        """
-        Conservative preliminary classifier.
-
-        Precise Gemini SDK exception mapping will be hardened in
-        Batch 13H after we have observed the real SDK behavior.
-        """
 
         text = (
             f"{exc.__class__.__name__} "
             f"{str(exc)}"
         ).lower()
+
+        # Billing / credential failures should never be retried.
+        non_retryable_markers = [
+            "prepayment credits are depleted",
+            "billing",
+            "invalid api key",
+            "invalid_api_key",
+            "authentication",
+            "permission denied",
+            "forbidden",
+        ]
+
+        if any(
+            marker
+            in text
+            for marker
+            in non_retryable_markers
+        ):
+
+            return False
 
         retryable_markers = [
             "timeout",

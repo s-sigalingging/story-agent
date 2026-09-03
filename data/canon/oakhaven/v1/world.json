@@ -1,0 +1,41 @@
+{
+  "world_id": "WORLD_OAKHAVEN",
+  "name": "Oakhaven",
+  "core_statement": "Oakhaven is a coastal city built on inherited lies.",
+  "narrative_principle": "No generation knows the complete truth.",
+  "genres": [
+    "Historical mystery",
+    "Crime mystery",
+    "Noir"
+  ],
+  "historical_layers": [
+    {
+      "layer_id": "HIST_1856",
+      "year_label": "1856",
+      "name": "The Illegal Foundation",
+      "description": "A fishing village was dispossessed and land ownership deeds were falsified by the Pike family.",
+      "status": "HARD_CANON"
+    },
+    {
+      "layer_id": "HIST_1930",
+      "year_label": "1930",
+      "name": "The Industrial Cover-Up",
+      "description": "A labor conflict was triggered by a misunderstanding of records originating from 1856.",
+      "status": "HARD_CANON"
+    },
+    {
+      "layer_id": "HIST_1970S",
+      "year_label": "1970s",
+      "name": "The Bureaucratic Erasure",
+      "description": "City archives were purged and media records were manipulated during Oakhaven's modernization.",
+      "status": "HARD_CANON"
+    },
+    {
+      "layer_id": "HIST_2026_PRESENT",
+      "year_label": "2026-Present",
+      "name": "The Current Tragedies",
+      "description": "Modern killings are driven by panic and attempts to suppress old records connected to Oakhaven's inherited lies.",
+      "status": "HARD_CANON"
+    }
+  ]
+}
